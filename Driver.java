@@ -1,11 +1,20 @@
+import javax.swing.JFrame;
+
 import controller.Controller;
 import view.View;
 import model.Model;
 
-// Class that ties the project together
+/*
+ *  Class that ties the Model, View and Controller together
+ */
 public class Driver {
 
 	public static void main(String[] args) {
+		
+		// Initialize JFrame
+		JFrame frame = new JFrame();
+		frame.setSize(800, 800);
+		frame.setTitle("Galatic Turret");
 		
 		// Initialize model
 		Model model = new Model();
@@ -14,7 +23,9 @@ public class Driver {
 		Controller controller = new Controller(model);
 		
 		// Initialize view
-		new View(model, controller);
+		new View(model, controller, frame);
+		
+		frame.setVisible(true);
 	}
 
 }

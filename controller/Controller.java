@@ -2,7 +2,9 @@ package controller;
 
 import model.Model;
 
-// Class takes user interaction and updates model
+/*
+ *  Class takes user interaction and updates model
+ */
 public class Controller {
 	private Model model;
 	
