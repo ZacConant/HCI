@@ -30,8 +30,9 @@ public class Model {
 		this.timeDelay = timeDelay;
 		this.initializerTimer();
 		this.initializeGrid();
-		this.printGrid();
 		this.start();
+		this.addEnemy(0);
+		this.printGrid();
 	}
 	
 	// Get the turret orientation in degrees
@@ -76,7 +77,7 @@ public class Model {
 					grid[i][j] = "T";
 				}
 				else {
-					grid[i][j] = "_";
+					grid[i][j] = " ";
 				}
 			}
 		}
@@ -148,5 +149,20 @@ public class Model {
 	// Stop timer
 	public void stop() {
 		this.timer.cancel();
+	}
+	
+	public void addEnemy(int degrees) {
+		if (degrees == 0) {
+			grid[numberGridColumns-1][turretPositionY] = "E";
+		}
+		else if (degrees == 90) {
+			grid[turretPositionX][0] = "E";
+		}
+		else if (degrees == 180) {
+			grid[0][turretPositionY] = "E";
+		}
+		else if (degrees == 270) {
+			grid[turretPositionX][numberGridRows-1] = "E";
+		}
 	}
 }
