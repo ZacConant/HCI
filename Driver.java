@@ -7,14 +7,11 @@ import model.Model;
 /*
  *  Class that ties the Model, View and Controller together
  */
-/**
- * TEST
- * @author ryanmaynord
- *
- */
-public class Driver {
+public class Driver 
+{
 
-	public static void main(String[] args) {
+	public static void main(String[] args) 
+	{
 		
 		// Initialize JFrame
 		JFrame frame = new JFrame();
