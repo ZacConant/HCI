@@ -3,7 +3,7 @@ import javax.swing.JFrame;
 import controller.Controller;
 import view.View;
 import model.Model;
-
+////
 /*
  *  Class that ties the Model, View and Controller together
  */
