@@ -31,7 +31,7 @@ public class Model {
 		this.initializerTimer();
 		this.initializeGrid();
 		this.start();
-		this.addEnemy(0);
+		this.addEnemy(270);
 		this.printGrid();
 	}
 	
@@ -87,12 +87,12 @@ public class Model {
 	public void printGrid() {
 		String gridString = "";
 		
-		for (int i = 0; i < numberGridColumns; ++i) {
+		for (int i = 0; i < numberGridRows; ++i) {
 			
 			gridString += "[";
 			
-			for (int j = 0; j < numberGridRows; ++j) {
-				gridString += grid[i][j] + " ";
+			for (int j = 0; j < numberGridColumns; ++j) {
+				gridString += grid[j][i] + " ";
 			}
 			
 			gridString += "]\n";
