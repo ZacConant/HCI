@@ -15,7 +15,7 @@ public class Driver
 		
 		// Initialize JFrame
 		JFrame frame = new JFrame();
-		frame.setSize(800, 800);
+		frame.setSize(1100, 600);
 		frame.setTitle("Galatic Turret");
 		
 		// Initialize model
