@@ -31,7 +31,7 @@ public class Model {
 		this.turretPositionX = GRID_DIMENSION/2;
 		this.turretPositionY = GRID_DIMENSION/2;
 		this.timeDelay = timeDelay;
-		this.imperialFighter = new ImageIcon("Imperial_Fighter.png");
+		this.imperialFighter = new ImageIcon("src/Imperial_Fighter.png");
 		this.initializerTimer();
 		this.start();
 	}
