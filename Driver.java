@@ -3,7 +3,7 @@ import javax.swing.JFrame;
 import controller.Controller;
 import view.View;
 import model.Model;
-////
+
 /*
  *  Class that ties the Model, View and Controller together
  */
@@ -23,7 +23,7 @@ public class Driver
 		
 		// Initialize controller
 		Controller controller = new Controller(model);
-		
+		frame.addKeyListener(controller);
 		// Initialize view
 		new View(model, controller, frame);
 		

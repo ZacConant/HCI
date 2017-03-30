@@ -27,4 +27,6 @@ public class View
 		this.controller = controller;
 		this.frame = frame;
 	}
+	
+	
 }
