@@ -1,8 +1,11 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import javax.swing.ImageIcon;
 
 /*
  *  Class that represents the data being presented
@@ -10,34 +13,27 @@ import java.util.TimerTask;
 public class Model {
 	private int turretOrientation;  // turret orientation in degrees (0, 90, 180, 270)
 	private ArrayList<OrientationListener> orientationListeners; // list of components to update orientation
-	private int numberGridRows; // Number of rows in grid
-	private int numberGridColumns; // Number of columns in grid
-	private String[][] grid; // Grid representing positions of view components and their interactions
+	private ArrayList<PositionListener> positionListeners; // component to update to show new positions of components
+	private static final int GRID_DIMENSION = 15; // Number of rows and columns in grid
+	private static final int NUMBER_DIRECTIONS = 4; // number of directions
+	private String[][] directions; // Holds view components of 4 directions
 	private int turretPositionX; // Center x position of turret
 	private int turretPositionY; // Center y position of turret
 	private double timeDelay; // Delay for each update in seconds
 	private Timer timer; // Timer for application
 	private TimerTask task; // TimerTask that is scheduled with timer
+	private ImageIcon imperialFighter;
 	
-	public Model(int numberGridRows, int numberGridColumns, int timeDelay) {
+	public Model(int timeDelay) {
 		this.turretOrientation = 0;
 		this.orientationListeners = new ArrayList<OrientationListener>();
-		this.numberGridRows = numberGridRows;
-		this.numberGridColumns = numberGridColumns;
-		this.grid = new String[numberGridColumns][numberGridRows];
-		this.turretPositionX = numberGridRows/2;
-		this.turretPositionY = numberGridColumns/2;
+		this.directions = new String[NUMBER_DIRECTIONS][GRID_DIMENSION/2];
+		this.turretPositionX = GRID_DIMENSION/2;
+		this.turretPositionY = GRID_DIMENSION/2;
 		this.timeDelay = timeDelay;
+		this.imperialFighter = new ImageIcon("src/Imperial_Fighter.png");
 		this.initializerTimer();
-		this.initializeGrid();
 		this.start();
-		this.addEnemy(270);
-		this.printGrid();
-	}
-	
-	// Get the turret orientation in degrees
-	public int getTuerretOrientation() {
-		return this.turretOrientation;
 	}
 	
 	// Set the turret orientation in degrees
@@ -57,68 +53,84 @@ public class Model {
 		}
 	}
 	
-	// Get number of rows in grid
-	// This must be odd!
-	public int getNumberGridRows() {
-		return this.numberGridRows;
+	// Register a component with an position listener
+	public void addPositionListener(PositionListener listener) {
+		this.positionListeners.add(listener);
 	}
 	
-	// Set number of rows in grid
-	// This must be odd!
-	public void setNumberGridRows(int rows) {
-		this.numberGridRows = rows;
+	// Call all component that updates all view component positions
+	public void notifyPositionListeners() {
+		for (PositionListener listener : positionListeners) {
+			listener.updatePositions();
+		}
 	}
 	
-	// Initialize all spaces to an empty string
-	public void initializeGrid() {
-		for (int i = 0; i < numberGridColumns; ++i) {
-			for (int j = 0; j < numberGridRows; ++j) {
-				if (i == turretPositionX && j == turretPositionY) {
-					grid[i][j] = "T";
+	public ImageIcon[] getImages(int degrees) {
+		ImageIcon[] images = new ImageIcon[GRID_DIMENSION/2];
+		int directionIndex = -1;
+		
+		if (degrees == 0) {
+			directionIndex = 0;
+		}
+		else if (degrees == 90) {
+			directionIndex = 1;
+		}
+		else if (degrees == 180) {
+			directionIndex = 2;
+		}
+		else {
+			directionIndex = 3;
+		}
+		
+		for (int i = 0; i < GRID_DIMENSION/2; ++i) {
+			String panel = this.directions[directionIndex][i];
+			
+			if (panel != null) {
+				if (panel.equals("E")) {
+					images[i] = imperialFighter;
 				}
-				else {
-					grid[i][j] = " ";
-				}
+			}
+		}
+		
+		return images;
+	}
+	
+	// Get random direction selection -1 to 3. If -1 don't render a new enemy
+	private int selectEnemyDirection() {
+		Random random = new Random();
+		return (random.nextInt(NUMBER_DIRECTIONS + 1) - 1);
+	}
+	
+	private void shiftDirectionComponents() {
+		for (int i = 0; i < NUMBER_DIRECTIONS; ++i) {
+			for (int j = (GRID_DIMENSION/2 - 2); j >= 0; --j) {
+				this.directions[i][j+1] = this.directions[i][j];
 			}
 		}
 	}
 	
-	// Print representation of current state for grid
-	public void printGrid() {
-		String gridString = "";
+	private void addEnemy(int directionIndex) {
 		
-		for (int i = 0; i < numberGridRows; ++i) {
-			
-			gridString += "[";
-			
-			for (int j = 0; j < numberGridColumns; ++j) {
-				gridString += grid[j][i] + " ";
-			}
-			
-			gridString += "]\n";
+		for (int i = 0; i < NUMBER_DIRECTIONS; ++i) {
+			this.directions[i][0] = null;
 		}
 		
-		System.out.println(gridString);
+		if (directionIndex >= 0) {
+			this.directions[directionIndex][0] = "E";
+		}
 	}
 	
-	// Get center x position of turret
-	public int getTurretPositionX() {
-		return this.turretPositionX;
-	}
-	
-	// Set center x position of turret
-	public void setTurretPositionX(int x) {
-		this.turretPositionX = x;
-	}
-	
-	// Get center y position of turret
-	public int getTurretPositionY() {
-		return this.turretPositionY;
-	}
-	
-	// Set center y position of turret
-	public void setTurretPositionY(int y) {
-		this.turretPositionY = y;
+	// Print components at each direction
+	private void print() {
+		for (int i = 0; i < NUMBER_DIRECTIONS; ++i) {
+			System.out.print(i + ":");
+			for (int j = 0; j < GRID_DIMENSION/2; ++j) {
+				System.out.print(" " + this.directions[i][j]);
+			}
+			System.out.println("");
+		}
+		
+		System.out.println("\n");
 	}
 	
 	// Get current time delay
@@ -136,7 +148,7 @@ public class Model {
 		this.timer = new Timer();
 		this.task = new TimerTask() {
 			public void run() {
-				
+				move();
 			}
 		};
 	}
@@ -151,18 +163,11 @@ public class Model {
 		this.timer.cancel();
 	}
 	
-	public void addEnemy(int degrees) {
-		if (degrees == 0) {
-			grid[numberGridColumns-1][turretPositionY] = "E";
-		}
-		else if (degrees == 90) {
-			grid[turretPositionX][0] = "E";
-		}
-		else if (degrees == 180) {
-			grid[0][turretPositionY] = "E";
-		}
-		else if (degrees == 270) {
-			grid[turretPositionX][numberGridRows-1] = "E";
-		}
+	// Move view components
+	public void move() {
+		int directionIndex = selectEnemyDirection();
+		shiftDirectionComponents();
+		addEnemy(directionIndex);
+		notifyPositionListeners();
 	}
 }
