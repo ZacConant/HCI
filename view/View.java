@@ -37,10 +37,11 @@ public class View
 	private Model model; 				// Needs model to get new information about its view components
 	private Controller controller; 		// Needs controller to connect view components with user interaction
 	private JFrame frame; 				// Window that holds app
-	private final int gridRows = 15;
-	private final int gridCols = 15;
-	private final int gameRow = 8;
-	private final int gameCol = 8;
+	private ShipAndGridControl shipControl;
+//	private final int gridRows = 15;
+//	private final int gridCols = 15;
+//	private final int gameRow = 8;
+//	private final int gameCol = 8;
 	
 	
 	public View( Model model, Controller controller, JFrame frame ) 
@@ -48,6 +49,7 @@ public class View
 		this.model = model;
 		this.controller = controller;
 		this.frame = frame;
+		this.shipControl = shipControl;
 		
 		frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 		
@@ -58,6 +60,7 @@ public class View
 	{
 		// The main layout used in the design of the game
 		BorderLayout border = new BorderLayout();
+		frame.setLayout( border );
 		
 		
 		// **** MENU BAR **** //
@@ -95,7 +98,7 @@ public class View
 		mBar.add( mHelp );
 
 		
-		border.addLayoutComponent( mBar, BorderLayout.NORTH );
+		//border.addLayoutComponent( mBar, BorderLayout.NORTH );
 		
 		// ---- END OF MENUBAR ---- //
 		
@@ -103,7 +106,8 @@ public class View
 		// **** LEFT **** //
 		
 		JPanel panelLeft = new JPanel();
-		panelLeft.setBounds( 0, 0, 200, 450);
+		//panelLeft.setBounds( 0, 0, 200, 450);
+		panelLeft.setPreferredSize( new Dimension(200, 450));
 		GridLayout gridLeft = new GridLayout( 5, 1 );
 		panelLeft.setLayout( gridLeft );
 		panelLeft.add( new JButton ( " BUTT " ) );
@@ -122,7 +126,7 @@ public class View
 		// **** BOTTOM **** //
 		
 		JPanel panelBottom = new JPanel();
-		panelBottom.setBounds( 201, 451, 899, 105);
+		panelBottom.setPreferredSize( new Dimension(1100, 100));
 		GridLayout gridBottom = new GridLayout( 1, 3 );
 		panelBottom.setLayout( gridBottom );
 		JButton userControls = new JButton( "Controls" );
@@ -135,39 +139,13 @@ public class View
 		
 		
 		
-		
 		// **** CENTER **** //
+		ShipAndGridControl centerDesign = new ShipAndGridControl();
+		centerDesign.gridDesign( frame, border );
+
 		
-		JPanel panelCenter = new JPanel();
-		//panelCenter.setBounds( 400, 0, 200, 450);
-		GridLayout gridCenter = new GridLayout( gridRows, gridCols );
-		panelCenter.setLayout( gridCenter );
 		
-		// Creating grid
-		JPanel[][] panelArray = new JPanel[ gridRows ][ gridCols ];
 		
-		for( int i = 0; i < gridRows; i++ )
-		{
-			for( int j = 0; j < gridCols; j++ )
-			{
-				panelArray[ i ][ j ] = new JPanel();
-				//frame.add( panelArray[ i ][ j ]);
-				panelCenter.add( panelArray[ i ][ j ] );
-			}
-		}
-//		
-//		JPanel wrapper = new JPanel( new FlowLayout( FlowLayout.LEFT));
-//		wrapper.add( panelCenter );
-//		
-		//panelCenter.setLayout( gridCenter );
-		frame.add( panelCenter );
-		border.addLayoutComponent( panelCenter , BorderLayout.CENTER );
-		
-		panelArray[ 8 ][ 2 ].add( new JLabel( ">") );
-		panelArray[ 8 ][ 3 ].add( new JLabel( ">") );
-		panelArray[ 8 ][ 8 ].add( new JLabel( "^") );
-		panelArray[ 8 ][ 9 ].add( new JLabel( "<") );
-		panelArray[8][14].add(new JLabel("<"));
 		
 		
 		
