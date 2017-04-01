@@ -22,7 +22,8 @@ public class Model {
 	private double timeDelay; // Delay for each update in seconds
 	private Timer timer; // Timer for application
 	private TimerTask task; // TimerTask that is scheduled with timer
-	private ImageIcon imperialFighter;
+	private ImageIcon imperialFighter; // Imperial Fighter image (all are same orientation)
+	private ImageIcon[] xWings; // 4 angles for x wing image
 	
 	public Model(int timeDelay) {
 		this.turretOrientation = 0;
@@ -32,6 +33,8 @@ public class Model {
 		this.turretPositionY = GRID_DIMENSION/2;
 		this.timeDelay = timeDelay;
 		this.imperialFighter = new ImageIcon("src/Imperial_Fighter.png");
+		this.xWings = new ImageIcon[NUMBER_DIRECTIONS];
+		this.loadXWings();
 		this.initializerTimer();
 		this.start();
 	}
@@ -39,6 +42,7 @@ public class Model {
 	// Set the turret orientation in degrees
 	public void setTurretOrientation(int degrees) {
 		this.turretOrientation = degrees;
+		notifyOrientationListeners();
 	}
 	
 	// Register a view component with an orientation listener
@@ -65,6 +69,7 @@ public class Model {
 		}
 	}
 	
+	// Get all images that move with timing of game (enemies, missiles)
 	public ImageIcon[] getImages(int degrees) {
 		ImageIcon[] images = new ImageIcon[GRID_DIMENSION/2];
 		int directionIndex = -1;
@@ -95,12 +100,39 @@ public class Model {
 		return images;
 	}
 	
+	// Load all 4 X wing images
+	private void loadXWings() {
+		xWings[0] = new ImageIcon("src/X_Wing_0.png");
+		xWings[1] = new ImageIcon("src/X_Wing_90.png");
+		xWings[2] = new ImageIcon("src/X_Wing_180.png");
+		xWings[3] = new ImageIcon("src/X_Wing_270.png");
+	}
+	
+	// Get the center turret image (this can be 4 different angles)
+	public ImageIcon getTurretImage() {
+		if (turretOrientation == 0) {
+			return xWings[0];
+		}
+		else if (turretOrientation == 90) {
+			return xWings[1];
+		}
+		else if (turretOrientation == 180) {
+			return xWings[2];
+		}
+		else if (turretOrientation == 270) {
+			return xWings[3];
+		}
+		
+		return null;
+	}
+	
 	// Get random direction selection -1 to 3. If -1 don't render a new enemy
 	private int selectEnemyDirection() {
 		Random random = new Random();
 		return (random.nextInt(NUMBER_DIRECTIONS + 1) - 1);
 	}
 	
+	// Shift the images in all arrays
 	private void shiftDirectionComponents() {
 		for (int i = 0; i < NUMBER_DIRECTIONS; ++i) {
 			for (int j = (GRID_DIMENSION/2 - 2); j >= 0; --j) {
@@ -109,6 +141,7 @@ public class Model {
 		}
 	}
 	
+	// Add an enemy string to one of 4 arrays, or not at all
 	private void addEnemy(int directionIndex) {
 		
 		for (int i = 0; i < NUMBER_DIRECTIONS; ++i) {
