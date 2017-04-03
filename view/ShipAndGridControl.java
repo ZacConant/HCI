@@ -1,23 +1,39 @@
+/**
+ * Ryan Maynord, Zachary Conant, Nathan Pierce
+ * CS 3053 - Human Computer Interaction
+ * Project
+ * April 25th, 27th 2017
+ * ShipAndGridControl.java
+ */
+
 package view;
+
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import model.Model;
 import model.OrientationListener;
 import model.PositionListener;
 
 public class ShipAndGridControl extends JPanel implements PositionListener, OrientationListener
 {
-	private final ImageIcon xwing = new ImageIcon( "/Users/ryanmaynord/Documents/workspace/HCI - Project/src/X-Wing_Top_View.png" );
+	private Model model;
+	private ImageIcon xwing = new ImageIcon( "src/X_Wing_90.png" );
+//	private ImageIcon xwing2 = new ImageIcon( "src/X_Wing_0.png" );
 	private final ImageIcon tie = new ImageIcon( "Imperial_Fighter.png" );
-	private final JLabel playerShip;
+	private JLabel playerShip;
 	private final JLabel enemyShip;
 	private final int gridRows = 15;
 	private final int gridCols = 15;
@@ -27,14 +43,16 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 	
 	public ShipAndGridControl()
 	{
+		
+		this.model = model;
 		this.playerShip = new JLabel( xwing );
 		this.enemyShip = new JLabel( tie );
 		
 	}
 	
-	public void gridDesign(JFrame frame, BorderLayout border)
+	public void gridDesign(JFrame frame, BorderLayout border, Model model)
 	{
-		this.setPreferredSize( new Dimension( 900, 450));
+		this.setPreferredSize( new Dimension( 450, 450));
 		this.setBackground( Color.LIGHT_GRAY );
 		
 		GridLayout gridCenter = new GridLayout( gridRows, gridCols );
@@ -68,8 +86,9 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		panelArray[ gameRow ][ 5 ].add( new JLabel( ">") );
 		panelArray[ gameRow ][ 6 ].add( new JLabel( ">") );
 		
-		
-		panelArray[ gameRow ][ 7 ].add( playerShip );
+		//this.playerShip = new JLabel( xwing );
+		//this.playerShip = new JLabel( xwing2 );
+		panelArray[ gameRow ][ gameCol ].add( playerShip );
 		
 		panelArray[ gameRow ][ 8 ].add( new JLabel( "<") );
 		panelArray[ gameRow ][ 9 ].add( new JLabel( "") );
@@ -95,6 +114,13 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		panelArray[ 13 ][ gameCol ].add( new JLabel( "^") );
 		panelArray[ 14 ][ gameCol ].add( new JLabel( "^^") );
 	}
+//	
+//	public void shipSizing()
+//	{
+//		Image xWing = xwing.getImage();
+//		Image newXWing = xWing.getScaledInstance( 25, 25, java.awt.Image.SCALE_SMOOTH);
+//		this.xwing = new ImageIcon( newXWing );
+//	}
 	
 	public void playerNorth()
 	{
@@ -120,8 +146,8 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 	@Override
 	public void updateOrientation() 
 	{
-		// TODO Auto-generated method stub
-		
+		this.playerShip = new JLabel( model.getTurretImage() );
+		//panelArray[ gameRow ][ 7 ].add( playerShip );
 	}
 
 	@Override

@@ -126,7 +126,7 @@ public class View
 		// **** BOTTOM **** //
 		
 		JPanel panelBottom = new JPanel();
-		panelBottom.setPreferredSize( new Dimension(1100, 100));
+		panelBottom.setPreferredSize( new Dimension( 800, 100 ) );
 		GridLayout gridBottom = new GridLayout( 1, 3 );
 		panelBottom.setLayout( gridBottom );
 		JButton userControls = new JButton( "Controls" );
@@ -141,7 +141,7 @@ public class View
 		
 		// **** CENTER **** //
 		ShipAndGridControl centerDesign = new ShipAndGridControl();
-		centerDesign.gridDesign( frame, border );
+		centerDesign.gridDesign( frame, border, model );
 
 		
 		
