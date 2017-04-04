@@ -143,6 +143,9 @@ public class View
 		ShipAndGridControl centerDesign = new ShipAndGridControl();
 		centerDesign.gridDesign( frame, border, model );
 		
+		//centerDesign.addKeyListener( controller );
+		frame.addKeyListener( controller );
+		
 		
 		
 		
