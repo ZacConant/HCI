@@ -25,20 +25,25 @@ public class Controller implements KeyListener, ActionListener{
 	public void keyPressed(KeyEvent arg0) {
 		//arrow key actions implemented
 		//UP
-		if(arg0.getSource().equals(KeyEvent.VK_UP)){
+		if(arg0.getKeyCode()==KeyEvent.VK_UP){
 			model.setTurretOrientation(90);
+			//System.out.println("up");
 		}
 		//DOWN
-		if(arg0.getSource().equals(KeyEvent.VK_DOWN)){
+		if(arg0.getKeyCode()==KeyEvent.VK_DOWN){
 			model.setTurretOrientation(270);
 		}
 		//LEFT
-		if(arg0.getSource().equals(KeyEvent.VK_LEFT)){
+		if(arg0.getKeyCode()==KeyEvent.VK_LEFT){
 			model.setTurretOrientation(180);
 		}
 		//RIGHT
-		if(arg0.getSource().equals(KeyEvent.VK_RIGHT)){
+		if(arg0.getKeyCode()==KeyEvent.VK_RIGHT){
 			model.setTurretOrientation(0);
+		}
+		//SHOOT
+		if(arg0.getKeyCode()==KeyEvent.VK_SPACE){
+			//shoot method
 		}
 	}
 	@Override
