@@ -32,9 +32,9 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 	private Model model;
 	private ImageIcon xwing = new ImageIcon( "src/X_Wing_90.png" );
 //	private ImageIcon xwing2 = new ImageIcon( "src/X_Wing_0.png" );
-	private final ImageIcon tie = new ImageIcon( "Imperial_Fighter.png" );
-	private JLabel playerShip;
-	private final JLabel enemyShip;
+	private ImageIcon tie = new ImageIcon( "src/Imperial_Fighter.png" );
+	private JLabel playerShip = new JLabel();
+	private JLabel enemyShip = new JLabel();
 	private final int gridRows = 15;
 	private final int gridCols = 15;
 	private final int gameRow = 7;
@@ -45,8 +45,10 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 	{
 		
 		this.model = model;
-		this.playerShip = new JLabel( xwing );
-		this.enemyShip = new JLabel( tie );
+		this.playerShip.setIcon( xwing );
+		this.enemyShip.setIcon( tie );
+//		this.playerShip = new JLabel( xwing );
+//		this.enemyShip = new JLabel( tie );
 		
 	}
 	
@@ -79,16 +81,22 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		
 		// TEST //
 		panelArray[ gameRow ][ 0 ].add( new JLabel( ">>") );
-		panelArray[ gameRow ][ 1 ].add( new JLabel( ">") );
+//		panelArray[ gameRow ][ 1 ].add( new JLabel( tie ) );
+		//panelArray[ gameRow ][ 1 ].add( enemyShip );
+		panelArray[ gameRow ][ 1 ].add( new JLabel( new ImageIcon( "src/Imperial_Fighter.png" )));
 		panelArray[ gameRow ][ 2 ].add( new JLabel( ">") );
 		panelArray[ gameRow ][ 3 ].add( new JLabel( ">") );
-		panelArray[ gameRow ][ 4 ].add( new JLabel( ">") );
+		//panelArray[ gameRow ][ 4 ].add( enemyShip );
+		panelArray[ gameRow ][ 4 ].add( new JLabel( new ImageIcon( "src/Imperial_Fighter.png" )));
 		panelArray[ gameRow ][ 5 ].add( new JLabel( ">") );
-		panelArray[ gameRow ][ 6 ].add( new JLabel( ">") );
+		panelArray[ gameRow ][ 6 ].add( new JLabel( new ImageIcon( "src/Imperial_Fighter.png" )));
 		
 		//this.playerShip = new JLabel( xwing );
 		//this.playerShip = new JLabel( xwing2 );
+		
+		model.addOrientationListener( this );
 		panelArray[ gameRow ][ gameCol ].add( playerShip );
+		//panelArray[ gameRow ][ gameCol
 		
 		panelArray[ gameRow ][ 8 ].add( new JLabel( "<") );
 		panelArray[ gameRow ][ 9 ].add( new JLabel( "") );
@@ -96,7 +104,7 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		panelArray[ gameRow ][ 11 ].add( new JLabel( "<") );
 		panelArray[ gameRow ][ 12 ].add( new JLabel( "<") );
 		panelArray[ gameRow ][ 13 ].add( new JLabel( "") );
-		panelArray[ gameRow ][ 14 ].add(new JLabel("<<"));
+		panelArray[ gameRow ][ 14 ].add( new JLabel("<<") );
 		
 		panelArray[ 0 ][ gameCol ].add( new JLabel( "VV") );
 		panelArray[ 1 ][ gameCol ].add( new JLabel( "V") );

@@ -142,7 +142,6 @@ public class View
 		// **** CENTER **** //
 		ShipAndGridControl centerDesign = new ShipAndGridControl();
 		centerDesign.gridDesign( frame, border, model );
-
 		
 		
 		
