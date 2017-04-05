@@ -14,8 +14,10 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 //import java.awt.GridLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -38,6 +40,12 @@ public class View
 	private Controller controller; 		// Needs controller to connect view components with user interaction
 	private JFrame frame; 				// Window that holds app
 	private ShipAndGridControl shipControl;
+	private ImageIcon up = new ImageIcon( "src/up_arrow.png" );
+	private ImageIcon right = new ImageIcon( "src/right_arrow.png" );
+	private ImageIcon down = new ImageIcon( "src/down_arrow.png" );
+	private ImageIcon left = new ImageIcon( "src/left_arrow.png" );
+	private ImageIcon start = new ImageIcon( "src/start.png" );
+	
 //	private final int gridRows = 15;
 //	private final int gridCols = 15;
 //	private final int gameRow = 8;
@@ -61,6 +69,8 @@ public class View
 		// The main layout used in the design of the game
 		BorderLayout border = new BorderLayout();
 		frame.setLayout( border );
+		
+		imageResizing();
 		
 		
 		// **** MENU BAR **** //
@@ -110,7 +120,12 @@ public class View
 		panelLeft.setPreferredSize( new Dimension(200, 450));
 		GridLayout gridLeft = new GridLayout( 5, 1 );
 		panelLeft.setLayout( gridLeft );
-		panelLeft.add( new JButton ( " BUTT " ) );
+		
+		JButton startButton = new JButton( start );
+		startButton.setBorderPainted( false );
+		startButton.addActionListener( controller );
+		panelLeft.add( startButton );
+		
 		panelLeft.add( new JButton ( "Button 2" ) );
 		panelLeft.add( new JButton ( "Button 3" ) );
 		panelLeft.add( new JButton ( "Button 4" ) );
@@ -127,10 +142,66 @@ public class View
 		
 		JPanel panelBottom = new JPanel();
 		panelBottom.setPreferredSize( new Dimension( 800, 100 ) );
-		GridLayout gridBottom = new GridLayout( 1, 3 );
+		GridLayout gridBottom = new GridLayout( 1, 4 );
 		panelBottom.setLayout( gridBottom );
-		JButton userControls = new JButton( "Controls" );
+		JButton userControls = new JButton( "" );
 		panelBottom.add( userControls );
+		JButton userControls1 = new JButton( "" );
+		panelBottom.add( userControls1 );
+		
+		GridLayout gridControls = new GridLayout( 3, 3 );
+		JPanel panelControls = new JPanel( gridControls );
+		
+		panelControls.add( new JLabel("") );
+
+		JButton upKey = new JButton( up );
+		upKey.setBorderPainted( false );
+		upKey.addActionListener( controller );
+		panelControls.add( upKey );
+		
+		panelControls.add( new JLabel("") );
+		
+		
+		JButton leftKey = new JButton( left );
+		leftKey.setBorderPainted( false );
+		leftKey.addActionListener( controller );
+		panelControls.add( leftKey );
+		
+		panelControls.add( new JLabel("") );
+		
+		JButton rightKey = new JButton( right );
+		rightKey.setBorderPainted( false );
+		rightKey.addActionListener( controller );
+		panelControls.add( rightKey );
+		
+		panelControls.add( new JLabel("") );
+		
+		JButton downKey = new JButton( down );
+		downKey.setBorderPainted( false );
+		downKey.addActionListener( controller );
+		panelControls.add( downKey );
+		
+		panelControls.add( new JLabel("") );
+
+
+		
+		
+
+		
+
+
+
+		
+
+		
+		panelBottom.add( panelControls );
+		
+//		JButton userControls2 = new JButton( "Controls2" );
+//		panelBottom.add( userControls2 );
+		
+		
+		JLabel userControls3 = new JLabel( "" );
+		panelBottom.add( userControls3 );
 		
 		frame.add( panelBottom );
 		border.addLayoutComponent( panelBottom, BorderLayout.SOUTH );
@@ -147,7 +218,28 @@ public class View
 		frame.addKeyListener( controller );
 		frame.setFocusable( true );
 		
-		
+	}
 	
+	public void imageResizing()
+	{
+		Image up1 = up.getImage();
+		Image newUp = up1.getScaledInstance( 37, 37, java.awt.Image.SCALE_SMOOTH );
+		this.up = new ImageIcon( newUp );
+		
+		Image right1 = right.getImage();
+		Image newRight = right1.getScaledInstance( 37, 37, java.awt.Image.SCALE_SMOOTH );
+		this.right = new ImageIcon( newRight );
+		
+		Image down1 = down.getImage();
+		Image newDown = down1.getScaledInstance( 37, 37, java.awt.Image.SCALE_SMOOTH );
+		this.down = new ImageIcon( newDown );
+		
+		Image left1 = left.getImage();
+		Image newLeft = left1.getScaledInstance( 37, 37, java.awt.Image.SCALE_SMOOTH );
+		this.left = new ImageIcon( newLeft );
+		
+		Image start1 = start.getImage();
+		Image newStart = start1.getScaledInstance( 175, 175, java.awt.Image.SCALE_SMOOTH );
+		this.start = new ImageIcon( newStart );
 	}
 }

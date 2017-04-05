@@ -88,6 +88,7 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		
 		// TEST //
 		imageSizing();
+		this.playerShip.setIcon( xwing );
 		
 		
 		panelArray[ gameRow ][ 0 ].add( new JLabel( tie ) );
@@ -144,26 +145,6 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		Image explosion1 = explosion.getImage();
 		Image newExplosion = explosion1.getScaledInstance( 37, 37, java.awt.Image.SCALE_SMOOTH );
 		this.explosion = new ImageIcon( newExplosion );
-	}
-	
-	public void missiles()
-	{
-//		JPanel missilePanel = new JPanel();
-//		JLabel missileLabel = new JLabel();
-//		
-//		Canvas c = new Canvas();
-//		Graphics missile = c.getGraphics();
-//		missile.setColor( Color.RED );
-//		missile.fillRect( 0, 0, 18, 5);
-//		missileLabel.add( )
-//		//Rectangle missiles = new Rectangle( 18, 5 );
-////		Graphics missiles = new Graphics();
-////		setBackground( Color.RED );
-////		missiles.fillRect( 0, 0, 18, 5);
-//		
-//		//Color red = new Color( Color.RED );
-		
-		
 	}
 	
 	public void playerNorth()
