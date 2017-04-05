@@ -30,6 +30,7 @@ public class Model {
 	public Model(int timeDelay) {
 		this.turretOrientation = 0;
 		this.orientationListeners = new ArrayList<OrientationListener>();
+		this.positionListeners = new ArrayList<PositionListener>();
 		this.directions = new String[NUMBER_DIRECTIONS][GRID_DIMENSION/2];
 		this.turretPositionX = GRID_DIMENSION/2;
 		this.turretPositionY = GRID_DIMENSION/2;
