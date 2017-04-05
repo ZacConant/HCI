@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
@@ -102,10 +103,16 @@ public class Model {
 	
 	// Load all 4 X wing images
 	private void loadXWings() {
-		xWings[0] = new ImageIcon("src/X_Wing_0.png");
-		xWings[1] = new ImageIcon("src/X_Wing_90.png");
-		xWings[2] = new ImageIcon("src/X_Wing_180.png");
-		xWings[3] = new ImageIcon("src/X_Wing_270.png");
+		xWings[0] = resizeImage(37, 37, new ImageIcon("src/X_Wing_0.png"));
+		xWings[1] = resizeImage(37, 37, new ImageIcon("src/X_Wing_90.png"));
+		xWings[2] = resizeImage(37, 37, new ImageIcon("src/X_Wing_180.png"));
+		xWings[3] = resizeImage(37, 37, new ImageIcon("src/X_Wing_270.png"));
+	}
+	
+	private ImageIcon resizeImage(int width, int height, ImageIcon icon) {
+		Image image = icon.getImage();
+		Image newImage = image.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
+		return new ImageIcon(newImage);
 	}
 	
 	// Get the center turret image (this can be 4 different angles)
