@@ -140,22 +140,14 @@ public class View
 		
 		
 		// **** CENTER **** //
-		ShipAndGridControl centerDesign = new ShipAndGridControl();
+		ShipAndGridControl centerDesign = new ShipAndGridControl( model );
 		centerDesign.gridDesign( frame, border, model );
 		
 		//centerDesign.addKeyListener( controller );
 		frame.addKeyListener( controller );
+		frame.setFocusable( true );
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
+	
 	}
-	
-	
 }
