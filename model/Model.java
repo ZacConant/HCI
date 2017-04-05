@@ -15,7 +15,7 @@ public class Model {
 	private int turretOrientation;  // turret orientation in degrees (0, 90, 180, 270)
 	private ArrayList<OrientationListener> orientationListeners; // list of components to update orientation
 	private ArrayList<PositionListener> positionListeners; // component to update to show new positions of components
-	private static final int GRID_DIMENSION = 15; // Number of rows and columns in grid
+	private static final int GRID_DIMENSION = 11; // Number of rows and columns in grid
 	private static final int NUMBER_DIRECTIONS = 4; // number of directions
 	private String[][] directions; // Holds view components of 4 directions
 	private int turretPositionX; // Center x position of turret
@@ -48,6 +48,23 @@ public class Model {
 				directions[i][j] = "";
 			}
 		}
+	}
+	
+	private int getDirectionIndex(int degrees) {
+		if (degrees == 0) {
+			return 0;
+		}
+		else if (degrees == 90) {
+			return 1;
+		}
+		else if (degrees == 180) {
+			return 2;
+		}
+		else if (degrees == 270) {
+			return 3;
+		}
+		
+		return -1;
 	}
 	
 	// Set the turret orientation in degrees
@@ -83,20 +100,7 @@ public class Model {
 	// Get all images that move with timing of game (enemies, missiles)
 	public ImageIcon[] getImages(int degrees) {
 		ImageIcon[] images = new ImageIcon[GRID_DIMENSION/2];
-		int directionIndex = -1;
-		
-		if (degrees == 0) {
-			directionIndex = 0;
-		}
-		else if (degrees == 90) {
-			directionIndex = 1;
-		}
-		else if (degrees == 180) {
-			directionIndex = 2;
-		}
-		else {
-			directionIndex = 3;
-		}
+		int directionIndex = getDirectionIndex(degrees);
 		
 		for (int i = 0; i < GRID_DIMENSION/2; ++i) {
 			String panel = this.directions[directionIndex][i];
@@ -143,7 +147,7 @@ public class Model {
 		return null;
 	}
 	
-	// Get random direction selection -7 to 3. If < 0 don't render a new enemy. 30% chance of 
+	// Get random direction selection -7 to 3. If < 0 don't render a new enemy. 30% chance of enemy appearing
 	private int selectEnemyDirection() {
 		Random random = new Random();
 		return (random.nextInt(NUMBER_DIRECTIONS + 7) - 7);
@@ -154,6 +158,13 @@ public class Model {
 		for (int i = 0; i < NUMBER_DIRECTIONS; ++i) {
 			for (int j = (GRID_DIMENSION/2 - 2); j >= 0; --j) {
 				this.directions[i][j+1] = this.directions[i][j];
+				/*if (this.directions[i][j] == "E") {
+					this.directions[i][j+1] += this.directions[i][j];
+				}
+				else if (this.directions[i][j] == "M") {
+					this.directions[i][j-1] += this.directions[i][j];
+					this.directions[i][j] = "";
+				}*/
 			}
 		}
 	}
@@ -171,7 +182,11 @@ public class Model {
 	}
 	
 	private void addMissile(int directionIndex) {
+		if (directionIndex >= 0) {
+			this.directions[directionIndex][GRID_DIMENSION/2 - 1] += "M";
+		}
 		
+		this.isShooting = false;
 	}
 	
 	public void shoot() {
@@ -223,13 +238,19 @@ public class Model {
 	
 	// Move view components
 	public void move() {
-		int directionIndex = selectEnemyDirection();
+		int randomDirectionIndex = selectEnemyDirection();
 		shiftDirectionComponents();
-		addEnemy(directionIndex);
-		if (isShooting) {
-			addMissile(directionIndex);
+		addEnemy(randomDirectionIndex);
+		
+		if (randomDirectionIndex % 2 == 0 && randomDirectionIndex >= 0) {
+			shoot();
 		}
-		//notifyPositionListeners();
+		
+		if (isShooting) {
+			addMissile(getDirectionIndex(turretOrientation));
+		}
+		
+		notifyPositionListeners();
 		
 		print();
 	}
