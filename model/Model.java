@@ -25,6 +25,7 @@ public class Model {
 	private TimerTask task; // TimerTask that is scheduled with timer
 	private ImageIcon imperialFighter; // Imperial Fighter image (all are same orientation)
 	private ImageIcon[] xWings; // 4 angles for x wing image
+	private boolean isShooting = false; // holds state of if turret is shooting
 	
 	public Model(int timeDelay) {
 		this.turretOrientation = 0;
@@ -35,9 +36,18 @@ public class Model {
 		this.timeDelay = timeDelay;
 		this.imperialFighter = new ImageIcon("src/Imperial_Fighter.png");
 		this.xWings = new ImageIcon[NUMBER_DIRECTIONS];
+		this.initializeDirections();
 		this.loadXWings();
 		this.initializerTimer();
 		this.start();
+	}
+	
+	private void initializeDirections() {
+		for (int i = 0; i < NUMBER_DIRECTIONS; ++i) {
+			for (int j = 0; j < GRID_DIMENSION/2; ++j) {
+				directions[i][j] = "";
+			}
+		}
 	}
 	
 	// Set the turret orientation in degrees
@@ -133,10 +143,10 @@ public class Model {
 		return null;
 	}
 	
-	// Get random direction selection -1 to 3. If -1 don't render a new enemy
+	// Get random direction selection -7 to 3. If < 0 don't render a new enemy. 30% chance of 
 	private int selectEnemyDirection() {
 		Random random = new Random();
-		return (random.nextInt(NUMBER_DIRECTIONS + 1) - 1);
+		return (random.nextInt(NUMBER_DIRECTIONS + 7) - 7);
 	}
 	
 	// Shift the images in all arrays
@@ -152,12 +162,20 @@ public class Model {
 	private void addEnemy(int directionIndex) {
 		
 		for (int i = 0; i < NUMBER_DIRECTIONS; ++i) {
-			this.directions[i][0] = null;
+			this.directions[i][0] = "";
 		}
 		
 		if (directionIndex >= 0) {
-			this.directions[directionIndex][0] = "E";
+			this.directions[directionIndex][0] += "E";
 		}
+	}
+	
+	private void addMissile(int directionIndex) {
+		
+	}
+	
+	public void shoot() {
+		this.isShooting = true;
 	}
 	
 	// Print components at each direction
@@ -208,6 +226,11 @@ public class Model {
 		int directionIndex = selectEnemyDirection();
 		shiftDirectionComponents();
 		addEnemy(directionIndex);
-		notifyPositionListeners();
+		if (isShooting) {
+			addMissile(directionIndex);
+		}
+		//notifyPositionListeners();
+		
+		print();
 	}
 }
