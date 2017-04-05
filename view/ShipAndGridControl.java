@@ -105,7 +105,7 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		
 		model.addOrientationListener( this );
 		
-		panelArray[ gameRow ][ gameCol ].add( new JLabel( xwing ) );
+		panelArray[ gameRow ][ gameCol ].add( playerShip );
 
 		
 		panelArray[ gameRow ][ 8 ].add( new JLabel( "<") );

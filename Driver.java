@@ -23,7 +23,7 @@ public class Driver
 		
 		// Initialize controller
 		Controller controller = new Controller(model);
-		frame.addKeyListener(controller);
+		//frame.addKeyListener(controller);
 		// Initialize view
 		new View(model, controller, frame);
 		
