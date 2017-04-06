@@ -27,7 +27,6 @@ public class Controller implements KeyListener, ActionListener{
 		//UP
 		if(arg0.getKeyCode()==KeyEvent.VK_UP){
 			model.setTurretOrientation(90);
-			//System.out.println("up");
 		}
 		//DOWN
 		if(arg0.getKeyCode()==KeyEvent.VK_DOWN){
@@ -44,6 +43,7 @@ public class Controller implements KeyListener, ActionListener{
 		//SHOOT
 		if(arg0.getKeyCode()==KeyEvent.VK_SPACE){
 			//shoot method
+			model.shoot();
 		}
 	}
 	@Override
@@ -56,6 +56,14 @@ public class Controller implements KeyListener, ActionListener{
 	
 	public void actionPerformed(ActionEvent e) {
 		//directional buttons actions implemented
+				//START button
+				if(e.getActionCommand().equals("startGame")){
+					model.start();
+				}
+				//QUIT in Jmenubar
+				if(e.getActionCommand().equals("stopGame")){
+					model.stop();
+				}
 				//UP
 				if(e.getActionCommand().equals("faceUp")){
 					model.setTurretOrientation(90);
