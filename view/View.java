@@ -45,6 +45,7 @@ public class View
 	private ImageIcon down = new ImageIcon( "src/down_arrow.png" );
 	private ImageIcon left = new ImageIcon( "src/left_arrow.png" );
 	private ImageIcon start = new ImageIcon( "src/start.png" );
+	private ImageIcon reset = new ImageIcon( "src/reset.png" );
 	
 //	private final int gridRows = 15;
 //	private final int gridCols = 15;
@@ -123,10 +124,16 @@ public class View
 		
 		JButton startButton = new JButton( start );
 		startButton.setBorderPainted( false );
+		startButton.setRequestFocusEnabled( false );
 		startButton.addActionListener( controller );
 		panelLeft.add( startButton );
 		
-		panelLeft.add( new JButton ( "Button 2" ) );
+		JButton resetButton = new JButton( reset );
+		resetButton.setBorderPainted( false );
+		resetButton.setRequestFocusEnabled( false );
+		resetButton.addActionListener( controller );
+		panelLeft.add( resetButton );
+		
 		panelLeft.add( new JButton ( "Button 3" ) );
 		panelLeft.add( new JButton ( "Button 4" ) );
 		panelLeft.add( new JButton ( "Button 5" ) );
@@ -157,6 +164,8 @@ public class View
 		JButton upKey = new JButton( up );
 		upKey.setBorderPainted( false );
 		upKey.addActionListener( controller );
+		upKey.setActionCommand( "faceUp" );
+		upKey.setRequestFocusEnabled( false );
 		panelControls.add( upKey );
 		
 		panelControls.add( new JLabel("") );
@@ -165,6 +174,8 @@ public class View
 		JButton leftKey = new JButton( left );
 		leftKey.setBorderPainted( false );
 		leftKey.addActionListener( controller );
+		leftKey.setActionCommand( "faceLeft" );
+		leftKey.setRequestFocusEnabled( false );
 		panelControls.add( leftKey );
 		
 		panelControls.add( new JLabel("") );
@@ -172,14 +183,20 @@ public class View
 		JButton rightKey = new JButton( right );
 		rightKey.setBorderPainted( false );
 		rightKey.addActionListener( controller );
+		rightKey.setActionCommand( "faceRight" );
+		rightKey.setRequestFocusEnabled( false );
 		panelControls.add( rightKey );
+		
 		
 		panelControls.add( new JLabel("") );
 		
 		JButton downKey = new JButton( down );
 		downKey.setBorderPainted( false );
 		downKey.addActionListener( controller );
+		downKey.setActionCommand("faceDown");
+		downKey.setRequestFocusEnabled( false );
 		panelControls.add( downKey );
+		
 		
 		panelControls.add( new JLabel("") );
 
@@ -241,5 +258,9 @@ public class View
 		Image start1 = start.getImage();
 		Image newStart = start1.getScaledInstance( 175, 175, java.awt.Image.SCALE_SMOOTH );
 		this.start = new ImageIcon( newStart );
+		
+		Image reset1 = reset.getImage();
+		Image newReset = reset1.getScaledInstance( 220, 220, java.awt.Image.SCALE_SMOOTH );
+		this.reset = new ImageIcon( newReset );
 	}
 }
