@@ -126,12 +126,14 @@ public class View
 		startButton.setBorderPainted( false );
 		startButton.setRequestFocusEnabled( false );
 		startButton.addActionListener( controller );
+		startButton.setActionCommand( "startGame" );
 		panelLeft.add( startButton );
 		
 		JButton resetButton = new JButton( reset );
 		resetButton.setBorderPainted( false );
 		resetButton.setRequestFocusEnabled( false );
 		resetButton.addActionListener( controller );
+		resetButton.setActionCommand( "stopGame" );
 		panelLeft.add( resetButton );
 		
 		panelLeft.add( new JButton ( "Button 3" ) );

@@ -91,16 +91,16 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		this.playerShip.setIcon( xwing );
 		
 		
-		panelArray[ gameRow ][ 0 ].add( new JLabel( tie ) );
+//		panelArray[ gameRow ][ 0 ].add( new JLabel( tie ) );
+////		panelArray[ gameRow ][ 1 ].add( new JLabel( tie ) );
+//		//panelArray[ gameRow ][ 1 ].add( enemyShip );
 //		panelArray[ gameRow ][ 1 ].add( new JLabel( tie ) );
-		//panelArray[ gameRow ][ 1 ].add( enemyShip );
-		panelArray[ gameRow ][ 1 ].add( new JLabel( tie ) );
-		panelArray[ gameRow ][ 2 ].add( new JLabel( tie ) );
-		panelArray[ gameRow ][ 3 ].add( new JLabel( bolt ) );
-		//panelArray[ gameRow ][ 4 ].add( enemyShip );
-		panelArray[ gameRow ][ 4 ].add( new JLabel( explosion ) );
-		//panelArray[ gameRow ][ 5 ].add( new JLabel( ">") );
-		panelArray[ gameRow ][ 6 ].add( new JLabel( tie ) );
+//		panelArray[ gameRow ][ 2 ].add( new JLabel( tie ) );
+//		panelArray[ gameRow ][ 3 ].add( new JLabel( bolt ) );
+//		//panelArray[ gameRow ][ 4 ].add( enemyShip );
+//		panelArray[ gameRow ][ 4 ].add( new JLabel( explosion ) );
+//		//panelArray[ gameRow ][ 5 ].add( new JLabel( ">") );
+//		panelArray[ gameRow ][ 6 ].add( new JLabel( tie ) );
 		
 
 		
@@ -109,22 +109,22 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		panelArray[ gameRow ][ gameCol ].add( playerShip );
 
 		
-		panelArray[ gameRow ][ 8 ].add( new JLabel( "<") );
-		panelArray[ gameRow ][ 9 ].add( new JLabel( "<") );
-		panelArray[ gameRow ][ 10 ].add( new JLabel( "<") );
-		
-
-		
-		panelArray[ 0 ][ gameCol ].add( new JLabel( tie ) );
-		panelArray[ 1 ][ gameCol ].add( new JLabel( tie ) );
-		panelArray[ 2 ][ gameCol ].add( new JLabel( tie ) );
-		panelArray[ 3 ][ gameCol ].add( new JLabel( tie ) );
-		panelArray[ 4 ][ gameCol ].add( new JLabel( tie ) );
-		panelArray[ 6 ][ gameCol ].add( new JLabel( tie ) );
-		
-		panelArray[ 8 ][ gameCol ].add( new JLabel( tie ) );
-		panelArray[ 9 ][ gameCol ].add( new JLabel( "^") );
-		panelArray[ 10 ][ gameCol ].add( new JLabel( "^") );
+//		panelArray[ gameRow ][ 8 ].add( new JLabel( "<") );
+//		panelArray[ gameRow ][ 9 ].add( new JLabel( "<") );
+//		panelArray[ gameRow ][ 10 ].add( new JLabel( "<") );
+//		
+//
+//		
+//		panelArray[ 0 ][ gameCol ].add( new JLabel( tie ) );
+//		panelArray[ 1 ][ gameCol ].add( new JLabel( tie ) );
+//		panelArray[ 2 ][ gameCol ].add( new JLabel( tie ) );
+//		panelArray[ 3 ][ gameCol ].add( new JLabel( tie ) );
+//		panelArray[ 4 ][ gameCol ].add( new JLabel( tie ) );
+//		panelArray[ 6 ][ gameCol ].add( new JLabel( tie ) );
+//		
+//		panelArray[ 8 ][ gameCol ].add( new JLabel( tie ) );
+//		panelArray[ 9 ][ gameCol ].add( new JLabel( "^") );
+//		panelArray[ 10 ][ gameCol ].add( new JLabel( "^") );
 
 	}
 	
@@ -180,6 +180,37 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 	public void updatePositions() 
 	{
 		// TODO Auto-generated method stub
+		ImageIcon[] zero = model.getImages( 0 );
+		ImageIcon[] ninety = model.getImages( 90 );
+		ImageIcon[] oneEighty = model.getImages( 180 );
+		ImageIcon[] twoSeventy = model.getImages( 270 );
+		//this.panelArray[ gameRow ][ 10 ].add( new JLabel( zero[ 10 ] ) );
+		
+		int indexJ1 = 10;
+		int indexJ2 = 10;
+		
+		for ( int index = 0; index < 5; index++ )
+		{
+			this.panelArray[ gameRow ][ indexJ1 ].add( new JLabel( zero[ index ] ) );
+			--indexJ1;
+		}
+		
+		for ( int index = 0; index < 5; index++ )
+		{
+			this.panelArray[ index ][ gameCol].add( new JLabel( ninety[ index ] ) );
+		}
+		
+		for ( int index = 0; index < 5; index++ )
+		{
+			this.panelArray[ gameRow ][ index ].add( new JLabel( oneEighty[ index ] ) );
+		}
+		
+		
+		for ( int index = 0; index < 5; index++ )
+		{
+			this.panelArray[ indexJ2 ][ gameCol ].add( new JLabel( twoSeventy[ index ] ) );
+			--indexJ2;
+		}
 		
 	}
 
