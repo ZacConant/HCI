@@ -243,16 +243,16 @@ public class Model {
 		shiftDirectionComponents();
 		addEnemy(randomDirectionIndex);
 		
-		if (randomDirectionIndex % 2 == 0 && randomDirectionIndex >= 0) {
+		/*if (randomDirectionIndex % 2 == 0 && randomDirectionIndex >= 0) {
 			shoot();
 		}
 		
 		if (isShooting) {
 			addMissile(getDirectionIndex(turretOrientation));
-		}
+		}*/
 		
 		notifyPositionListeners();
 		
-		print();
+		/*print();*/
 	}
 }
