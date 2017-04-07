@@ -220,16 +220,16 @@ public class Model {
 	// Initialize timer
 	public void initializerTimer() {
 		this.timer = new Timer();
-		this.task = new TimerTask() {
+		/*this.task = new TimerTask() {
 			public void run() {
 				move();
 			}
-		};
+		};*/
 	}
 	
 	// Start timer to run at specified time delay
 	public void start() {
-		this.timer.scheduleAtFixedRate(this.task, 0, (long)this.timeDelay*1000);
+		this.timer.scheduleAtFixedRate(new TimerTask() { public void run() { move(); } }, 0, (long)this.timeDelay*1000);
 	}
 	
 	// Stop timer
@@ -242,7 +242,6 @@ public class Model {
 		int randomDirectionIndex = selectEnemyDirection();
 		shiftDirectionComponents();
 		addEnemy(randomDirectionIndex);
-		
 		/*if (randomDirectionIndex % 2 == 0 && randomDirectionIndex >= 0) {
 			shoot();
 		}
