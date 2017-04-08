@@ -18,31 +18,24 @@ public class Model {
 	private static final int GRID_DIMENSION = 11; // Number of rows and columns in grid
 	private static final int NUMBER_DIRECTIONS = 4; // number of directions
 	private String[][] directions; // Holds view components of 4 directions
-	private int turretPositionX; // Center x position of turret
-	private int turretPositionY; // Center y position of turret
 	private double timeDelay; // Delay for each update in seconds
 	private Timer timer; // Timer for application
-	private TimerTask task; // TimerTask that is scheduled with timer
-	private ImageIcon imperialFighter; // Imperial Fighter image (all are same orientation)
 	private ImageIcon[] xWings; // 4 angles for x wing image
 	private boolean isShooting = false; // holds state of if turret is shooting
+	private boolean isStarted = false; // check if game has started
 	
 	public Model(int timeDelay) {
 		this.turretOrientation = 0;
 		this.orientationListeners = new ArrayList<OrientationListener>();
 		this.positionListeners = new ArrayList<PositionListener>();
 		this.directions = new String[NUMBER_DIRECTIONS][GRID_DIMENSION/2];
-		this.turretPositionX = GRID_DIMENSION/2;
-		this.turretPositionY = GRID_DIMENSION/2;
 		this.timeDelay = timeDelay;
-		this.imperialFighter = new ImageIcon("src/Imperial_Fighter.png");
 		this.xWings = new ImageIcon[NUMBER_DIRECTIONS];
 		this.initializeDirections();
 		this.loadXWings();
-		this.initializerTimer();
-		this.start();
 	}
 	
+	// Set all direction indices to empty string
 	private void initializeDirections() {
 		for (int i = 0; i < NUMBER_DIRECTIONS; ++i) {
 			for (int j = 0; j < GRID_DIMENSION/2; ++j) {
@@ -51,6 +44,7 @@ public class Model {
 		}
 	}
 	
+	// Get array index by degrees
 	private int getDirectionIndex(int degrees) {
 		if (degrees == 0) {
 			return 0;
@@ -98,22 +92,9 @@ public class Model {
 		}
 	}
 	
-	// Get all images that move with timing of game (enemies, missiles)
-	public ImageIcon[] getImages(int degrees) {
-		ImageIcon[] images = new ImageIcon[GRID_DIMENSION/2];
-		int directionIndex = getDirectionIndex(degrees);
-		
-		for (int i = 0; i < GRID_DIMENSION/2; ++i) {
-			String panel = this.directions[directionIndex][i];
-			
-			if (panel != null) {
-				if (panel.equals("E")) {
-					images[i] = imperialFighter;
-				}
-			}
-		}
-		
-		return images;
+	// Get array of strings representing state for certain direction
+	public String[] getDirection(int degrees) {
+		return this.directions[getDirectionIndex(degrees)];
 	}
 	
 	// Load all 4 X wing images
@@ -124,6 +105,7 @@ public class Model {
 		xWings[3] = resizeImage(37, 37, new ImageIcon("src/X_Wing_270.png"));
 	}
 	
+	// Resize an image icon
 	private ImageIcon resizeImage(int width, int height, ImageIcon icon) {
 		Image image = icon.getImage();
 		Image newImage = image.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
@@ -217,24 +199,21 @@ public class Model {
 		this.timeDelay = delay;
 	}
 	
-	// Initialize timer
-	public void initializerTimer() {
-		this.timer = new Timer();
-		/*this.task = new TimerTask() {
-			public void run() {
-				move();
-			}
-		};*/
-	}
-	
 	// Start timer to run at specified time delay
 	public void start() {
-		this.timer.scheduleAtFixedRate(new TimerTask() { public void run() { move(); } }, 0, (long)this.timeDelay*1000);
+		if (!this.isStarted) {
+			this.timer = new Timer();
+			this.timer.scheduleAtFixedRate(new TimerTask() { public void run() { move(); } }, 0, (long)this.timeDelay*1000);
+			this.isStarted = true;
+		}
 	}
 	
 	// Stop timer
 	public void stop() {
-		this.timer.cancel();
+		if (this.isStarted) {
+			this.timer.cancel();
+			this.isStarted = false;
+		}
 	}
 	
 	// Move view components
