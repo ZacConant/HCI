@@ -77,6 +77,7 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 			{
 				panelArray[ i ][ j ] = new JPanel();
 				panelArray[ i ][ j ].setOpaque( false );
+				panelArray[ i ][ j ].add( new JLabel() );
 				this.add( panelArray[ i ][ j ] );
 			}
 		}
@@ -105,8 +106,11 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 
 		
 		model.addOrientationListener( this );
+		model.addPositionListener( this );
 		
 		panelArray[ gameRow ][ gameCol ].add( playerShip );
+		
+
 
 		
 //		panelArray[ gameRow ][ 8 ].add( new JLabel( "<") );
@@ -147,6 +151,14 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		this.explosion = new ImageIcon( newExplosion );
 	}
 	
+	// Resize an image icon
+	public ImageIcon resizeImage( int width, int height, ImageIcon icon ) 
+	{
+		Image image = icon.getImage();
+		Image newImage = image.getScaledInstance( width, height, java.awt.Image.SCALE_SMOOTH );
+		return new ImageIcon( newImage );
+	}
+	
 	public void playerNorth()
 	{
 		//panelArray[ gameRow ][ 7 ].add( playerShip );
@@ -179,11 +191,37 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 	@Override
 	public void updatePositions() 
 	{
-		// TODO Auto-generated method stub
-		ImageIcon[] zero = model.getImages( 0 );
-		ImageIcon[] ninety = model.getImages( 90 );
-		ImageIcon[] oneEighty = model.getImages( 180 );
-		ImageIcon[] twoSeventy = model.getImages( 270 );
+
+//		for ( int i = 0; i < 10; i++ )
+//		{
+//			if ( i != 5 )
+//			{
+//				// TODO: BUG TESTING
+//				System.out.println( "This should print after pressing start" );
+//				// - Actually this prints as soon as the program runs
+//				
+//				panelArray[ gameRow ][ i ].add( new JLabel( tie ) );
+//			}
+//
+//		}
+		
+
+//		panelArray[ gameRow ][ 0 ].add( new JLabel( tie ) );
+//		panelArray[ gameRow ][ 1 ].add( new JLabel( tie ) );
+//		panelArray[ gameRow ][ 2 ].add( new JLabel( tie ) );
+//		panelArray[ gameRow ][ 3 ].add( new JLabel( bolt ) );
+//		//panelArray[ gameRow ][ 4 ].add( enemyShip );
+//		panelArray[ gameRow ][ 4 ].add( new JLabel( explosion ) );
+//		//panelArray[ gameRow ][ 5 ].add( new JLabel( ">") );
+//		panelArray[ gameRow ][ 6 ].add( new JLabel( tie ) );
+		
+		
+		
+		
+		String[] zero = model.getDirection( 0 );
+		String[] ninety = model.getDirection( 90 );
+		String[] oneEighty = model.getDirection( 180 );
+		String[] twoSeventy = model.getDirection( 270 );
 		//this.panelArray[ gameRow ][ 10 ].add( new JLabel( zero[ 10 ] ) );
 		
 		int indexJ1 = 10;
@@ -191,27 +229,70 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		
 		for ( int index = 0; index < 5; index++ )
 		{
-			this.panelArray[ gameRow ][ indexJ1 ].add( new JLabel( zero[ index ] ) );
+			// Zero Degrees
+			if ( zero[ index ].equals( "" ) )
+			{
+				( ( JLabel ) ( this.panelArray[ gameRow ][ indexJ1 ].getComponent( 0 ) ) ).setIcon( null );
+			}
+			
+			else if ( zero[ index ].equals( "E" ) )
+			{
+				( ( JLabel ) ( this.panelArray[ gameRow ][ indexJ1 ].getComponent( 0 ) ) ).setIcon( resizeImage( 37, 37, new ImageIcon( "src/TIE_Fighter_Render.png" ) ) );
+			}
+			
+			// Ninety Degrees
+			if ( ninety[ index ].equals( "" ) )
+			{
+				( ( JLabel ) ( this.panelArray[ index ][ gameCol ].getComponent( 0 ) ) ).setIcon( null );
+			}
+			
+			else if ( ninety[ index ].equals( "E" ) )
+			{
+				( ( JLabel ) ( this.panelArray[ index ][ gameCol ].getComponent( 0 ) ) ).setIcon( resizeImage( 37, 37, new ImageIcon( "src/TIE_Fighter_Render.png" ) ) );
+			}
+			
+			// One Eighty Degrees
+			if ( oneEighty[ index ].equals( "" ) )
+			{
+				( ( JLabel ) ( this.panelArray[ gameRow ][ index ].getComponent( 0 ) ) ).setIcon( null );
+			}
+			
+			else if ( oneEighty[ index ].equals( "E" ) )
+			{
+				( ( JLabel ) ( this.panelArray[ gameRow ][ index ].getComponent( 0 ) ) ).setIcon( resizeImage( 37, 37, new ImageIcon( "src/TIE_Fighter_Render.png" ) ) );
+			}
+			
+			// Two Seventy Degrees
+			if ( twoSeventy[ index ].equals( "" ) )
+			{
+				( ( JLabel ) ( this.panelArray[ indexJ1 ][ gameCol ].getComponent( 0 ) ) ).setIcon( null );
+			}
+			
+			else if ( oneEighty[ index ].equals( "E" ) )
+			{
+				( ( JLabel ) ( this.panelArray[ indexJ1 ][ gameCol ].getComponent( 0 ) ) ).setIcon( resizeImage( 37, 37, new ImageIcon( "src/TIE_Fighter_Render.png" ) ) );
+			}
+			
 			--indexJ1;
 		}
 		
-		for ( int index = 0; index < 5; index++ )
-		{
-			this.panelArray[ index ][ gameCol].add( new JLabel( ninety[ index ] ) );
-		}
+//		for ( int index = 0; index < 5; index++ )
+//		{
+//			this.panelArray[ index ][ gameCol].add( new JLabel( ninety[ index ] ) );
+//		}
+//		
+//		for ( int index = 0; index < 5; index++ )
+//		{
+//			this.panelArray[ gameRow ][ index ].add( new JLabel( oneEighty[ index ] ) );
+//		}
+//		
+//		
+//		for ( int index = 0; index < 5; index++ )
+//		{
+//			this.panelArray[ indexJ2 ][ gameCol ].add( new JLabel( twoSeventy[ index ] ) );
+//			--indexJ2;
+//		}
 		
-		for ( int index = 0; index < 5; index++ )
-		{
-			this.panelArray[ gameRow ][ index ].add( new JLabel( oneEighty[ index ] ) );
-		}
-		
-		
-		for ( int index = 0; index < 5; index++ )
-		{
-			this.panelArray[ indexJ2 ][ gameCol ].add( new JLabel( twoSeventy[ index ] ) );
-			--indexJ2;
-		}
-		
-	}
+	} // END OF UPDATEPOSITIONS()
 
 }
