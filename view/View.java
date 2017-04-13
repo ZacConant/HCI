@@ -12,9 +12,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GraphicsEnvironment;
 //import java.awt.GridLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.net.URL;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -24,6 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu.Separator;
 import javax.swing.JSeparator;
@@ -46,6 +50,7 @@ public class View
 	private ImageIcon left = new ImageIcon( "src/left_arrow.png" );
 	private ImageIcon start = new ImageIcon( "src/start.png" );
 	private ImageIcon reset = new ImageIcon( "src/reset.png" );
+	private ImageIcon fire = new ImageIcon( "src/target.png" );
 	
 //	private final int gridRows = 15;
 //	private final int gridCols = 15;
@@ -53,7 +58,7 @@ public class View
 //	private final int gameCol = 8;
 	
 	
-	public View( Model model, Controller controller, JFrame frame ) 
+	public View( Model model, Controller controller, JFrame frame ) throws Exception 
 	{
 		this.model = model;
 		this.controller = controller;
@@ -65,7 +70,7 @@ public class View
 		gameView( controller, model, frame );
 	}
 	
-	private void gameView( Controller controller, Model model, JFrame frame )
+	private void gameView( Controller controller, Model model, JFrame frame ) throws Exception
 	{
 		// The main layout used in the design of the game
 		BorderLayout border = new BorderLayout();
@@ -78,7 +83,6 @@ public class View
 		
 		JMenuBar mBar = new JMenuBar();
 		mBar.setBorderPainted( true );
-		mBar.setBackground( Color.BLACK );
 		frame.setJMenuBar( mBar );
 		
 		/* 'FILE' TAB */
@@ -138,7 +142,11 @@ public class View
 		
 		panelLeft.add( new JButton ( "Button 3" ) );
 		panelLeft.add( new JButton ( "Button 4" ) );
-		panelLeft.add( new JButton ( "Button 5" ) );
+		//panelLeft.add( new JButton ( "Button 5" ) );
+		JLabel scoreLabel = new JLabel( " Score " );
+		scoreLabel.setFont( getFont() );
+		scoreLabel.setForeground( new Color( 229, 177, 58 ));
+		panelLeft.add( scoreLabel );
 		
 		frame.add( panelLeft );
 		border.addLayoutComponent( panelLeft , BorderLayout.WEST );
@@ -153,8 +161,15 @@ public class View
 		panelBottom.setPreferredSize( new Dimension( 800, 100 ) );
 		GridLayout gridBottom = new GridLayout( 1, 4 );
 		panelBottom.setLayout( gridBottom );
+		
+		
 		JButton userControls = new JButton( "" );
 		panelBottom.add( userControls );
+		
+		// TODO: This will replace the above button
+//		JLabel userScore = new JLabel( model.getScore() );
+//		panelBottom.add( userScore );
+		
 		JButton userControls1 = new JButton( "" );
 		panelBottom.add( userControls1 );
 		
@@ -180,7 +195,13 @@ public class View
 		leftKey.setRequestFocusEnabled( false );
 		panelControls.add( leftKey );
 		
-		panelControls.add( new JLabel("") );
+		//panelControls.add( new JLabel("") );
+		JButton trigger = new JButton( fire );
+		trigger.setBorderPainted( false );
+		trigger.addActionListener( controller );
+		//trigger.setActionCommand( );
+		trigger.setRequestFocusEnabled( false );
+		panelControls.add( trigger );
 		
 		JButton rightKey = new JButton( right );
 		rightKey.setBorderPainted( false );
@@ -264,5 +285,26 @@ public class View
 		Image reset1 = reset.getImage();
 		Image newReset = reset1.getScaledInstance( 220, 220, java.awt.Image.SCALE_SMOOTH );
 		this.reset = new ImageIcon( newReset );
+		
+		Image fire1 = fire.getImage();
+		Image newFire = fire1.getScaledInstance( 37, 37, java.awt.Image.SCALE_SMOOTH );
+		this.fire = new ImageIcon( newFire );
+	}
+	
+	public Font getFont() throws Exception
+	{
+		URL swFont = new URL( "http://www.webpagepublicity.com/free-fonts/s/Star%20Jedi.ttf");
+		Font font = Font.createFont(Font.TRUETYPE_FONT, swFont.openStream() );
+		font = font.deriveFont( Font.PLAIN, 44 );
+		
+		GraphicsEnvironment graphics = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		graphics.registerFont(font);
+		
+		return font;
+	}
+	
+	public void gameOver()
+	{
+		JOptionPane.showMessageDialog( frame, "Game Over", "", JOptionPane.PLAIN_MESSAGE );
 	}
 }
