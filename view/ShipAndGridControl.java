@@ -37,7 +37,8 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 	private ImageIcon xwing = new ImageIcon( "src/X_Wing_90.png" );
 //	private ImageIcon xwing2 = new ImageIcon( "src/X_Wing_0.png" );
 	private ImageIcon tie = new ImageIcon( "src/TIE_Fighter_Render.png" );
-	private ImageIcon bolt = new ImageIcon( "src/blaster_bolt.png" );
+	private ImageIcon boltHorizontal = new ImageIcon( "src/blaster_bolt_horizontal.png" );
+	private ImageIcon boltVertical = new ImageIcon( "src/blaster_bolt_vertical.png" );
 	private ImageIcon explosion = new ImageIcon( "src/explosion2.png" );
 	private JLabel playerShip = new JLabel();
 	private JLabel enemyShip = new JLabel();
@@ -110,9 +111,9 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		Image newTie = tie2.getScaledInstance( 37, 37, java.awt.Image.SCALE_SMOOTH);
 		this.tie = new ImageIcon( newTie );
 		
-		Image bolt1 = bolt.getImage();
+		Image bolt1 = boltHorizontal.getImage();
 		Image newBolt = bolt1.getScaledInstance( 37, 37, java.awt.Image.SCALE_SMOOTH );
-		this.bolt = new ImageIcon( newBolt );
+		this.boltHorizontal = new ImageIcon( newBolt );
 		
 		Image explosion1 = explosion.getImage();
 		Image newExplosion = explosion1.getScaledInstance( 37, 37, java.awt.Image.SCALE_SMOOTH );
@@ -181,7 +182,7 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 			
 			else if ( zero[ index ].equals( "M" ) )
 			{
-				( ( JLabel ) ( this.panelArray[ gameRow ][ indexJ1 ].getComponent( 0 ) ) ).setIcon( resizeImage( 37, 37, new ImageIcon( "src/blaster_bolt.png" ) ) );
+				( ( JLabel ) ( this.panelArray[ gameRow ][ indexJ1 ].getComponent( 0 ) ) ).setIcon( resizeImage( 37, 37, new ImageIcon( "src/blaster_bolt_horizontal.png" ) ) );
 			}
 			
 			else if ( zero[ index ].equals( "D" ) )
@@ -203,7 +204,7 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 			
 			else if ( ninety[ index ].equals( "M" ) )
 			{
-				( ( JLabel ) ( this.panelArray[ index ][ gameCol ].getComponent( 0 ) ) ).setIcon( resizeImage( 37, 37, new ImageIcon( "src/blaster_bolt.png" ) ) );
+				( ( JLabel ) ( this.panelArray[ index ][ gameCol ].getComponent( 0 ) ) ).setIcon( resizeImage( 37, 37, new ImageIcon( "src/blaster_bolt_vertical.png" ) ) );
 			}
 			
 			else if ( ninety[ index ].equals( "D" ) )
@@ -225,7 +226,7 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 			
 			else if ( oneEighty[ index ].equals( "M" ) )
 			{
-				( ( JLabel ) ( this.panelArray[ gameRow ][ index ].getComponent( 0 ) ) ).setIcon( resizeImage( 37, 37, new ImageIcon( "src/blaster_bolt.png" ) ) );
+				( ( JLabel ) ( this.panelArray[ gameRow ][ index ].getComponent( 0 ) ) ).setIcon( resizeImage( 37, 37, new ImageIcon( "src/blaster_bolt_horizontal.png" ) ) );
 			}
 			
 			else if ( oneEighty[ index ].equals( "D" ) )
@@ -247,7 +248,7 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 			
 			else if ( twoSeventy[ index ].equals( "M" ) )
 			{
-				( ( JLabel ) ( this.panelArray[ indexJ1 ][ gameCol ].getComponent( 0 ) ) ).setIcon( resizeImage( 37, 37, new ImageIcon( "src/blaster_bolt.png" ) ) );
+				( ( JLabel ) ( this.panelArray[ indexJ1 ][ gameCol ].getComponent( 0 ) ) ).setIcon( resizeImage( 37, 37, new ImageIcon( "src/blaster_bolt_vertical.png" ) ) );
 			}
 			
 			else if ( twoSeventy[ index ].equals( "D" ) )

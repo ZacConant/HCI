@@ -51,6 +51,7 @@ public class View
 	private ImageIcon start = new ImageIcon( "src/start.png" );
 	private ImageIcon reset = new ImageIcon( "src/reset.png" );
 	private ImageIcon fire = new ImageIcon( "src/target.png" );
+	private ImageIcon highScore = new ImageIcon( "src/high_score.png" );
 	
 //	private final int gridRows = 15;
 //	private final int gridCols = 15;
@@ -258,6 +259,9 @@ public class View
 		frame.addKeyListener( controller );
 		frame.setFocusable( true );
 		
+		//gameOver();
+		JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.INFORMATION_MESSAGE, highScore );
+		
 	}
 	
 	public void imageResizing()
@@ -289,6 +293,10 @@ public class View
 		Image fire1 = fire.getImage();
 		Image newFire = fire1.getScaledInstance( 37, 37, java.awt.Image.SCALE_SMOOTH );
 		this.fire = new ImageIcon( newFire );
+		
+		Image highScore1 = highScore.getImage();
+		Image newHighScore = highScore1.getScaledInstance( 100, 100, java.awt.Image.SCALE_SMOOTH );
+		this.highScore = new ImageIcon( newHighScore );
 	}
 	
 	public Font getFont() throws Exception
@@ -305,6 +313,14 @@ public class View
 	
 	public void gameOver()
 	{
-		JOptionPane.showMessageDialog( frame, "Game Over", "", JOptionPane.PLAIN_MESSAGE );
+		// TODO: Needs to be removed once I can get the high score
+		JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.PLAIN_MESSAGE );
+		
+//		if ( model.getHighScore() == true )
+//		{
+//			JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.INFORMATION_MESSAGE, highScore );
+//		}
+//		else
+//			JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.PLAIN_MESSAGE );
 	}
 }
