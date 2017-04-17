@@ -158,6 +158,17 @@ public class Model {
 		}
 	}
 	
+	// Shift the images in all arrays
+	private void shiftMissiles() {
+		for (int i = 0; i < NUMBER_DIRECTIONS; ++i) {
+			for (int j = (GRID_DIMENSION/2 - 2); j >= 0; --j) {
+				int k = GRID_DIMENSION/2 - 2 - j;
+				
+				this.missiles[i][k] = this.missiles[i][k+1];
+			}
+		}
+	}
+	
 	// Add an enemy string to one of 4 arrays, or not at all
 	private void addEnemy(int directionIndex) {
 		
@@ -256,7 +267,7 @@ public class Model {
 	public void start() {
 		if (!this.isStarted) {
 			this.timer = new Timer();
-			this.timer.scheduleAtFixedRate(new TimerTask() { public void run() { move(); } }, 0, (long)this.timeDelay*100);
+			this.timer.scheduleAtFixedRate(new TimerTask() { public void run() { move(); } }, 0, (long)this.timeDelay);
 			this.isStarted = true;
 		}
 	}
@@ -271,10 +282,14 @@ public class Model {
 	
 	// Move view components
 	public void move() {
-		int randomDirectionIndex = selectEnemyDirection();
-		shiftDirectionComponents();
-		
-		addEnemy(randomDirectionIndex);
+		if (timerCount %8 == 0) {
+			int randomDirectionIndex = selectEnemyDirection();
+			shiftDirectionComponents();
+			addEnemy(randomDirectionIndex);
+		}
+		else {
+			shiftMissiles();
+		}
 		
 		addMissile(getDirectionIndex(turretOrientation));
 		
