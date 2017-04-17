@@ -112,7 +112,7 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		this.playerShip.setIcon( xwing );
 		
 
-		
+		// Listeners
 		model.addOrientationListener( this );
 		model.addPositionListener( this );
 		
