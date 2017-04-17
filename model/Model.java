@@ -69,7 +69,7 @@ public class Model {
 		this.initializeDirections();
 		this.notifyPositionListeners();
 		this.notifyOrientationListeners();
-		//this.notifyScoreListeners();
+		this.notifyScoreListeners();
 	}
 	
 	// Set all direction indices to empty string
@@ -356,7 +356,7 @@ public class Model {
 	
 	private void updateScore() {
 		this.score += SCORE_VALUE;
-		//notifyScoreListeners();
+		notifyScoreListeners();
 	}
 	
 	public int getScore() {
@@ -400,10 +400,10 @@ public class Model {
 		
 		if (isHighScore()) {
 			this.highScore = score;
-			System.out.println("High:" + this.highScore);
+			System.out.println("New High Score: " + this.highScore);
 			writeHighScore(this.highScore);
 		}
-		//notifyScoreListeners();
+		notifyScoreListeners();
 	}
 	
 	public boolean isGameOver() {
