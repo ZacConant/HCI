@@ -20,6 +20,7 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
@@ -40,6 +41,8 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 	private ImageIcon boltHorizontal = new ImageIcon( "src/blaster_bolt_horizontal.png" );
 	private ImageIcon boltVertical = new ImageIcon( "src/blaster_bolt_vertical.png" );
 	private ImageIcon explosion = new ImageIcon( "src/explosion2.png" );
+	//private Image deathStar = new ImageIcon( "src/deathstar1.jpg");
+	private Image deathStar = Toolkit.getDefaultToolkit().createImage( "src/deathstar1.jpg" );
 	private JLabel playerShip = new JLabel();
 	private JLabel enemyShip = new JLabel();
 	private JLabel boltLabel = new JLabel();
@@ -60,13 +63,27 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		
 	}
 	
-	public void gridDesign(JFrame frame, BorderLayout border, Model model)
+	public void gridDesign(JFrame frame, BorderLayout border, Model model )
 	{
+		
 		this.setPreferredSize( new Dimension( 450, 450));
 		this.setBackground( Color.LIGHT_GRAY );
+//		this.paint(g.drawImage( deathStar, 0, 0, null));
+//		this.
+		//this.paint
+//		this.add( new JLabel( new ImageIcon(deathStar)));
+//		this.add
+		
+		
+		//this.add( g.drawImage( deathStar, 0, 0, null) );
 		
 		GridLayout gridCenter = new GridLayout( gridRows, gridCols );
 		this.setLayout( gridCenter );
+		
+		// TEST
+		//JPanel behindCenter = new JPanel();
+		//~
+		//this.add( behindCenter );
 		
 		// Creating grid
 		this.panelArray = new JPanel[ gridRows ][ gridCols ];
@@ -80,9 +97,11 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 				panelArray[ i ][ j ].setOpaque( false );
 				panelArray[ i ][ j ].add( new JLabel() );
 				this.add( panelArray[ i ][ j ] );
+				//behindCenter.add( panelArray[ i ][ j ] );
 			}
 		}
 		
+		//this.add( behindCenter );
 		frame.add( this );
 		
 		border.addLayoutComponent( this , BorderLayout.CENTER );

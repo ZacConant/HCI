@@ -49,9 +49,12 @@ public class View
 	private ImageIcon down = new ImageIcon( "src/down_arrow.png" );
 	private ImageIcon left = new ImageIcon( "src/left_arrow.png" );
 	private ImageIcon start = new ImageIcon( "src/start.png" );
-	private ImageIcon reset = new ImageIcon( "src/reset.png" );
+	//private ImageIcon reset = new ImageIcon( "src/reset.png" );
 	private ImageIcon fire = new ImageIcon( "src/target.png" );
 	private ImageIcon highScore = new ImageIcon( "src/high_score.png" );
+	private ImageIcon reset = new ImageIcon( "src/reset_button.png" );
+	private ImageIcon play = new ImageIcon( "src/play_button.png" );
+	private ImageIcon pause = new ImageIcon( "src/pause_button.png" );
 	
 //	private final int gridRows = 15;
 //	private final int gridCols = 15;
@@ -127,21 +130,28 @@ public class View
 		GridLayout gridLeft = new GridLayout( 5, 1 );
 		panelLeft.setLayout( gridLeft );
 		
-		JButton startButton = new JButton( start );
-		startButton.setBorderPainted( false );
-		startButton.setRequestFocusEnabled( false );
-		startButton.addActionListener( controller );
-		startButton.setActionCommand( "startGame" );
-		panelLeft.add( startButton );
+		//JButton startButton = new JButton( start );
+		JButton playButton = new JButton( play );
+		playButton.setBorderPainted( false );
+		playButton.setRequestFocusEnabled( false );
+		playButton.addActionListener( controller );
+		playButton.setActionCommand( "playGame" );
+		panelLeft.add( playButton );
+		
+		JButton pauseButton = new JButton( pause );
+		pauseButton.setBorderPainted( false );
+		pauseButton.setRequestFocusEnabled( false );
+		pauseButton.addActionListener( controller );
+		pauseButton.setActionCommand( "pauseGame" );
+		panelLeft.add( pauseButton );
 		
 		JButton resetButton = new JButton( reset );
 		resetButton.setBorderPainted( false );
 		resetButton.setRequestFocusEnabled( false );
 		resetButton.addActionListener( controller );
-		resetButton.setActionCommand( "stopGame" );
+		resetButton.setActionCommand( "resetGame" );
 		panelLeft.add( resetButton );
 		
-		panelLeft.add( new JButton ( "Button 3" ) );
 		panelLeft.add( new JButton ( "Button 4" ) );
 		//panelLeft.add( new JButton ( "Button 5" ) );
 		JLabel scoreLabel = new JLabel( " Score " );
@@ -286,8 +296,12 @@ public class View
 		Image newStart = start1.getScaledInstance( 175, 175, java.awt.Image.SCALE_SMOOTH );
 		this.start = new ImageIcon( newStart );
 		
+		Image play1 = play.getImage();
+		Image newPlay = play1.getScaledInstance( 150,  80, java.awt.Image.SCALE_SMOOTH );
+		this.play = new ImageIcon( newPlay );
+		
 		Image reset1 = reset.getImage();
-		Image newReset = reset1.getScaledInstance( 220, 220, java.awt.Image.SCALE_SMOOTH );
+		Image newReset = reset1.getScaledInstance( 150, 80, java.awt.Image.SCALE_SMOOTH );
 		this.reset = new ImageIcon( newReset );
 		
 		Image fire1 = fire.getImage();
@@ -297,6 +311,10 @@ public class View
 		Image highScore1 = highScore.getImage();
 		Image newHighScore = highScore1.getScaledInstance( 100, 100, java.awt.Image.SCALE_SMOOTH );
 		this.highScore = new ImageIcon( newHighScore );
+		
+		Image pause1 = pause.getImage();
+		Image newPause = pause1.getScaledInstance( 150, 80, java.awt.Image.SCALE_SMOOTH );
+		this.pause = new ImageIcon( newPause );
 	}
 	
 	public Font getFont() throws Exception
