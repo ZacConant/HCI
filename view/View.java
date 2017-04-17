@@ -57,6 +57,7 @@ public class View implements ScoreListener
 	private ImageIcon reset = new ImageIcon( "src/reset_button.png" );
 	private ImageIcon play = new ImageIcon( "src/play_button.png" );
 	private ImageIcon pause = new ImageIcon( "src/pause_button.png" );
+	private JLabel userScore;
 	
 //	private final int gridRows = 15;
 //	private final int gridCols = 15;
@@ -182,8 +183,7 @@ public class View implements ScoreListener
 //		panelBottom.add( userControls );
 		
 		// TODO: This will replace the above button
-		JLabel userScore = new JLabel( );
-		userScore.setText( Integer.toString( score ) );
+		userScore = new JLabel();
 		panelBottom.add( userScore );
 		
 		JButton userControls1 = new JButton( "" );
@@ -354,6 +354,6 @@ public class View implements ScoreListener
 	public void updateScore() 
 	{
 		this.score = model.getScore();
-		System.out.println( model.getScore() );
+		userScore.setText("" + this.score);
 	}
 }
