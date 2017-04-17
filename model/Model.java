@@ -18,19 +18,27 @@ public class Model {
 	private static final int GRID_DIMENSION = 11; // Number of rows and columns in grid
 	private static final int NUMBER_DIRECTIONS = 4; // number of directions
 	private String[][] directions; // Holds view components of 4 directions
-	private double timeDelay; // Delay for each update in seconds
+	private String[][] enemies; // keep track of enemies
+	private String[][] missiles; // keep track of missiles
+	private int timeDelay; // Delay for each update in seconds
 	private Timer timer; // Timer for application
 	private ImageIcon[] xWings; // 4 angles for x wing image
-	private boolean isShooting = false; // holds state of if turret is shooting
-	private boolean isStarted = false; // check if game has started
+	private boolean isShooting; // holds state of if turret is shooting
+	private boolean isStarted; // check if game has started
+	private int timerCount;
 	
 	public Model(int timeDelay) {
-		this.turretOrientation = 0;
+		this.turretOrientation = 90;
 		this.orientationListeners = new ArrayList<OrientationListener>();
 		this.positionListeners = new ArrayList<PositionListener>();
 		this.directions = new String[NUMBER_DIRECTIONS][GRID_DIMENSION/2];
+		this.enemies = new String[NUMBER_DIRECTIONS][GRID_DIMENSION/2];
+		this.missiles = new String[NUMBER_DIRECTIONS][GRID_DIMENSION/2];
 		this.timeDelay = timeDelay;
 		this.xWings = new ImageIcon[NUMBER_DIRECTIONS];
+		this.isShooting = false;
+		this.isStarted = false;
+		this.timerCount = 0;
 		this.initializeDirections();
 		this.loadXWings();
 	}
@@ -40,6 +48,8 @@ public class Model {
 		for (int i = 0; i < NUMBER_DIRECTIONS; ++i) {
 			for (int j = 0; j < GRID_DIMENSION/2; ++j) {
 				directions[i][j] = "";
+				enemies[i][j] = "";
+				missiles[i][j] = "";
 			}
 		}
 	}
@@ -140,14 +150,10 @@ public class Model {
 	private void shiftDirectionComponents() {
 		for (int i = 0; i < NUMBER_DIRECTIONS; ++i) {
 			for (int j = (GRID_DIMENSION/2 - 2); j >= 0; --j) {
-				this.directions[i][j+1] = this.directions[i][j];
-				/*if (this.directions[i][j] == "E") {
-					this.directions[i][j+1] += this.directions[i][j];
-				}
-				else if (this.directions[i][j] == "M") {
-					this.directions[i][j-1] += this.directions[i][j];
-					this.directions[i][j] = "";
-				}*/
+				int k = GRID_DIMENSION/2 - 2 - j;
+				
+				this.enemies[i][j+1] = this.enemies[i][j];
+				this.missiles[i][k] = this.missiles[i][k+1];
 			}
 		}
 	}
@@ -156,22 +162,69 @@ public class Model {
 	private void addEnemy(int directionIndex) {
 		
 		for (int i = 0; i < NUMBER_DIRECTIONS; ++i) {
-			this.directions[i][0] = "";
+			this.enemies[i][0] = "";
 		}
 		
 		if (directionIndex >= 0) {
-			this.directions[directionIndex][0] += "E";
+			this.enemies[directionIndex][0] += "E";
 		}
 	}
 	
+	// Add missile to direction selected
 	private void addMissile(int directionIndex) {
-		if (directionIndex >= 0) {
-			this.directions[directionIndex][GRID_DIMENSION/2 - 1] += "M";
+		for (int i = 0; i < NUMBER_DIRECTIONS; ++i) {
+			this.missiles[i][GRID_DIMENSION/2 - 1] = "";
+		}
+		
+		if (isShooting) {
+			this.missiles[directionIndex][GRID_DIMENSION/2 - 1] += "M";
 		}
 		
 		this.isShooting = false;
 	}
 	
+	private void updateDirections() {
+		for (int i = 0; i < NUMBER_DIRECTIONS; ++i) {
+			for (int j = 0; j < GRID_DIMENSION/2; ++j) {
+				
+				// Clear current space
+				this.directions[i][j] = "";
+				
+				// Check for enemy and missile one position away from each other
+				if (j > 0) {
+					if (this.missiles[i][j].equals("M") && this.enemies[i][j-1].equals("E")) {
+						this.missiles[i][j] = "";
+						this.enemies[i][j-1] = "";
+						this.directions[i][j-1] = "D";
+					}
+					else if (this.missiles[i][j].equals("M") && this.enemies[i][j].equals("E")) {
+						this.missiles[i][j] = "";
+						this.enemies[i][j] = "";
+						this.directions[i][j] = "D";
+					}
+					else {
+						this.directions[i][j] += this.missiles[i][j];
+						this.directions[i][j] += this.enemies[i][j];
+					}
+				}
+				// Enemy and missile can only be in same position
+				else {
+					if (this.missiles[i][j].equals("M") && this.enemies[i][j].equals("E")) {
+						this.missiles[i][j] = "";
+						this.enemies[i][j] = "";
+						this.directions[i][j] = "D";
+					}
+					else {
+						this.directions[i][j] += this.missiles[i][j];
+						this.directions[i][j] += this.enemies[i][j];
+					}
+				}
+				
+			}
+		}
+	}
+	
+	// Shoot a missile
 	public void shoot() {
 		this.isShooting = true;
 	}
@@ -195,7 +248,7 @@ public class Model {
 	}
 	
 	// Set current time delay
-	public void setTimeDelay(double delay) {
+	public void setTimeDelay(int delay) {
 		this.timeDelay = delay;
 	}
 	
@@ -203,7 +256,7 @@ public class Model {
 	public void start() {
 		if (!this.isStarted) {
 			this.timer = new Timer();
-			this.timer.scheduleAtFixedRate(new TimerTask() { public void run() { move(); } }, 0, (long)this.timeDelay*1000);
+			this.timer.scheduleAtFixedRate(new TimerTask() { public void run() { move(); } }, 0, (long)this.timeDelay*100);
 			this.isStarted = true;
 		}
 	}
@@ -220,17 +273,17 @@ public class Model {
 	public void move() {
 		int randomDirectionIndex = selectEnemyDirection();
 		shiftDirectionComponents();
-		addEnemy(randomDirectionIndex);
-		/*if (randomDirectionIndex % 2 == 0 && randomDirectionIndex >= 0) {
-			shoot();
-		}
 		
-		if (isShooting) {
-			addMissile(getDirectionIndex(turretOrientation));
-		}*/
+		addEnemy(randomDirectionIndex);
+		
+		addMissile(getDirectionIndex(turretOrientation));
+		
+		updateDirections();
 		
 		notifyPositionListeners();
 		
-		/*print();*/
+		print();
+		
+		timerCount += 1;
 	}
 }
