@@ -1,8 +1,12 @@
 package model;
 
 import java.awt.Image;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -28,7 +32,10 @@ public class Model {
 	private boolean isGameOver;
 	private int timerCount;
 	private int score;
+	private int highScore;
 	private static final int SCORE_VALUE = 100;
+	private ArrayList<ScoreListener> scoreListeners;
+	private File highScoreFile;
 	
 	public Model(int timeDelay) {
 		this.turretOrientation = 90;
@@ -44,6 +51,8 @@ public class Model {
 		this.isGameOver = false;
 		this.timerCount = 0;
 		this.score = 0;
+		this.highScoreFile = new File("src/highscore.txt");
+		this.highScore = readHighScore();
 		this.initializeDirections();
 		this.loadXWings();
 	}
@@ -218,13 +227,13 @@ public class Model {
 						this.missiles[i][j] = "";
 						this.enemies[i][j-1] = "";
 						this.directions[i][j-1] = "D";
-						this.score += SCORE_VALUE;
+						updateScore();
 					}
 					else if (this.missiles[i][j].equals("M") && this.enemies[i][j].equals("E")) {
 						this.missiles[i][j] = "";
 						this.enemies[i][j] = "";
 						this.directions[i][j] = "D";
-						this.score += SCORE_VALUE;
+						updateScore();
 					}
 					else {
 						this.directions[i][j] += this.missiles[i][j];
@@ -237,7 +246,7 @@ public class Model {
 						this.missiles[i][j] = "";
 						this.enemies[i][j] = "";
 						this.directions[i][j] = "D";
-						this.score += SCORE_VALUE;
+						updateScore();
 					}
 					else {
 						this.directions[i][j] += this.missiles[i][j];
@@ -317,11 +326,73 @@ public class Model {
 		
 		timerCount += 1;
 		
-		System.out.println(score);
+		System.out.println(getScore());
+	}
+	
+	// Register a view component with an orientation listener
+	public void addScoreListener(ScoreListener listener) {
+		this.scoreListeners.add(listener);
+	}
+	
+	// Call all view components to update orientation
+	public void notifyScoreListeners() {
+		for (ScoreListener listener : scoreListeners) {
+			listener.updateScore();
+		}
+	}
+	
+	private void updateScore() {
+		this.score += SCORE_VALUE;
+		notifyScoreListeners();
+	}
+	
+	public int getScore() {
+		return this.score;
+	}
+	
+	public int getHighScore() {
+		return this.highScore;
+	}
+	
+	private void writeHighScore(int highScore) {
+		try {
+			PrintWriter pw = new PrintWriter(this.highScoreFile);
+			pw.println(highScore);
+			pw.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private int readHighScore() {
+		Scanner scanner;
+		try {
+			scanner = new Scanner(this.highScoreFile);
+			return scanner.nextInt();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return -1;
+	}
+	
+	private boolean isHighScore() {
+		return this.score > this.highScore;
 	}
 	
 	private void gameOver() {
 		notifyOrientationListeners();
+		notifyScoreListeners();
+		if (isHighScore()) {
+			this.highScore = score;
+			System.out.println("High:" + this.highScore);
+			writeHighScore(this.highScore);
+		}
 		stop();
+	}
+	
+	public boolean isGameOver() {
+		return this.isGameOver;
 	}
 }
