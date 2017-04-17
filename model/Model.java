@@ -391,7 +391,7 @@ public class Model {
 		return -1;
 	}
 	
-	private boolean isHighScore() {
+	public boolean isHighScore() {
 		return this.score > this.highScore;
 	}
 	
