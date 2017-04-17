@@ -383,13 +383,14 @@ public class Model {
 	
 	private void gameOver() {
 		notifyOrientationListeners();
-		notifyScoreListeners();
+		stop();
+		
 		if (isHighScore()) {
 			this.highScore = score;
 			System.out.println("High:" + this.highScore);
 			writeHighScore(this.highScore);
 		}
-		stop();
+		notifyScoreListeners();
 	}
 	
 	public boolean isGameOver() {
