@@ -1,8 +1,12 @@
 package model;
 
 import java.awt.Image;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -18,21 +22,54 @@ public class Model {
 	private static final int GRID_DIMENSION = 11; // Number of rows and columns in grid
 	private static final int NUMBER_DIRECTIONS = 4; // number of directions
 	private String[][] directions; // Holds view components of 4 directions
-	private double timeDelay; // Delay for each update in seconds
+	private String[][] enemies; // keep track of enemies
+	private String[][] missiles; // keep track of missiles
+	private int timeDelay; // Delay for each update in seconds
 	private Timer timer; // Timer for application
 	private ImageIcon[] xWings; // 4 angles for x wing image
-	private boolean isShooting = false; // holds state of if turret is shooting
-	private boolean isStarted = false; // check if game has started
+	private boolean isShooting; // holds state of if turret is shooting
+	private boolean isStarted; // check if game has started
+	private boolean isGameOver;
+	private int timerCount;
+	private int score;
+	private int highScore;
+	private static final int SCORE_VALUE = 100;
+	private ArrayList<ScoreListener> scoreListeners;
+	private File highScoreFile;
 	
 	public Model(int timeDelay) {
-		this.turretOrientation = 0;
+		this.turretOrientation = 90;
 		this.orientationListeners = new ArrayList<OrientationListener>();
 		this.positionListeners = new ArrayList<PositionListener>();
 		this.directions = new String[NUMBER_DIRECTIONS][GRID_DIMENSION/2];
+		this.enemies = new String[NUMBER_DIRECTIONS][GRID_DIMENSION/2];
+		this.missiles = new String[NUMBER_DIRECTIONS][GRID_DIMENSION/2];
 		this.timeDelay = timeDelay;
 		this.xWings = new ImageIcon[NUMBER_DIRECTIONS];
+		this.isShooting = false;
+		this.isStarted = false;
+		this.isGameOver = false;
+		this.timerCount = 0;
+		this.score = 0;
+		this.highScoreFile = new File("src/highscore.txt");
+		this.highScore = readHighScore();
 		this.initializeDirections();
 		this.loadXWings();
+	}
+	
+	public void reset() {
+		this.stop();
+		this.turretOrientation = 90;
+		this.isShooting = false;
+		this.isStarted = false;
+		this.isGameOver = false;
+		this.timerCount = 0;
+		this.score = 0;
+		this.highScore = readHighScore();
+		this.initializeDirections();
+		this.notifyPositionListeners();
+		this.notifyOrientationListeners();
+		this.notifyScoreListeners();
 	}
 	
 	// Set all direction indices to empty string
@@ -40,6 +77,8 @@ public class Model {
 		for (int i = 0; i < NUMBER_DIRECTIONS; ++i) {
 			for (int j = 0; j < GRID_DIMENSION/2; ++j) {
 				directions[i][j] = "";
+				enemies[i][j] = "";
+				missiles[i][j] = "";
 			}
 		}
 	}
@@ -114,6 +153,10 @@ public class Model {
 	
 	// Get the center turret image (this can be 4 different angles)
 	public ImageIcon getTurretImage() {
+		if (isGameOver) {
+			return resizeImage(37, 37, new ImageIcon("src/explosion2.png"));
+		}
+		
 		if (turretOrientation == 0) {
 			return xWings[0];
 		}
@@ -139,15 +182,25 @@ public class Model {
 	// Shift the images in all arrays
 	private void shiftDirectionComponents() {
 		for (int i = 0; i < NUMBER_DIRECTIONS; ++i) {
+			if ((this.enemies[i][GRID_DIMENSION/2 - 1]).equals("E")) {
+				this.isGameOver = true;
+			}
 			for (int j = (GRID_DIMENSION/2 - 2); j >= 0; --j) {
-				this.directions[i][j+1] = this.directions[i][j];
-				/*if (this.directions[i][j] == "E") {
-					this.directions[i][j+1] += this.directions[i][j];
-				}
-				else if (this.directions[i][j] == "M") {
-					this.directions[i][j-1] += this.directions[i][j];
-					this.directions[i][j] = "";
-				}*/
+				int k = GRID_DIMENSION/2 - 2 - j;
+				
+				this.enemies[i][j+1] = this.enemies[i][j];
+				this.missiles[i][k] = this.missiles[i][k+1];
+			}
+		}
+	}
+	
+	// Shift the images in all arrays
+	private void shiftMissiles() {
+		for (int i = 0; i < NUMBER_DIRECTIONS; ++i) {
+			for (int j = (GRID_DIMENSION/2 - 2); j >= 0; --j) {
+				int k = GRID_DIMENSION/2 - 2 - j;
+				
+				this.missiles[i][k] = this.missiles[i][k+1];
 			}
 		}
 	}
@@ -156,22 +209,71 @@ public class Model {
 	private void addEnemy(int directionIndex) {
 		
 		for (int i = 0; i < NUMBER_DIRECTIONS; ++i) {
-			this.directions[i][0] = "";
+			this.enemies[i][0] = "";
 		}
 		
 		if (directionIndex >= 0) {
-			this.directions[directionIndex][0] += "E";
+			this.enemies[directionIndex][0] += "E";
 		}
 	}
 	
+	// Add missile to direction selected
 	private void addMissile(int directionIndex) {
-		if (directionIndex >= 0) {
-			this.directions[directionIndex][GRID_DIMENSION/2 - 1] += "M";
+		for (int i = 0; i < NUMBER_DIRECTIONS; ++i) {
+			this.missiles[i][GRID_DIMENSION/2 - 1] = "";
 		}
 		
-		this.isShooting = false;
+		if (isShooting) {
+			this.missiles[directionIndex][GRID_DIMENSION/2 - 1] += "M";
+			this.isShooting = false;
+		}
 	}
 	
+	private void updateDirections() {
+		for (int i = 0; i < NUMBER_DIRECTIONS; ++i) {
+			for (int j = 0; j < GRID_DIMENSION/2; ++j) {
+				
+				// Clear current space
+				this.directions[i][j] = "";
+				
+				// Check for enemy and missile one position away from each other
+				if (j > 0) {
+					if (this.missiles[i][j].equals("M") && this.enemies[i][j-1].equals("E")) {
+						this.missiles[i][j] = "";
+						this.enemies[i][j-1] = "";
+						this.directions[i][j-1] = "D";
+						updateScore();
+					}
+					else if (this.missiles[i][j].equals("M") && this.enemies[i][j].equals("E")) {
+						this.missiles[i][j] = "";
+						this.enemies[i][j] = "";
+						this.directions[i][j] = "D";
+						updateScore();
+					}
+					else {
+						this.directions[i][j] += this.missiles[i][j];
+						this.directions[i][j] += this.enemies[i][j];
+					}
+				}
+				// Enemy and missile can only be in same position
+				else {
+					if (this.missiles[i][j].equals("M") && this.enemies[i][j].equals("E")) {
+						this.missiles[i][j] = "";
+						this.enemies[i][j] = "";
+						this.directions[i][j] = "D";
+						updateScore();
+					}
+					else {
+						this.directions[i][j] += this.missiles[i][j];
+						this.directions[i][j] += this.enemies[i][j];
+					}
+				}
+				
+			}
+		}
+	}
+	
+	// Shoot a missile
 	public void shoot() {
 		this.isShooting = true;
 	}
@@ -195,7 +297,7 @@ public class Model {
 	}
 	
 	// Set current time delay
-	public void setTimeDelay(double delay) {
+	public void setTimeDelay(int delay) {
 		this.timeDelay = delay;
 	}
 	
@@ -203,7 +305,7 @@ public class Model {
 	public void start() {
 		if (!this.isStarted) {
 			this.timer = new Timer();
-			this.timer.scheduleAtFixedRate(new TimerTask() { public void run() { move(); } }, 0, (long)this.timeDelay*1000);
+			this.timer.scheduleAtFixedRate(new TimerTask() { public void run() { move(); } }, 0, (long)this.timeDelay);
 			this.isStarted = true;
 		}
 	}
@@ -218,19 +320,93 @@ public class Model {
 	
 	// Move view components
 	public void move() {
-		int randomDirectionIndex = selectEnemyDirection();
-		shiftDirectionComponents();
-		addEnemy(randomDirectionIndex);
-		/*if (randomDirectionIndex % 2 == 0 && randomDirectionIndex >= 0) {
-			shoot();
+		if (timerCount % 7 == 0) {
+			int randomDirectionIndex = selectEnemyDirection();
+			shiftDirectionComponents();
+			addEnemy(randomDirectionIndex);
+		}
+		else {
+			shiftMissiles();
 		}
 		
-		if (isShooting) {
-			addMissile(getDirectionIndex(turretOrientation));
-		}*/
+		addMissile(getDirectionIndex(turretOrientation));
+		
+		updateDirections();
 		
 		notifyPositionListeners();
 		
-		/*print();*/
+		if (isGameOver) {
+			gameOver();
+		}
+		
+		timerCount += 1;
+	}
+	
+	// Register a view component with an orientation listener
+	public void addScoreListener(ScoreListener listener) {
+		this.scoreListeners.add(listener);
+	}
+	
+	// Call all view components to update orientation
+	public void notifyScoreListeners() {
+		for (ScoreListener listener : scoreListeners) {
+			listener.updateScore();
+		}
+	}
+	
+	private void updateScore() {
+		this.score += SCORE_VALUE;
+		notifyScoreListeners();
+	}
+	
+	public int getScore() {
+		return this.score;
+	}
+	
+	public int getHighScore() {
+		return this.highScore;
+	}
+	
+	private void writeHighScore(int highScore) {
+		try {
+			PrintWriter pw = new PrintWriter(this.highScoreFile);
+			pw.println(highScore);
+			pw.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private int readHighScore() {
+		Scanner scanner;
+		try {
+			scanner = new Scanner(this.highScoreFile);
+			return scanner.nextInt();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return -1;
+	}
+	
+	private boolean isHighScore() {
+		return this.score > this.highScore;
+	}
+	
+	private void gameOver() {
+		notifyOrientationListeners();
+		stop();
+		
+		if (isHighScore()) {
+			this.highScore = score;
+			System.out.println("New High Score: " + this.highScore);
+			writeHighScore(this.highScore);
+		}
+		notifyScoreListeners();
+	}
+	
+	public boolean isGameOver() {
+		return this.isGameOver;
 	}
 }

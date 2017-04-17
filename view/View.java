@@ -270,7 +270,7 @@ public class View
 		frame.setFocusable( true );
 		
 		//gameOver();
-		JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.INFORMATION_MESSAGE, highScore );
+		//JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.INFORMATION_MESSAGE, highScore );
 		
 	}
 	
