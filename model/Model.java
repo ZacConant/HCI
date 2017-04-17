@@ -25,6 +25,7 @@ public class Model {
 	private ImageIcon[] xWings; // 4 angles for x wing image
 	private boolean isShooting; // holds state of if turret is shooting
 	private boolean isStarted; // check if game has started
+	private boolean isGameOver;
 	private int timerCount;
 	
 	public Model(int timeDelay) {
@@ -38,6 +39,7 @@ public class Model {
 		this.xWings = new ImageIcon[NUMBER_DIRECTIONS];
 		this.isShooting = false;
 		this.isStarted = false;
+		this.isGameOver = false;
 		this.timerCount = 0;
 		this.initializeDirections();
 		this.loadXWings();
@@ -124,6 +126,10 @@ public class Model {
 	
 	// Get the center turret image (this can be 4 different angles)
 	public ImageIcon getTurretImage() {
+		if (isGameOver) {
+			return resizeImage(37, 37, new ImageIcon("src/explosion2.png"));
+		}
+		
 		if (turretOrientation == 0) {
 			return xWings[0];
 		}
@@ -149,6 +155,9 @@ public class Model {
 	// Shift the images in all arrays
 	private void shiftDirectionComponents() {
 		for (int i = 0; i < NUMBER_DIRECTIONS; ++i) {
+			if ((this.enemies[i][GRID_DIMENSION/2 - 1]).equals("E")) {
+				this.isGameOver = true;
+			}
 			for (int j = (GRID_DIMENSION/2 - 2); j >= 0; --j) {
 				int k = GRID_DIMENSION/2 - 2 - j;
 				
@@ -282,7 +291,7 @@ public class Model {
 	
 	// Move view components
 	public void move() {
-		if (timerCount %8 == 0) {
+		if (timerCount % 8 == 0) {
 			int randomDirectionIndex = selectEnemyDirection();
 			shiftDirectionComponents();
 			addEnemy(randomDirectionIndex);
@@ -297,8 +306,15 @@ public class Model {
 		
 		notifyPositionListeners();
 		
-		print();
+		if (isGameOver) {
+			gameOver();
+		}
 		
 		timerCount += 1;
+	}
+	
+	private void gameOver() {
+		notifyOrientationListeners();
+		stop();
 	}
 }
