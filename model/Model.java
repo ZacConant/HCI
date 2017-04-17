@@ -27,6 +27,8 @@ public class Model {
 	private boolean isStarted; // check if game has started
 	private boolean isGameOver;
 	private int timerCount;
+	private int score;
+	private static final int SCORE_VALUE = 100;
 	
 	public Model(int timeDelay) {
 		this.turretOrientation = 90;
@@ -41,6 +43,7 @@ public class Model {
 		this.isStarted = false;
 		this.isGameOver = false;
 		this.timerCount = 0;
+		this.score = 0;
 		this.initializeDirections();
 		this.loadXWings();
 	}
@@ -198,9 +201,8 @@ public class Model {
 		
 		if (isShooting) {
 			this.missiles[directionIndex][GRID_DIMENSION/2 - 1] += "M";
+			this.isShooting = false;
 		}
-		
-		this.isShooting = false;
 	}
 	
 	private void updateDirections() {
@@ -216,11 +218,13 @@ public class Model {
 						this.missiles[i][j] = "";
 						this.enemies[i][j-1] = "";
 						this.directions[i][j-1] = "D";
+						this.score += SCORE_VALUE;
 					}
 					else if (this.missiles[i][j].equals("M") && this.enemies[i][j].equals("E")) {
 						this.missiles[i][j] = "";
 						this.enemies[i][j] = "";
 						this.directions[i][j] = "D";
+						this.score += SCORE_VALUE;
 					}
 					else {
 						this.directions[i][j] += this.missiles[i][j];
@@ -233,6 +237,7 @@ public class Model {
 						this.missiles[i][j] = "";
 						this.enemies[i][j] = "";
 						this.directions[i][j] = "D";
+						this.score += SCORE_VALUE;
 					}
 					else {
 						this.directions[i][j] += this.missiles[i][j];
@@ -291,7 +296,7 @@ public class Model {
 	
 	// Move view components
 	public void move() {
-		if (timerCount % 8 == 0) {
+		if (timerCount % 7 == 0) {
 			int randomDirectionIndex = selectEnemyDirection();
 			shiftDirectionComponents();
 			addEnemy(randomDirectionIndex);
@@ -311,6 +316,8 @@ public class Model {
 		}
 		
 		timerCount += 1;
+		
+		System.out.println(score);
 	}
 	
 	private void gameOver() {
