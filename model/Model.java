@@ -41,6 +41,7 @@ public class Model {
 		this.turretOrientation = 90;
 		this.orientationListeners = new ArrayList<OrientationListener>();
 		this.positionListeners = new ArrayList<PositionListener>();
+		this.scoreListeners = new ArrayList<ScoreListener>();
 		this.directions = new String[NUMBER_DIRECTIONS][GRID_DIMENSION/2];
 		this.enemies = new String[NUMBER_DIRECTIONS][GRID_DIMENSION/2];
 		this.missiles = new String[NUMBER_DIRECTIONS][GRID_DIMENSION/2];
