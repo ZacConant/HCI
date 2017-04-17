@@ -62,7 +62,7 @@ public class Controller implements KeyListener, ActionListener{
 				}
 				//QUIT in Jmenubar
 				if(e.getActionCommand().equals("stopGame")){
-					model.stop();
+					model.reset();
 				}
 				//UP
 				if(e.getActionCommand().equals("faceUp")){

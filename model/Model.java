@@ -57,6 +57,21 @@ public class Model {
 		this.loadXWings();
 	}
 	
+	public void reset() {
+		this.stop();
+		this.turretOrientation = 90;
+		this.isShooting = false;
+		this.isStarted = false;
+		this.isGameOver = false;
+		this.timerCount = 0;
+		this.score = 0;
+		this.highScore = readHighScore();
+		this.initializeDirections();
+		this.notifyPositionListeners();
+		this.notifyOrientationListeners();
+		//this.notifyScoreListeners();
+	}
+	
 	// Set all direction indices to empty string
 	private void initializeDirections() {
 		for (int i = 0; i < NUMBER_DIRECTIONS; ++i) {
@@ -325,8 +340,6 @@ public class Model {
 		}
 		
 		timerCount += 1;
-		
-		System.out.println(getScore());
 	}
 	
 	// Register a view component with an orientation listener
@@ -343,7 +356,7 @@ public class Model {
 	
 	private void updateScore() {
 		this.score += SCORE_VALUE;
-		notifyScoreListeners();
+		//notifyScoreListeners();
 	}
 	
 	public int getScore() {
@@ -390,7 +403,7 @@ public class Model {
 			System.out.println("High:" + this.highScore);
 			writeHighScore(this.highScore);
 		}
-		notifyScoreListeners();
+		//notifyScoreListeners();
 	}
 	
 	public boolean isGameOver() {
