@@ -17,6 +17,7 @@ import java.awt.GraphicsEnvironment;
 //import java.awt.GridLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.LayoutManager;
 import java.net.URL;
 
 import javax.swing.BoxLayout;
@@ -24,6 +25,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -54,9 +56,9 @@ public class View implements ScoreListener
 	//private ImageIcon reset = new ImageIcon( "src/reset.png" );
 	private ImageIcon fire = new ImageIcon( "src/target.png" );
 	private ImageIcon highScore = new ImageIcon( "src/high_score.png" );
-	private ImageIcon reset = new ImageIcon( "src/reset_button.png" );
-	private ImageIcon play = new ImageIcon( "src/play_button.png" );
-	private ImageIcon pause = new ImageIcon( "src/pause_button.png" );
+	private ImageIcon reset = new ImageIcon( "src/reset_button_1.png" );
+	private ImageIcon play = new ImageIcon( "src/play_button_1.png" );
+	private ImageIcon pause = new ImageIcon( "src/pause_button_1.png" );
 	
 //	private final int gridRows = 15;
 //	private final int gridCols = 15;
