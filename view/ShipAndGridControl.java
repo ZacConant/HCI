@@ -280,11 +280,11 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		
 	} // END OF UPDATEPOSITIONS()
 	
-	@Override
-	protected void paintComponent( Graphics g )
-	{
-		super.paintComponent( g );
-		g.drawImage( deathStar, 0, 0, null);
-	}
+//	@Override
+//	protected void paintComponent( Graphics g )
+//	{
+//		super.paintComponent( g );
+//		g.drawImage( deathStar, 0, 0, null);
+//	}
 
 }
