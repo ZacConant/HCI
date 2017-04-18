@@ -110,6 +110,7 @@ public class View implements ScoreListener
 		mItemQuit.setActionCommand( "Quit" );
 		mItemQuit.addActionListener( controller );
 		
+		
 		mFile.add( mItemQuit );
 		mBar.add( mFile );
 		
@@ -280,8 +281,9 @@ public class View implements ScoreListener
 		frame.addKeyListener( controller );
 		frame.setFocusable( true );
 		
-		//gameOver();
-		//JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.INFORMATION_MESSAGE, highScore );
+		
+		if ( model.isGameOver() == true )
+			gameOver();
 		
 		// Listeners
 		model.addScoreListener( this );
@@ -345,15 +347,13 @@ public class View implements ScoreListener
 	
 	public void gameOver()
 	{
-		// TODO: Needs to be removed once I can get the high score
-		JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.PLAIN_MESSAGE );
+		if ( model.isHighScore() == true )
+		{
+			JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.INFORMATION_MESSAGE, highScore );
+		}
 		
-//		if ( model.getHighScore() == true )
-//		{
-//			JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.INFORMATION_MESSAGE, highScore );
-//		}
-//		else
-//			JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.PLAIN_MESSAGE );
+		else
+			JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.PLAIN_MESSAGE );
 	}
 
 	@Override
