@@ -57,7 +57,7 @@ public class Controller implements KeyListener, ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		//directional buttons actions implemented
 				//PLAY button
-				if(e.getActionCommand().equals("startGame")){
+				if(e.getActionCommand().equals("playGame")){
 					model.start();
 				}
 				//RESET button
