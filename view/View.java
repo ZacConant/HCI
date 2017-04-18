@@ -220,7 +220,7 @@ public class View implements ScoreListener
 		JButton trigger = new JButton( fire );
 		trigger.setBorderPainted( false );
 		trigger.addActionListener( controller );
-		//trigger.setActionCommand( );
+		trigger.setActionCommand( "fire" );
 		trigger.setRequestFocusEnabled( false );
 		panelControls.add( trigger );
 		
