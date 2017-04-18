@@ -107,6 +107,7 @@ public class View implements ScoreListener
 		// mBar.add( mFile );
 		
 		JMenuItem mItemQuit = new JMenuItem( "Quit" );
+		mItemQuit.setActionCommand( "Quit" );
 		mItemQuit.addActionListener( controller );
 		
 		mFile.add( mItemQuit );
@@ -145,7 +146,7 @@ public class View implements ScoreListener
 		playButton.setBorderPainted( false );
 		playButton.setRequestFocusEnabled( false );
 		playButton.addActionListener( controller );
-		playButton.setActionCommand( "startGame" );
+		playButton.setActionCommand( "playGame" );
 		panelLeft.add( playButton );
 		
 		JButton pauseButton = new JButton( pause );
@@ -220,7 +221,7 @@ public class View implements ScoreListener
 		JButton trigger = new JButton( fire );
 		trigger.setBorderPainted( false );
 		trigger.addActionListener( controller );
-		//trigger.setActionCommand( );
+		trigger.setActionCommand( "fire" );
 		trigger.setRequestFocusEnabled( false );
 		panelControls.add( trigger );
 		
