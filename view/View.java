@@ -145,7 +145,7 @@ public class View implements ScoreListener
 		playButton.setBorderPainted( false );
 		playButton.setRequestFocusEnabled( false );
 		playButton.addActionListener( controller );
-		playButton.setActionCommand( "startGame" );
+		playButton.setActionCommand( "playGame" );
 		panelLeft.add( playButton );
 		
 		JButton pauseButton = new JButton( pause );
