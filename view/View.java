@@ -107,6 +107,7 @@ public class View implements ScoreListener
 		// mBar.add( mFile );
 		
 		JMenuItem mItemQuit = new JMenuItem( "Quit" );
+		mItemQuit.setActionCommand( "Quit" );
 		mItemQuit.addActionListener( controller );
 		
 		mFile.add( mItemQuit );
