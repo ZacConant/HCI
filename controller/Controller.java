@@ -56,13 +56,17 @@ public class Controller implements KeyListener, ActionListener{
 	
 	public void actionPerformed(ActionEvent e) {
 		//directional buttons actions implemented
-				//START button
-				if(e.getActionCommand().equals("startGame")){
+				//PLAY button
+				if(e.getActionCommand().equals("playGame")){
 					model.start();
 				}
-				//QUIT in Jmenubar
-				if(e.getActionCommand().equals("stopGame")){
-					model.stop();
+				//RESET button
+				if(e.getActionCommand().equals("resetGame")){
+					model.reset();
+				}
+				//PAUSE button
+				if(e.getActionCommand().equals("pauseGame")){
+					//model.pause();
 				}
 				//UP
 				if(e.getActionCommand().equals("faceUp")){
@@ -79,6 +83,10 @@ public class Controller implements KeyListener, ActionListener{
 				//RIGHT
 				if(e.getActionCommand().equals("faceRight")){
 					model.setTurretOrientation(0);
+				}
+				//FIRE
+				if(e.getActionCommand().equals("fire")){
+					model.shoot();
 				}
 	}
 }
