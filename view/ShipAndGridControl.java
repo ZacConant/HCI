@@ -41,7 +41,7 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 	private ImageIcon boltHorizontal = new ImageIcon( "src/blaster_bolt_horizontal.png" );
 	private ImageIcon boltVertical = new ImageIcon( "src/blaster_bolt_vertical.png" );
 	private ImageIcon explosion = new ImageIcon( "src/explosion2.png" );
-	//private Image deathStar = new ImageIcon( "src/deathstar1.jpg");
+	//private ImageIcon deathStar = new ImageIcon( "src/deathstar1.jpg");
 	private Image deathStar = Toolkit.getDefaultToolkit().createImage( "src/deathstar1.jpg" );
 	private JLabel playerShip = new JLabel();
 	private JLabel enemyShip = new JLabel();
@@ -279,5 +279,12 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		}
 		
 	} // END OF UPDATEPOSITIONS()
+	
+	@Override
+	protected void paintComponent( Graphics g )
+	{
+		super.paintComponent( g );
+		g.drawImage( deathStar, 0, 0, null);
+	}
 
 }
