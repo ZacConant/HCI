@@ -17,6 +17,7 @@ import java.awt.GraphicsEnvironment;
 //import java.awt.GridLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.LayoutManager;
 import java.net.URL;
 
 import javax.swing.BoxLayout;
@@ -24,6 +25,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -34,16 +36,18 @@ import javax.swing.JSeparator;
 
 import controller.Controller;
 import model.Model;
+import model.ScoreListener;
 
 /**
  *  Class contains view components that represent model data and that are manipulated by the controller
  */
-public class View 
+public class View implements ScoreListener
 {
 	private Model model; 				// Needs model to get new information about its view components
 	private Controller controller; 		// Needs controller to connect view components with user interaction
 	private JFrame frame; 				// Window that holds app
 	private ShipAndGridControl shipControl;
+	private int score;
 	private ImageIcon up = new ImageIcon( "src/up_arrow.png" );
 	private ImageIcon right = new ImageIcon( "src/right_arrow.png" );
 	private ImageIcon down = new ImageIcon( "src/down_arrow.png" );
@@ -52,9 +56,13 @@ public class View
 	//private ImageIcon reset = new ImageIcon( "src/reset.png" );
 	private ImageIcon fire = new ImageIcon( "src/target.png" );
 	private ImageIcon highScore = new ImageIcon( "src/high_score.png" );
-	private ImageIcon reset = new ImageIcon( "src/reset_button.png" );
-	private ImageIcon play = new ImageIcon( "src/play_button.png" );
-	private ImageIcon pause = new ImageIcon( "src/pause_button.png" );
+
+	private ImageIcon reset = new ImageIcon( "src/reset_button_1.png" );
+	private ImageIcon play = new ImageIcon( "src/play_button_1.png" );
+	private ImageIcon pause = new ImageIcon( "src/pause_button_1.png" );
+
+
+	private JLabel userScore;
 	
 //	private final int gridRows = 15;
 //	private final int gridCols = 15;
@@ -68,6 +76,8 @@ public class View
 		this.controller = controller;
 		this.frame = frame;
 		this.shipControl = shipControl;
+		this.score = score;
+		
 		
 		frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 		
@@ -135,7 +145,7 @@ public class View
 		playButton.setBorderPainted( false );
 		playButton.setRequestFocusEnabled( false );
 		playButton.addActionListener( controller );
-		playButton.setActionCommand( "playGame" );
+		playButton.setActionCommand( "startGame" );
 		panelLeft.add( playButton );
 		
 		JButton pauseButton = new JButton( pause );
@@ -174,12 +184,12 @@ public class View
 		panelBottom.setLayout( gridBottom );
 		
 		
-		JButton userControls = new JButton( "" );
-		panelBottom.add( userControls );
+//		JButton userControls = new JButton( "" );
+//		panelBottom.add( userControls );
 		
 		// TODO: This will replace the above button
-//		JLabel userScore = new JLabel( model.getScore() );
-//		panelBottom.add( userScore );
+		userScore = new JLabel();
+		panelBottom.add( userScore );
 		
 		JButton userControls1 = new JButton( "" );
 		panelBottom.add( userControls1 );
@@ -272,6 +282,9 @@ public class View
 		//gameOver();
 		//JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.INFORMATION_MESSAGE, highScore );
 		
+		// Listeners
+		model.addScoreListener( this );
+		
 	}
 	
 	public void imageResizing()
@@ -340,5 +353,12 @@ public class View
 //		}
 //		else
 //			JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.PLAIN_MESSAGE );
+	}
+
+	@Override
+	public void updateScore() 
+	{
+		this.score = model.getScore();
+		userScore.setText("" + this.score);
 	}
 }
