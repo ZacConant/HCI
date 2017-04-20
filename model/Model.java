@@ -308,6 +308,9 @@ public class Model {
 	
 	// Start timer to run at specified time delay
 	public void start() {
+		if (isGameOver()) {
+			reset();
+		}
 		this.timer = new Timer();
 		this.timer.scheduleAtFixedRate(new TimerTask() { public void run() { move(); } }, 0, (long)this.timeDelay);
 		this.isStarted = true;
