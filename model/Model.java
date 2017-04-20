@@ -61,7 +61,11 @@ public class Model {
 	}
 	
 	public void reset() {
+		print();
 		this.stop();
+		this.notifyPositionListeners();
+		this.notifyOrientationListeners();
+		this.notifyScoreListeners();
 		this.turretOrientation = 90;
 		this.isShooting = false;
 		this.isStarted = false;
@@ -70,6 +74,7 @@ public class Model {
 		this.score = 0;
 		this.highScore = readHighScore();
 		this.initializeDirections();
+		print();
 		this.notifyPositionListeners();
 		this.notifyOrientationListeners();
 		this.notifyScoreListeners();
@@ -308,12 +313,14 @@ public class Model {
 	
 	// Start timer to run at specified time delay
 	public void start() {
-		if (isGameOver()) {
-			reset();
+		if (!isStarted) {
+			if (isGameOver()) {
+				reset();
+			}
+			this.timer = new Timer();
+			this.timer.scheduleAtFixedRate(new TimerTask() { public void run() { move(); } }, 0, (long)this.timeDelay);
+			this.isStarted = true;
 		}
-		this.timer = new Timer();
-		this.timer.scheduleAtFixedRate(new TimerTask() { public void run() { move(); } }, 0, (long)this.timeDelay);
-		this.isStarted = true;
 	}
 	
 	// Stop timer
