@@ -30,6 +30,7 @@ public class Model {
 	private boolean isShooting; // holds state of if turret is shooting
 	private boolean isStarted; // check if game has started
 	private boolean isGameOver;
+	private boolean isPaused;
 	private int timerCount;
 	private int score;
 	private int highScore;
@@ -50,6 +51,7 @@ public class Model {
 		this.isShooting = false;
 		this.isStarted = false;
 		this.isGameOver = false;
+		this.isPaused = false;
 		this.timerCount = 0;
 		this.score = 0;
 		this.highScoreFile = new File("src/highscore.txt");
@@ -276,7 +278,9 @@ public class Model {
 	
 	// Shoot a missile
 	public void shoot() {
-		this.isShooting = true;
+		if (isStarted) {
+			this.isShooting = true;
+		}
 	}
 	
 	// Print components at each direction
@@ -304,11 +308,9 @@ public class Model {
 	
 	// Start timer to run at specified time delay
 	public void start() {
-		if (!this.isStarted) {
-			this.timer = new Timer();
-			this.timer.scheduleAtFixedRate(new TimerTask() { public void run() { move(); } }, 0, (long)this.timeDelay);
-			this.isStarted = true;
-		}
+		this.timer = new Timer();
+		this.timer.scheduleAtFixedRate(new TimerTask() { public void run() { move(); } }, 0, (long)this.timeDelay);
+		this.isStarted = true;
 	}
 	
 	// Stop timer
@@ -321,26 +323,28 @@ public class Model {
 	
 	// Move view components
 	public void move() {
-		if (timerCount % 7 == 0) {
-			int randomDirectionIndex = selectEnemyDirection();
-			shiftDirectionComponents();
-			addEnemy(randomDirectionIndex);
+		if (!isPaused()) {
+			if (timerCount % 7 == 0) {
+				int randomDirectionIndex = selectEnemyDirection();
+				shiftDirectionComponents();
+				addEnemy(randomDirectionIndex);
+			}
+			else {
+				shiftMissiles();
+			}
+			
+			addMissile(getDirectionIndex(turretOrientation));
+			
+			updateDirections();
+			
+			notifyPositionListeners();
+			
+			if (isGameOver) {
+				gameOver();
+			}
+			
+			timerCount += 1;
 		}
-		else {
-			shiftMissiles();
-		}
-		
-		addMissile(getDirectionIndex(turretOrientation));
-		
-		updateDirections();
-		
-		notifyPositionListeners();
-		
-		if (isGameOver) {
-			gameOver();
-		}
-		
-		timerCount += 1;
 	}
 	
 	// Register a view component with an orientation listener
@@ -405,6 +409,14 @@ public class Model {
 			writeHighScore(this.highScore);
 		}
 		notifyScoreListeners();
+	}
+	
+	public void pause() {
+		stop();
+	}
+	
+	public boolean isPaused() {
+		return !this.isStarted;
 	}
 	
 	public boolean isGameOver() {
