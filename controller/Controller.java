@@ -88,5 +88,13 @@ public class Controller implements KeyListener, ActionListener{
 				if(e.getActionCommand().equals("fire")){
 					model.shoot();
 				}
+				//QUIT
+				if(e.getActionCommand().equals("Quit")){
+					System.exit(0);
+				}
+				//Combo Box difficulty changing 
+				//setDifficulty("EASY");
+				//setDifficulty("MEDIUM");
+				//setDifficulty("HARD");
 	}
 }
