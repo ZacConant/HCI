@@ -20,9 +20,11 @@ import java.awt.Image;
 import java.awt.LayoutManager;
 import java.net.URL;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -33,6 +35,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu.Separator;
 import javax.swing.JSeparator;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 
 import controller.Controller;
 import model.Model;
@@ -90,6 +96,7 @@ public class View implements ScoreListener
 		BorderLayout border = new BorderLayout();
 		frame.setLayout( border );
 		
+		
 		imageResizing();
 		
 		
@@ -109,6 +116,7 @@ public class View implements ScoreListener
 		JMenuItem mItemQuit = new JMenuItem( "Quit" );
 		mItemQuit.setActionCommand( "Quit" );
 		mItemQuit.addActionListener( controller );
+		
 		
 		mFile.add( mItemQuit );
 		mBar.add( mFile );
@@ -136,7 +144,6 @@ public class View implements ScoreListener
 		// **** LEFT **** //
 		
 		JPanel panelLeft = new JPanel();
-		//panelLeft.setBounds( 0, 0, 200, 450);
 		panelLeft.setPreferredSize( new Dimension(200, 450));
 		GridLayout gridLeft = new GridLayout( 5, 1 );
 		panelLeft.setLayout( gridLeft );
@@ -163,12 +170,20 @@ public class View implements ScoreListener
 		resetButton.setActionCommand( "resetGame" );
 		panelLeft.add( resetButton );
 		
-		panelLeft.add( new JButton ( "Button 4" ) );
+		//panelLeft.add( new JButton ( "Button 4" ) );
 		//panelLeft.add( new JButton ( "Button 5" ) );
 		JLabel scoreLabel = new JLabel( " Score " );
 		scoreLabel.setFont( getFont() );
-		scoreLabel.setForeground( new Color( 229, 177, 58 ));
+		scoreLabel.setForeground( new Color( 229, 177, 58 ) );
 		panelLeft.add( scoreLabel );
+		
+		userScore = new JLabel();
+		Border scoreBorder = BorderFactory.createLoweredBevelBorder();
+		userScore.setBorder( scoreBorder );
+		Font scoreFont = userScore.getFont();
+		userScore.setFont( scoreFont.deriveFont( Font.CENTER_BASELINE , 30) );
+		panelLeft.add( userScore );
+		
 		
 		frame.add( panelLeft );
 		border.addLayoutComponent( panelLeft , BorderLayout.WEST );
@@ -189,12 +204,32 @@ public class View implements ScoreListener
 //		panelBottom.add( userControls );
 		
 		// TODO: This will replace the above button
-		userScore = new JLabel();
-		panelBottom.add( userScore );
+//		userScore = new JLabel();
+//		panelBottom.add( userScore );
 		
-		JButton userControls1 = new JButton( "" );
+		
+		GridLayout diffGrid = new GridLayout(2, 1);
+		JPanel diffPanel = new JPanel( diffGrid );
+		
+		JLabel diffLabel = new JLabel( " Difficulty" );
+		Font diffFont = getFont().deriveFont( Font.PLAIN, 28 );
+		diffLabel.setFont( diffFont );
+		diffLabel.setForeground( new Color( 75, 213, 238 ) );
+		diffPanel.add( diffLabel );
+		
+		String[] difficulties = new String[] { "Normal","Hard" };
+		JComboBox<String> diffSetting = new JComboBox<String>( difficulties );
+		//diffSetting.setEditable(aFlag);
+		
+		diffSetting.addActionListener( controller );
+		diffPanel.add( diffSetting );
+		
+		panelBottom.add( diffPanel );
+		
+		JLabel userControls1 = new JLabel( "" );
 		panelBottom.add( userControls1 );
 		
+		// Control keys
 		GridLayout gridControls = new GridLayout( 3, 3 );
 		JPanel panelControls = new JPanel( gridControls );
 		
@@ -245,25 +280,11 @@ public class View implements ScoreListener
 		
 		panelControls.add( new JLabel("") );
 
-
-		
-		
-
-		
-
-
-
-		
-
-		
 		panelBottom.add( panelControls );
+		//~ End of panelControls
 		
-//		JButton userControls2 = new JButton( "Controls2" );
-//		panelBottom.add( userControls2 );
-		
-		
-		JLabel userControls3 = new JLabel( "" );
-		panelBottom.add( userControls3 );
+		JLabel temp = new JLabel("");
+		panelBottom.add( temp );
 		
 		frame.add( panelBottom );
 		border.addLayoutComponent( panelBottom, BorderLayout.SOUTH );
@@ -280,8 +301,9 @@ public class View implements ScoreListener
 		frame.addKeyListener( controller );
 		frame.setFocusable( true );
 		
-		//gameOver();
-		//JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.INFORMATION_MESSAGE, highScore );
+		
+		if ( model.isGameOver() == true )
+			gameOver();
 		
 		// Listeners
 		model.addScoreListener( this );
@@ -345,21 +367,19 @@ public class View implements ScoreListener
 	
 	public void gameOver()
 	{
-		// TODO: Needs to be removed once I can get the high score
-		JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.PLAIN_MESSAGE );
+		if ( model.isHighScore() == true )
+		{
+			JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.INFORMATION_MESSAGE, highScore );
+		}
 		
-//		if ( model.getHighScore() == true )
-//		{
-//			JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.INFORMATION_MESSAGE, highScore );
-//		}
-//		else
-//			JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.PLAIN_MESSAGE );
+		else
+			JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.PLAIN_MESSAGE );
 	}
 
 	@Override
 	public void updateScore() 
 	{
 		this.score = model.getScore();
-		userScore.setText("" + this.score);
+		userScore.setText("      " + this.score);
 	}
 }

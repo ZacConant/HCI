@@ -107,6 +107,7 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		border.addLayoutComponent( this , BorderLayout.CENTER );
 		
 		
+		
 		// TEST //
 		imageSizing();
 		this.playerShip.setIcon( xwing );
