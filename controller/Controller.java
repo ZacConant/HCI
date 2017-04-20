@@ -66,7 +66,7 @@ public class Controller implements KeyListener, ActionListener{
 				}
 				//PAUSE button
 				if(e.getActionCommand().equals("pauseGame")){
-					//model.pause();
+					model.pause();
 				}
 				//UP
 				if(e.getActionCommand().equals("faceUp")){
