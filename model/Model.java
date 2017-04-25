@@ -245,17 +245,18 @@ public class Model {
 				this.directions[i][j] = "";
 				
 				// Check for enemy and missile one position away from each other
-				if (j > 0) {
-					if (this.missiles[i][j].equals("M") && this.enemies[i][j-1].equals("E")) {
+				if (j < GRID_DIMENSION/2 - 1) {
+					if (this.missiles[i][j].equals("M") && this.enemies[i][j+1].equals("E")) {
+						this.directions[i][j] = "D";
 						this.missiles[i][j] = "";
-						this.enemies[i][j-1] = "";
-						this.directions[i][j-1] = "D";
+						this.enemies[i][j+1] = "";
+						System.out.println(j);
 						updateScore();
 					}
 					else if (this.missiles[i][j].equals("M") && this.enemies[i][j].equals("E")) {
+						this.directions[i][j] = "D";
 						this.missiles[i][j] = "";
 						this.enemies[i][j] = "";
-						this.directions[i][j] = "D";
 						updateScore();
 					}
 					else {
@@ -266,16 +267,16 @@ public class Model {
 				// Enemy and missile can only be in same position
 				else {
 					if (this.missiles[i][j].equals("M") && this.enemies[i][j].equals("E")) {
+						this.directions[i][j] = "D";
 						this.missiles[i][j] = "";
 						this.enemies[i][j] = "";
-						this.directions[i][j] = "D";
 						updateScore();
 					}
 					else {
 						this.directions[i][j] += this.missiles[i][j];
 						this.directions[i][j] += this.enemies[i][j];
 					}
-				}
+			    }
 				
 			}
 		}
@@ -334,7 +335,7 @@ public class Model {
 	// Move view components
 	public void move() {
 		if (!isPaused()) {
-			if (timerCount % 7 == 0) {
+			if (timerCount % 8 == 0) {
 				int randomDirectionIndex = selectEnemyDirection();
 				shiftDirectionComponents();
 				addEnemy(randomDirectionIndex);
@@ -352,6 +353,8 @@ public class Model {
 			if (isGameOver) {
 				gameOver();
 			}
+			
+			print();
 			
 			timerCount += 1;
 		}
