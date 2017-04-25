@@ -18,6 +18,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.LayoutManager;
+import java.awt.Toolkit;
 import java.net.URL;
 
 import javax.swing.BorderFactory;
@@ -65,8 +66,9 @@ public class View implements ScoreListener
 
 	private ImageIcon reset = new ImageIcon( "src/reset_button_1.png" );
 	private ImageIcon play = new ImageIcon( "src/play_button_1.png" );
-	private ImageIcon pause = new ImageIcon( "src/pause_button_1.png" );
-
+	private ImageIcon pause = new ImageIcon( "src/pause_button_1.png" );	
+	private ImageIcon deathStar = new ImageIcon( "src/deathstar1.jpg");
+	//private Image deathStar = Toolkit.getDefaultToolkit().createImage( "src/deathstar1.jpg" );
 
 	private JLabel userScore;
 	
@@ -92,6 +94,22 @@ public class View implements ScoreListener
 	
 	private void gameView( Controller controller, Model model, JFrame frame ) throws Exception
 	{
+		////////////////  TEST //////////////
+		JPanel imagePanel = new JPanel();
+		BorderLayout imageBorder = new BorderLayout();
+		JLabel background = new JLabel();
+		background.setIcon( deathStar );
+		imageBorder.addLayoutComponent( background, BorderLayout.CENTER );
+		background.setIcon( deathStar );
+		frame.add( imagePanel );
+		
+		
+		
+		////////////////~ END OF TEST //////////////
+		
+		
+		
+		
 		// The main layout used in the design of the game
 		BorderLayout border = new BorderLayout();
 		frame.setLayout( border );
@@ -144,7 +162,7 @@ public class View implements ScoreListener
 		// **** LEFT **** //
 		
 		JPanel panelLeft = new JPanel();
-		panelLeft.setPreferredSize( new Dimension(200, 450));
+		panelLeft.setPreferredSize( new Dimension( 200, 450 ) );
 		GridLayout gridLeft = new GridLayout( 5, 1 );
 		panelLeft.setLayout( gridLeft );
 		
@@ -303,8 +321,9 @@ public class View implements ScoreListener
 		
 		
 		if ( model.isGameOver() == true )
-			gameOver();
-		
+			System.out.println( model.isGameOver() + "");
+			//gameOver();
+		System.out.println( model.isGameOver() + "");
 		// Listeners
 		model.addScoreListener( this );
 		

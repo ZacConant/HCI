@@ -66,8 +66,9 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 	public void gridDesign(JFrame frame, BorderLayout border, Model model )
 	{
 		
-		this.setPreferredSize( new Dimension( 450, 450));
-		this.setBackground( Color.LIGHT_GRAY );
+		this.setPreferredSize( new Dimension( 450, 450 ) );
+		this.setBackground( Color.DARK_GRAY );
+		
 //		this.paint(g.drawImage( deathStar, 0, 0, null));
 //		this.
 		//this.paint
@@ -124,11 +125,11 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 	public void imageSizing()
 	{
 		Image xWing = xwing.getImage();
-		Image newXWing = xWing.getScaledInstance( 37, 37, java.awt.Image.SCALE_SMOOTH);
+		Image newXWing = xWing.getScaledInstance( 37, 37, java.awt.Image.SCALE_SMOOTH );
 		this.xwing = new ImageIcon( newXWing );
 		
 		Image tie2 = tie.getImage();
-		Image newTie = tie2.getScaledInstance( 37, 37, java.awt.Image.SCALE_SMOOTH);
+		Image newTie = tie2.getScaledInstance( 37, 37, java.awt.Image.SCALE_SMOOTH );
 		this.tie = new ImageIcon( newTie );
 		
 		Image bolt1 = boltHorizontal.getImage();
