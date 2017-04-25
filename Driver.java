@@ -18,9 +18,9 @@ public class Driver
 		frame.setResizable( false );
 		frame.setSize(800, 600);
 		frame.setTitle("Galatic Turret");
-		
+
 		// Initialize model ( time is in ms )
-		Model model = new Model(50);
+		Model model = new Model(60);
 		
 		// Initialize controller
 		Controller controller = new Controller(model);

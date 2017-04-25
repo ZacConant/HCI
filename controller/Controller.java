@@ -23,6 +23,21 @@ public class Controller implements KeyListener, ActionListener{
 
 	@Override
 	public void keyPressed(KeyEvent arg0) {
+		//game controll hotkeys
+		//PLAY hotkey
+		if(arg0.getKeyCode()==KeyEvent.VK_ENTER){
+			model.start();
+		}
+		//RESET hotkey
+		if(arg0.getKeyCode()==KeyEvent.VK_SHIFT){
+			model.reset();
+		}	
+
+		//PAUSE hotkey
+		if(arg0.getKeyCode()==KeyEvent.VK_CONTROL){
+			model.pause();
+		}	
+
 		//arrow key actions implemented
 		//UP
 		if(arg0.getKeyCode()==KeyEvent.VK_UP){
@@ -66,7 +81,7 @@ public class Controller implements KeyListener, ActionListener{
 				}
 				//PAUSE button
 				if(e.getActionCommand().equals("pauseGame")){
-					//model.pause();
+					model.pause();
 				}
 				//UP
 				if(e.getActionCommand().equals("faceUp")){

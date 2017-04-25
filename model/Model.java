@@ -37,6 +37,8 @@ public class Model {
 	private static final int SCORE_VALUE = 100;
 	private ArrayList<ScoreListener> scoreListeners;
 	private File highScoreFile;
+	private String difficulty;
+	private int vaderTracker;
 	
 	public Model(int timeDelay) {
 		this.turretOrientation = 90;
@@ -55,13 +57,19 @@ public class Model {
 		this.timerCount = 0;
 		this.score = 0;
 		this.highScoreFile = new File("src/highscore.txt");
+		this.difficulty = "HARD";
+		this.vaderTracker = 0;
 		this.highScore = readHighScore();
 		this.initializeDirections();
 		this.loadXWings();
 	}
 	
 	public void reset() {
+		print();
 		this.stop();
+		this.notifyPositionListeners();
+		this.notifyOrientationListeners();
+		this.notifyScoreListeners();
 		this.turretOrientation = 90;
 		this.isShooting = false;
 		this.isStarted = false;
@@ -69,7 +77,9 @@ public class Model {
 		this.timerCount = 0;
 		this.score = 0;
 		this.highScore = readHighScore();
+		this.vaderTracker = 0;
 		this.initializeDirections();
+		print();
 		this.notifyPositionListeners();
 		this.notifyOrientationListeners();
 		this.notifyScoreListeners();
@@ -185,7 +195,7 @@ public class Model {
 	// Shift the images in all arrays
 	private void shiftDirectionComponents() {
 		for (int i = 0; i < NUMBER_DIRECTIONS; ++i) {
-			if ((this.enemies[i][GRID_DIMENSION/2 - 1]).equals("E")) {
+			if ((this.enemies[i][GRID_DIMENSION/2 - 1]).startsWith("E")) {
 				this.isGameOver = true;
 			}
 			for (int j = (GRID_DIMENSION/2 - 2); j >= 0; --j) {
@@ -215,8 +225,22 @@ public class Model {
 			this.enemies[i][0] = "";
 		}
 		
-		if (directionIndex >= 0) {
-			this.enemies[directionIndex][0] += "E";
+		if (this.difficulty == "HARD") {
+			if (directionIndex >= 0) {
+				if (this.vaderTracker == 5) {
+					this.enemies[directionIndex][0] += "EV1";
+					this.vaderTracker = 0;
+				}
+				else {
+					this.enemies[directionIndex][0] += "E";
+					++this.vaderTracker;
+				}
+			}
+		}
+		else {
+			if (directionIndex >= 0) {
+				this.enemies[directionIndex][0] += "E";
+			}
 		}
 	}
 	
@@ -240,18 +264,37 @@ public class Model {
 				this.directions[i][j] = "";
 				
 				// Check for enemy and missile one position away from each other
-				if (j > 0) {
-					if (this.missiles[i][j].equals("M") && this.enemies[i][j-1].equals("E")) {
-						this.missiles[i][j] = "";
-						this.enemies[i][j-1] = "";
-						this.directions[i][j-1] = "D";
-						updateScore();
+				if (j < GRID_DIMENSION/2 - 1) {
+					if (this.missiles[i][j].equals("M") && this.enemies[i][j+1].startsWith("E")) {
+						if (this.enemies[i][j+1].equals("EV1")) {
+							this.missiles[i][j] = "";
+							this.enemies[i][j+1] = "EV2";
+							this.directions[i][j+1] = "EV2";
+						}
+						else {
+							this.missiles[i][j] = "";
+							this.enemies[i][j+1] = "";
+							this.directions[i][j+1] = "D";
+							updateScore();
+						}
 					}
-					else if (this.missiles[i][j].equals("M") && this.enemies[i][j].equals("E")) {
+					else if (this.missiles[i][j].equals("M") && this.enemies[i][j].startsWith("E")) {
+						if (this.enemies[i][j].equals("EV1")) {
+							this.missiles[i][j] = "";
+							this.enemies[i][j] = "EV2";
+							this.directions[i][j] = "EV2";
+						}
+						else {
+							this.missiles[i][j] = "";
+							this.enemies[i][j] = "";
+							this.directions[i][j] = "D";
+							System.out.println("Yep");
+							updateScore();
+						}
+						/*.directions[i][j] = "D";
 						this.missiles[i][j] = "";
 						this.enemies[i][j] = "";
-						this.directions[i][j] = "D";
-						updateScore();
+						updateScore();*/
 					}
 					else {
 						this.directions[i][j] += this.missiles[i][j];
@@ -260,17 +303,28 @@ public class Model {
 				}
 				// Enemy and missile can only be in same position
 				else {
-					if (this.missiles[i][j].equals("M") && this.enemies[i][j].equals("E")) {
+					if (this.missiles[i][j].equals("M") && this.enemies[i][j].startsWith("E")) {
+						if (this.enemies[i][j].equals("EV1")) {
+							this.missiles[i][j] = "";
+							this.enemies[i][j] = "EV2";
+							this.directions[i][j] = "EV2";
+						}
+						else {
+							this.missiles[i][j] = "";
+							this.enemies[i][j] = "";
+							this.directions[i][j] = "D";
+							updateScore();
+						}
+						/*this.directions[i][j] = "D";
 						this.missiles[i][j] = "";
 						this.enemies[i][j] = "";
-						this.directions[i][j] = "D";
-						updateScore();
+						updateScore();*/
 					}
 					else {
 						this.directions[i][j] += this.missiles[i][j];
 						this.directions[i][j] += this.enemies[i][j];
 					}
-				}
+			    }
 				
 			}
 		}
@@ -308,12 +362,14 @@ public class Model {
 	
 	// Start timer to run at specified time delay
 	public void start() {
-		if (isGameOver()) {
-			reset();
+		if (!isStarted) {
+			if (isGameOver()) {
+				reset();
+			}
+			this.timer = new Timer();
+			this.timer.scheduleAtFixedRate(new TimerTask() { public void run() { move(); } }, 0, (long)this.timeDelay);
+			this.isStarted = true;
 		}
-		this.timer = new Timer();
-		this.timer.scheduleAtFixedRate(new TimerTask() { public void run() { move(); } }, 0, (long)this.timeDelay);
-		this.isStarted = true;
 	}
 	
 	// Stop timer
@@ -327,7 +383,7 @@ public class Model {
 	// Move view components
 	public void move() {
 		if (!isPaused()) {
-			if (timerCount % 7 == 0) {
+			if (timerCount % 8 == 0) {
 				int randomDirectionIndex = selectEnemyDirection();
 				shiftDirectionComponents();
 				addEnemy(randomDirectionIndex);
@@ -345,6 +401,8 @@ public class Model {
 			if (isGameOver) {
 				gameOver();
 			}
+			
+			print();
 			
 			timerCount += 1;
 		}
@@ -424,5 +482,13 @@ public class Model {
 	
 	public boolean isGameOver() {
 		return this.isGameOver;
+	}
+	
+	public String getDifficulty() {
+		return this.difficulty;
+	}
+	
+	public void setDifficulty(String difficulty) {
+		this.difficulty = difficulty;
 	}
 }
