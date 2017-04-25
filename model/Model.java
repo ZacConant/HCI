@@ -28,9 +28,9 @@ public class Model {
 	private Timer timer; // Timer for application
 	private ImageIcon[] xWings; // 4 angles for x wing image
 	private boolean isShooting; // holds state of if turret is shooting
-	private boolean isStarted; // check if game has started
+	private boolean isPlaying; // check if game has started
+	private boolean isRunning;
 	private boolean isGameOver;
-	private boolean isPaused;
 	private int timerCount;
 	private int score;
 	private int highScore;
@@ -51,9 +51,9 @@ public class Model {
 		this.timeDelay = timeDelay;
 		this.xWings = new ImageIcon[NUMBER_DIRECTIONS];
 		this.isShooting = false;
-		this.isStarted = false;
+		this.isPlaying = false;
 		this.isGameOver = false;
-		this.isPaused = false;
+		this.isRunning = false;
 		this.timerCount = 0;
 		this.score = 0;
 		this.highScoreFile = new File("src/highscore.txt");
@@ -72,8 +72,9 @@ public class Model {
 		this.notifyScoreListeners();
 		this.turretOrientation = 90;
 		this.isShooting = false;
-		this.isStarted = false;
+		this.isPlaying = false;
 		this.isGameOver = false;
+		this.isRunning = false;
 		this.timerCount = 0;
 		this.score = 0;
 		this.highScore = readHighScore();
@@ -288,7 +289,6 @@ public class Model {
 							this.missiles[i][j] = "";
 							this.enemies[i][j] = "";
 							this.directions[i][j] = "D";
-							System.out.println("Yep");
 							updateScore();
 						}
 						/*.directions[i][j] = "D";
@@ -332,7 +332,7 @@ public class Model {
 	
 	// Shoot a missile
 	public void shoot() {
-		if (isStarted) {
+		if (isPlaying) {
 			this.isShooting = true;
 		}
 	}
@@ -362,21 +362,23 @@ public class Model {
 	
 	// Start timer to run at specified time delay
 	public void start() {
-		if (!isStarted) {
+		this.isRunning = true;
+		
+		if (!isPlaying) {
 			if (isGameOver()) {
 				reset();
 			}
 			this.timer = new Timer();
 			this.timer.scheduleAtFixedRate(new TimerTask() { public void run() { move(); } }, 0, (long)this.timeDelay);
-			this.isStarted = true;
+			this.isPlaying = true;
 		}
 	}
 	
 	// Stop timer
 	public void stop() {
-		if (this.isStarted) {
+		if (this.isPlaying) {
 			this.timer.cancel();
-			this.isStarted = false;
+			this.isPlaying = false;
 		}
 	}
 	
@@ -461,6 +463,8 @@ public class Model {
 	}
 	
 	private void gameOver() {
+		this.isRunning = false;
+		
 		notifyOrientationListeners();
 		stop();
 		
@@ -477,7 +481,7 @@ public class Model {
 	}
 	
 	public boolean isPaused() {
-		return !this.isStarted;
+		return !this.isPlaying;
 	}
 	
 	public boolean isGameOver() {
@@ -491,4 +495,8 @@ public class Model {
 	public void setDifficulty(String difficulty) {
 		this.difficulty = difficulty;
 	}
-}
+	
+	public boolean isRunning() {
+		return this.isRunning;
+	}
+ }
