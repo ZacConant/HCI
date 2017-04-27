@@ -67,16 +67,8 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 	{
 		
 		this.setPreferredSize( new Dimension( 450, 450 ) );
-		this.setBackground( Color.DARK_GRAY );
+		this.setOpaque( false );
 		
-//		this.paint(g.drawImage( deathStar, 0, 0, null));
-//		this.
-		//this.paint
-//		this.add( new JLabel( new ImageIcon(deathStar)));
-//		this.add
-		
-		
-		//this.add( g.drawImage( deathStar, 0, 0, null) );
 		
 		GridLayout gridCenter = new GridLayout( gridRows, gridCols );
 		this.setLayout( gridCenter );
@@ -211,6 +203,16 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 				( ( JLabel ) ( this.panelArray[ gameRow ][ indexJ1 ].getComponent( 0 ) ) ).setIcon( resizeImage( 37, 37, new ImageIcon( "src/explosion2.png" ) ) );
 			}
 			
+			else if ( zero[ index ].equals( "EV1" ) )
+			{
+				( ( JLabel ) ( this.panelArray[ gameRow ][ indexJ1 ].getComponent( 0 ) ) ).setIcon( resizeImage( 37, 37, new ImageIcon( "src/Darth_Vader.png" ) ) );
+			}
+			
+			else if ( zero[ index ].equals( "EV2" ) )
+			{
+				( ( JLabel ) ( this.panelArray[ gameRow ][ indexJ1 ].getComponent( 0 ) ) ).setIcon( resizeImage( 37, 37, new ImageIcon( "src/Darth_Vader_Damaged.png" ) ) );
+			}
+			
 			
 			// Ninety Degrees
 			if ( ninety[ index ].equals( "" ) )
@@ -231,6 +233,16 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 			else if ( ninety[ index ].equals( "D" ) )
 			{
 				( ( JLabel ) ( this.panelArray[ index ][ gameCol ].getComponent( 0 ) ) ).setIcon( resizeImage( 37, 37, new ImageIcon( "src/explosion2.png" ) ) );
+			}
+			
+			else if ( ninety[ index ].equals( "EV1" ) )
+			{
+				( ( JLabel ) ( this.panelArray[ index ][ gameCol ].getComponent( 0 ) ) ).setIcon( resizeImage( 37, 37, new ImageIcon( "src/Darth_Vader.png" ) ) );
+			}
+			
+			else if ( ninety[ index ].equals( "EV2" ) )
+			{
+				( ( JLabel ) ( this.panelArray[ index ][ gameCol ].getComponent( 0 ) ) ).setIcon( resizeImage( 37, 37, new ImageIcon( "src/Darth_Vader_Damaged.png" ) ) );
 			}
 			
 			
@@ -255,6 +267,16 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 				( ( JLabel ) ( this.panelArray[ gameRow ][ index ].getComponent( 0 ) ) ).setIcon( resizeImage( 37, 37, new ImageIcon( "src/explosion2.png" ) ) );
 			}
 			
+			else if ( oneEighty[ index ].equals( "EV1" ) )
+			{
+				( ( JLabel ) ( this.panelArray[ gameRow ][ index ].getComponent( 0 ) ) ).setIcon( resizeImage( 37, 37, new ImageIcon( "src/Darth_Vader.png" ) ) );
+			}
+			
+			else if ( oneEighty[ index ].equals( "EV2" ) )
+			{
+				( ( JLabel ) ( this.panelArray[ gameRow ][ index ].getComponent( 0 ) ) ).setIcon( resizeImage( 37, 37, new ImageIcon( "src/Darth_Vader_Damaged.png" ) ) );
+			}
+			
 			
 			// Two Seventy Degrees
 			if ( twoSeventy[ index ].equals( "" ) )
@@ -275,6 +297,16 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 			else if ( twoSeventy[ index ].equals( "D" ) )
 			{
 				( ( JLabel ) ( this.panelArray[ indexJ1 ][ gameCol ].getComponent( 0 ) ) ).setIcon( resizeImage( 37, 37, new ImageIcon( "src/explosion2.png" ) ) );
+			}
+			
+			else if ( twoSeventy[ index ].equals( "EV1" ) )
+			{
+				( ( JLabel ) ( this.panelArray[ indexJ1 ][ gameCol ].getComponent( 0 ) ) ).setIcon( resizeImage( 37, 37, new ImageIcon( "src/Darth_Vader.png" ) ) );
+			}
+			
+			else if ( twoSeventy[ index ].equals( "EV2" ) )
+			{
+				( ( JLabel ) ( this.panelArray[ indexJ1 ][ gameCol ].getComponent( 0 ) ) ).setIcon( resizeImage( 37, 37, new ImageIcon( "src/Darth_Vader_Damaged.png" ) ) );
 			}
 			
 			--indexJ1;

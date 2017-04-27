@@ -60,17 +60,17 @@ public class View implements ScoreListener
 	private ImageIcon down = new ImageIcon( "src/down_arrow.png" );
 	private ImageIcon left = new ImageIcon( "src/left_arrow.png" );
 	private ImageIcon start = new ImageIcon( "src/start.png" );
-	//private ImageIcon reset = new ImageIcon( "src/reset.png" );
 	private ImageIcon fire = new ImageIcon( "src/target.png" );
 	private ImageIcon highScore = new ImageIcon( "src/high_score.png" );
 
 	private ImageIcon reset = new ImageIcon( "src/reset_button_1.png" );
 	private ImageIcon play = new ImageIcon( "src/play_button_1.png" );
 	private ImageIcon pause = new ImageIcon( "src/pause_button_1.png" );	
-	private ImageIcon deathStar = new ImageIcon( "src/deathstar1.jpg");
+	private ImageIcon deathStar = new ImageIcon( "src/deathstar3.jpg");
 	//private Image deathStar = Toolkit.getDefaultToolkit().createImage( "src/deathstar1.jpg" );
 
 	private JLabel userScore;
+	private JLabel currentHighScore;
 	
 //	private final int gridRows = 15;
 //	private final int gridCols = 15;
@@ -94,18 +94,13 @@ public class View implements ScoreListener
 	
 	private void gameView( Controller controller, Model model, JFrame frame ) throws Exception
 	{
-		////////////////  TEST //////////////
-		JPanel imagePanel = new JPanel();
-		BorderLayout imageBorder = new BorderLayout();
-		JLabel background = new JLabel();
-		background.setIcon( deathStar );
-		imageBorder.addLayoutComponent( background, BorderLayout.CENTER );
-		background.setIcon( deathStar );
-		frame.add( imagePanel );
+		imageResizing();
 		
 		
-		
-		////////////////~ END OF TEST //////////////
+		// Background image for the playing field
+		JLabel backGround = new JLabel();
+		backGround.setIcon( deathStar );
+		frame.setContentPane( backGround );
 		
 		
 		
@@ -115,7 +110,7 @@ public class View implements ScoreListener
 		frame.setLayout( border );
 		
 		
-		imageResizing();
+		
 		
 		
 		// **** MENU BAR **** //
@@ -125,34 +120,55 @@ public class View implements ScoreListener
 		frame.setJMenuBar( mBar );
 		
 		/* 'FILE' TAB */
-		JMenu mFile = new JMenu( "File" );
+		JMenu mFile = new JMenu( " Exit " );
 		mFile.setBorder( null );
 		mFile.setBorderPainted( true );
 		mFile.setBackground( Color.LIGHT_GRAY );
-		// mBar.add( mFile );
+		mFile.setActionCommand( "Quit" );
+		//mFile.addMenuListener( controller ); 
 		
-		JMenuItem mItemQuit = new JMenuItem( "Quit" );
-		mItemQuit.setActionCommand( "Quit" );
-		mItemQuit.addActionListener( controller );
-		
-		
-		mFile.add( mItemQuit );
 		mBar.add( mFile );
 		
 		
 		
 		/* 'HELP' TAB */
-		JMenu mHelp = new JMenu( "Help" );
+		JMenu mHelp = new JMenu( " Help " );
 		mHelp.setBorder( null );
 		mHelp.setBorderPainted( true );
 		mHelp.setBackground( Color.LIGHT_GRAY );
+		mHelp.setActionCommand( "Help" );
+		//mHelp.addMenuListener( controller ); 
 		
-		JMenuItem mItemAbout = new JMenuItem( "About" );
-		mItemAbout.addActionListener( controller );
-		
-		mHelp.add( mItemAbout );
 		mBar.add( mHelp );
 
+		JMenu mDifficulty = new JMenu( " Difficulty " );
+		mDifficulty.setBorder( null );
+		mDifficulty.setBorderPainted( true );
+		mDifficulty.setBackground( Color.LIGHT_GRAY );
+		
+		// TODO: Might need to be placed within a listener
+		if ( model.isRunning() )
+		{
+			mDifficulty.setEnabled( false );
+		}
+		else
+		{
+			mDifficulty.setEnabled( true );
+		}
+			
+		
+		JMenuItem normal = new JMenuItem( "Normal" );
+		normal.setActionCommand( "Normal" );
+		normal.addActionListener( controller );
+		mDifficulty.add( normal );
+		
+		JMenuItem hard = new JMenuItem( "Hard" );
+		hard.setActionCommand( "Hard" );
+		hard.addActionListener( controller );
+		mDifficulty.add( hard );
+		
+		mBar.add( mDifficulty );
+		
 		
 		//border.addLayoutComponent( mBar, BorderLayout.NORTH );
 		
@@ -188,8 +204,6 @@ public class View implements ScoreListener
 		resetButton.setActionCommand( "resetGame" );
 		panelLeft.add( resetButton );
 		
-		//panelLeft.add( new JButton ( "Button 4" ) );
-		//panelLeft.add( new JButton ( "Button 5" ) );
 		JLabel scoreLabel = new JLabel( " Score " );
 		scoreLabel.setFont( getFont() );
 		scoreLabel.setForeground( new Color( 229, 177, 58 ) );
@@ -215,32 +229,21 @@ public class View implements ScoreListener
 		JPanel panelBottom = new JPanel();
 		panelBottom.setPreferredSize( new Dimension( 800, 100 ) );
 		GridLayout gridBottom = new GridLayout( 1, 4 );
-		panelBottom.setLayout( gridBottom );
-		
-		
-//		JButton userControls = new JButton( "" );
-//		panelBottom.add( userControls );
-		
-		// TODO: This will replace the above button
-//		userScore = new JLabel();
-//		panelBottom.add( userScore );
-		
+		panelBottom.setLayout( gridBottom ); 
 		
 		GridLayout diffGrid = new GridLayout(2, 1);
 		JPanel diffPanel = new JPanel( diffGrid );
 		
-		JLabel diffLabel = new JLabel( " Difficulty" );
+		JLabel diffLabel = new JLabel( " High Score" );
 		Font diffFont = getFont().deriveFont( Font.PLAIN, 28 );
 		diffLabel.setFont( diffFont );
 		diffLabel.setForeground( new Color( 75, 213, 238 ) );
 		diffPanel.add( diffLabel );
 		
-		String[] difficulties = new String[] { "Normal","Hard" };
-		JComboBox<String> diffSetting = new JComboBox<String>( difficulties );
-		//diffSetting.setEditable(aFlag);
-		
-		diffSetting.addActionListener( controller );
-		diffPanel.add( diffSetting );
+		currentHighScore = new JLabel( "      " + Integer.toString( model.getHighScore() ) );
+		Font hsFont = currentHighScore.getFont();
+		currentHighScore.setFont( hsFont.deriveFont( Font.CENTER_BASELINE , 30) );
+		diffPanel.add( currentHighScore );
 		
 		panelBottom.add( diffPanel );
 		
@@ -321,9 +324,12 @@ public class View implements ScoreListener
 		
 		
 		if ( model.isGameOver() == true )
+		{
 			System.out.println( model.isGameOver() + "");
-			//gameOver();
-		System.out.println( model.isGameOver() + "");
+			gameOver();
+		}
+
+		//System.out.println( model.isGameOver() + "");
 		// Listeners
 		model.addScoreListener( this );
 		
@@ -370,6 +376,10 @@ public class View implements ScoreListener
 		Image pause1 = pause.getImage();
 		Image newPause = pause1.getScaledInstance( 150, 80, java.awt.Image.SCALE_SMOOTH );
 		this.pause = new ImageIcon( newPause );
+		
+		Image deathStar1 = deathStar.getImage();
+		Image newDeathStar = deathStar1.getScaledInstance( 800, 600, java.awt.Image.SCALE_SMOOTH );
+		this.deathStar = new ImageIcon( newDeathStar );
 	}
 	
 	public Font getFont() throws Exception
@@ -394,11 +404,20 @@ public class View implements ScoreListener
 		else
 			JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.PLAIN_MESSAGE );
 	}
+	
+	public void help()
+	{
+		//TODO: Waiting on "help" text
+//		if ( model.needsHelp() == true )
+//		{
+//			JOptionPane.showMessageDialog( frame, "", "Help", JOptionPane.PLAIN_MESSAGE );
+//		}
+	}
 
 	@Override
 	public void updateScore() 
 	{
 		this.score = model.getScore();
-		userScore.setText("      " + this.score);
+		userScore.setText("       " + this.score);
 	}
 }
