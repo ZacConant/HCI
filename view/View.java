@@ -178,6 +178,7 @@ public class View implements ScoreListener
 		// **** LEFT **** //
 		
 		JPanel panelLeft = new JPanel();
+		panelLeft.setBackground( Color.DARK_GRAY );
 		panelLeft.setPreferredSize( new Dimension( 200, 450 ) );
 		GridLayout gridLeft = new GridLayout( 5, 1 );
 		panelLeft.setLayout( gridLeft );
