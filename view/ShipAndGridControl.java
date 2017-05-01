@@ -14,6 +14,7 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
@@ -56,8 +57,10 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 	private JPanel[][] panelArray;
 	private JFrame frame;
 	private JMenu mDifficulty;
+	private JLabel currentHighScore;
+	private JPanel diffPanel;
 	
-	public ShipAndGridControl( Model model, JFrame frame, JMenu mDifficulty )
+	public ShipAndGridControl( Model model, JFrame frame, JMenu mDifficulty, JLabel currentHighScore, JPanel diffPanel )
 	{
 		
 		this.model = model;
@@ -65,6 +68,8 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		this.enemyShip.setIcon( tie );
 		this.frame = frame;
 		this.mDifficulty = mDifficulty;
+		this.currentHighScore = currentHighScore;
+		this.diffPanel = diffPanel;
 //		this.playerShip = new JLabel( xwing );
 //		this.enemyShip = new JLabel( tie );
 		
@@ -330,10 +335,15 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 			--indexJ1;
 		}
 		
-		if ( model.isGameOver() == true )
+		if ( model.isEnd() == true )
 		{
 			System.out.println( model.isGameOver() + "");
 			gameOver( frame );
+			
+			currentHighScore = new JLabel( "      " + Integer.toString( model.getHighScore() ) );
+			Font hsFont = currentHighScore.getFont();
+			currentHighScore.setFont( hsFont.deriveFont( Font.CENTER_BASELINE , 30) );
+			diffPanel.add( currentHighScore );
 		}
 		
 	} // END OF UPDATEPOSITIONS()
