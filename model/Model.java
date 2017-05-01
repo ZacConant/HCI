@@ -29,18 +29,18 @@ public class Model {
 	private ImageIcon[] xWings; // 4 angles for x wing image
 	private boolean isShooting; // holds state of if turret is shooting
 	private boolean isPlaying; // check if game has started
-	private boolean isRunning;
-	private boolean isGameOver;
-	private int timerCount;
-	private int score;
-	private int highScore;
-	private static final int ENEMY_SCORE_VALUE = 100;
-	private static final int VADER_SCORE_VALUE = 100;
-	private ArrayList<ScoreListener> scoreListeners;
-	private File highScoreFile;
-	private String difficulty;
-	private int difficultySpeed;
-	private int vaderTracker;
+	private boolean isRunning; // check if game is running (still running even if paused)
+	private boolean isGameOver; // check if game over
+	private int timerCount; // increments by 1 on every count
+	private int score; // current score
+	private int highScore; // current high score
+	private static final int ENEMY_SCORE_VALUE = 100; // normal enemy points value
+	private static final int VADER_SCORE_VALUE = 200; // vader points value
+	private ArrayList<ScoreListener> scoreListeners; // listens for changes in score
+	private File highScoreFile; // File with current high score written
+	private String difficulty; // current difficulty
+	private int difficultySpeed; // determines how fast enemies move
+	private int vaderTracker; // determines if a vader should be spawned
 	
 	public Model(int timeDelay) {
 		this.turretOrientation = 90;
@@ -59,16 +59,16 @@ public class Model {
 		this.timerCount = 0;
 		this.score = 0;
 		this.highScoreFile = new File("src/highscore.txt");
-		this.difficulty = "HARD";
-		this.difficultySpeed = 5;
+		this.difficulty = "NORMAL";
+		this.difficultySpeed = 8;
 		this.vaderTracker = 0;
 		this.highScore = readHighScore();
 		this.initializeDirections();
 		this.loadXWings();
 	}
 	
+	// Reset the game (reset button)
 	public void reset() {
-		print();
 		this.stop();
 		this.notifyPositionListeners();
 		this.notifyOrientationListeners();
@@ -260,6 +260,7 @@ public class Model {
 		}
 	}
 	
+	// Update all arrays with new values based on position of components
 	private void updateDirections() {
 		for (int i = 0; i < NUMBER_DIRECTIONS; ++i) {
 			for (int j = 0; j < GRID_DIMENSION/2; ++j) {
@@ -267,18 +268,22 @@ public class Model {
 				// Clear current space
 				this.directions[i][j] = "";
 				
-				// Check for enemy and missile one position away from each other
 				if (j < GRID_DIMENSION/2 - 1) {
+					
+					// If missile and enemy are in same position
 					if (this.missiles[i][j].equals("M") && this.enemies[i][j].startsWith("E")) {
+						
+						// If undamaged vader
 						if (this.enemies[i][j].equals("EV1")) {
 							this.missiles[i][j] = "";
 							this.enemies[i][j] = "EV2";
 							this.directions[i][j] = "EV2";
 						}
+						// If not undamaged vader, destroy the ship
 						else {
 							int score;
 							
-							if (this.directions[i][j].equals("EV2")) {
+							if (this.enemies[i][j].equals("EV2")) {
 								score = VADER_SCORE_VALUE;
 							}
 							else {
@@ -290,22 +295,27 @@ public class Model {
 							this.directions[i][j] = "D";
 							updateScore(score);
 						}
-						
-						System.out.println("same");
 					}
+					// Check for enemy and missile one position away from each other
 					else if (this.missiles[i][j+1].equals("M") && this.enemies[i][j].startsWith("E")) {
 						
 						if (j < GRID_DIMENSION/2 - 2) {
+							
+							// For enemies next to each other
+							// Makes sure that enemy closer to missile is destroyed first
 							if (!(this.enemies[i][j+1].startsWith("E"))) {
+								
+								// If undamaged vader
 								if (this.enemies[i][j].equals("EV1")) {
 									this.missiles[i][j+1] = "";
 									this.enemies[i][j] = "EV2";
 									this.directions[i][j] = "EV2";
 								}
+								// If not undamaged vader, destroy the ship
 								else {
 									int score;
 									
-									if (this.directions[i][j].equals("EV2")) {
+									if (this.enemies[i][j].equals("EV2")) {
 										score = VADER_SCORE_VALUE;
 									}
 									else {
@@ -318,9 +328,6 @@ public class Model {
 									updateScore(score);
 								}
 							}
-							else {
-								System.out.println("Enemy After");
-							}
 						}
 						else {
 							if (this.enemies[i][j].equals("EV1")) {
@@ -331,7 +338,7 @@ public class Model {
 							else {
 								int score;
 								
-								if (this.directions[i][j].equals("EV2")) {
+								if (this.enemies[i][j].equals("EV2")) {
 									score = VADER_SCORE_VALUE;
 								}
 								else {
@@ -344,9 +351,8 @@ public class Model {
 								updateScore(score);
 							}
 						}
-						
-						System.out.println("In Front");
 					}
+					// If no missiles interfere with enemies just update arrays
 					else {
 						this.directions[i][j] += this.missiles[i][j];
 						this.directions[i][j] += this.enemies[i][j];
@@ -354,16 +360,21 @@ public class Model {
 				}
 				// Enemy and missile can only be in same position
 				else {
+					
+					// If missile and enemy are in same position
 					if (this.missiles[i][j].equals("M") && this.enemies[i][j].startsWith("E")) {
+						
+						// If undamaged vader
 						if (this.enemies[i][j].equals("EV1")) {
 							this.missiles[i][j] = "";
 							this.enemies[i][j] = "EV2";
 							this.directions[i][j] = "EV2";
 						}
+						// If not undamaged vader, destroy the ship
 						else {
 							int score;
 							
-							if (this.directions[i][j].equals("EV2")) {
+							if (this.enemies[i][j].equals("EV2")) {
 								score = VADER_SCORE_VALUE;
 							}
 							else {
@@ -376,6 +387,7 @@ public class Model {
 							updateScore(score);
 						}
 					}
+					// If no missiles interfere with enemies just update arrays
 					else {
 						this.directions[i][j] += this.missiles[i][j];
 						this.directions[i][j] += this.enemies[i][j];
@@ -440,28 +452,36 @@ public class Model {
 	
 	// Move view components
 	public void move() {
+		
+		// If paused don't update anything
 		if (!isPaused()) {
+			
+			// Update enemies by difficulty speed constant
 			if (timerCount % difficultySpeed == 0) {
 				int randomDirectionIndex = selectEnemyDirection();
 				shiftDirectionComponents();
 				addEnemy(randomDirectionIndex);
 			}
+			// Otherwise just update missiles
 			else {
 				shiftMissiles();
 			}
 			
+			// Add missile if shooting
 			addMissile(getDirectionIndex(turretOrientation));
 			
+			// Update all components
 			updateDirections();
 			
+			// Tell view to rerender
 			notifyPositionListeners();
 			
+			// If gameover
 			if (isGameOver) {
 				gameOver();
 			}
 			
-			print();
-			
+			// Increment timer count
 			timerCount += 1;
 		}
 	}
@@ -478,19 +498,23 @@ public class Model {
 		}
 	}
 	
+	// Increment score by given value
 	private void updateScore(int score) {
 		this.score += score;
 		notifyScoreListeners();
 	}
 	
+	// get current score
 	public int getScore() {
 		return this.score;
 	}
 	
+	// get current highscore
 	public int getHighScore() {
 		return this.highScore;
 	}
 	
+	// Write highscore to an external file
 	private void writeHighScore(int highScore) {
 		try {
 			PrintWriter pw = new PrintWriter(this.highScoreFile);
@@ -501,6 +525,7 @@ public class Model {
 		}
 	}
 	
+	// Read highscore from external file
 	private int readHighScore() {
 		Scanner scanner;
 		try {
@@ -514,40 +539,53 @@ public class Model {
 		return -1;
 	}
 	
+	// Check if new highscore achieved
 	public boolean isHighScore() {
 		return this.score > this.highScore;
 	}
 	
+	// Triggers a game over
 	private void gameOver() {
+		
+		// Set game to not running
 		this.isRunning = false;
 		
+		// One last cycle then stop
 		notifyOrientationListeners();
 		stop();
 		
+		// If highscore, override in file
 		if (isHighScore()) {
 			this.highScore = score;
 			System.out.println("New High Score: " + this.highScore);
 			writeHighScore(this.highScore);
 		}
+		
+		// Render new scores
 		notifyScoreListeners();
 	}
 	
+	// temporarily stop game play
 	public void pause() {
 		stop();
 	}
 	
+	// check if is paused
 	public boolean isPaused() {
 		return !this.isPlaying;
 	}
 	
+	// check if is a game over
 	public boolean isGameOver() {
 		return this.isGameOver;
 	}
 	
+	// get current difficulty of game
 	public String getDifficulty() {
 		return this.difficulty;
 	}
 	
+	// set the difficulty
 	public void setDifficulty(String difficulty) {
 		this.difficulty = difficulty;
 		if (difficulty.equals("HARD")) {
@@ -558,6 +596,7 @@ public class Model {
 		}
 	}
 	
+	// check if game is running
 	public boolean isRunning() {
 		return this.isRunning;
 	}
