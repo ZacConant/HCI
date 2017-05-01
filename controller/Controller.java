@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
@@ -44,6 +45,7 @@ public class Controller implements KeyListener, ActionListener, MenuListener{
 
 	@Override
 	public void keyPressed(KeyEvent arg0) {
+		frame.requestFocusInWindow();
 		//game controll hotkeys
 		//PLAY hotkey
 		if(arg0.getKeyCode()==KeyEvent.VK_ENTER){
@@ -154,18 +156,22 @@ public class Controller implements KeyListener, ActionListener, MenuListener{
 	@Override
 	public void menuSelected(MenuEvent arg0) {
 		// TODO Auto-generated method stub
-		//QUIT
-		//if(arg0.getActionCommand.equals("Quit")){
-			//System.exit(0);
-		//}
-		//HELP
+		
 		if(arg0.getSource() instanceof JMenu){
+			JMenu menu = (JMenu)arg0.getSource();
 			
-			JOptionPane.showMessageDialog(frame,helpText,"Help",JOptionPane.PLAIN_MESSAGE);
+			//QUIT
+			if (menu.getActionCommand().equals("Quit")) {
+				System.exit(0);
+			}
+			// Help
+			else if (menu.getActionCommand().equals("Help")) {
+				JOptionPane.showMessageDialog(frame,helpText,"Help",JOptionPane.PLAIN_MESSAGE);
+			}
 		}
 	}
 	/*
-	// Read highscore from external file
+	// Read help text from external file
 		private int readHighScore() {
 			Scanner scanner;
 			try {
