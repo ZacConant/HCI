@@ -20,7 +20,7 @@ public class Driver
 		frame.setTitle("Galatic Turret");
 
 		// Initialize model ( time is in ms )
-		Model model = new Model(60);
+		Model model = new Model(65);
 		
 		// Initialize controller
 		Controller controller = new Controller(model);
