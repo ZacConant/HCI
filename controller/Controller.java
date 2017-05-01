@@ -3,6 +3,10 @@ package controller;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.JFrame;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -11,14 +15,16 @@ import model.Model;
 /*
  *  Class takes user interaction and updates model
  */
-public class Controller implements KeyListener, ActionListener{
+public class Controller implements KeyListener, ActionListener, MenuListener{
 
 	private Model model;
+	private JFrame frame;
 
-	public Controller(Model model) {
+	public Controller(Model model, JFrame frame) {
 
 		// Needs to know model to update model data
 		this.model = model;
+		this.frame = frame;
 	}
 
 	@Override
@@ -107,9 +113,35 @@ public class Controller implements KeyListener, ActionListener{
 				if(e.getActionCommand().equals("Quit")){
 					System.exit(0);
 				}
+				
 				//Combo Box difficulty changing 
 				//setDifficulty("EASY");
 				//setDifficulty("MEDIUM");
 				//setDifficulty("HARD");
+	}
+
+	@Override
+	public void menuCanceled(MenuEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void menuDeselected(MenuEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void menuSelected(MenuEvent arg0) {
+		// TODO Auto-generated method stub
+		//QUIT
+		//if(arg0.getActionCommand.equals("Quit")){
+			//System.exit(0);
+		//}
+		//HELP
+		//if(arg0.getActionCommand.equals("Help")){
+			//frame.
+		//}
 	}
 }
