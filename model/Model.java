@@ -70,20 +70,19 @@ public class Model {
 	// Reset the game (reset button)
 	public void reset() {
 		this.stop();
-		this.notifyPositionListeners();
-		this.notifyOrientationListeners();
-		this.notifyScoreListeners();
 		this.turretOrientation = 90;
 		this.isShooting = false;
 		this.isPlaying = false;
 		this.isGameOver = false;
 		this.isRunning = false;
+		this.notifyPositionListeners();
+		this.notifyOrientationListeners();
+		this.notifyScoreListeners();
 		this.timerCount = 0;
 		this.score = 0;
 		this.highScore = readHighScore();
 		this.vaderTracker = 0;
 		this.initializeDirections();
-		print();
 		this.notifyPositionListeners();
 		this.notifyOrientationListeners();
 		this.notifyScoreListeners();
