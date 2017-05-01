@@ -17,7 +17,7 @@ public class Driver
 		JFrame frame = new JFrame();
 		frame.setResizable( false );
 		frame.setSize(800, 600);
-		frame.setTitle("Galatic Turret");
+		frame.setTitle("Galactic Turret");
 
 		// Initialize model ( time is in ms )
 		Model model = new Model(65);

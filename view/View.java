@@ -72,6 +72,7 @@ public class View implements ScoreListener
 
 	private JLabel userScore;
 	private JLabel currentHighScore;
+	private JPanel diffPanel;
 	
 //	private final int gridRows = 15;
 //	private final int gridCols = 15;
@@ -235,7 +236,7 @@ public class View implements ScoreListener
 		panelBottom.setLayout( gridBottom ); 
 		
 		GridLayout diffGrid = new GridLayout(2, 1);
-		JPanel diffPanel = new JPanel( diffGrid );
+		diffPanel = new JPanel( diffGrid );
 		
 		JLabel diffLabel = new JLabel( " High Score" );
 		Font diffFont = getFont().deriveFont( Font.PLAIN, 28 );
@@ -318,7 +319,7 @@ public class View implements ScoreListener
 		
 		
 		// **** CENTER **** //
-		ShipAndGridControl centerDesign = new ShipAndGridControl( model, frame, mDifficulty );
+		ShipAndGridControl centerDesign = new ShipAndGridControl( model, frame, mDifficulty, currentHighScore, diffPanel );
 		centerDesign.gridDesign( frame, border, model );
 		
 		//centerDesign.addKeyListener( controller );
@@ -396,7 +397,7 @@ public class View implements ScoreListener
 		}
 		
 		else
-			JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.PLAIN_MESSAGE );
+			JOptionPane.showMessageDialog( frame, " You Lost ", "Game Over", JOptionPane.PLAIN_MESSAGE );
 	}
 	
 	public void help()

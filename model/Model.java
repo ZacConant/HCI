@@ -489,8 +489,6 @@ public class Model {
 			
 			// Increment timer count
 			timerCount += 1;
-			
-			print();
 		}
 	}
 	
