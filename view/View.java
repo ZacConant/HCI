@@ -73,6 +73,7 @@ public class View implements ScoreListener
 	private JLabel userScore;
 	private JLabel currentHighScore;
 	private JPanel diffPanel;
+	private JPanel panelBottom;
 	
 //	private final int gridRows = 15;
 //	private final int gridCols = 15;
@@ -127,7 +128,7 @@ public class View implements ScoreListener
 		mFile.setBorderPainted( true );
 		mFile.setBackground( Color.LIGHT_GRAY );
 		mFile.setActionCommand( "Quit" );
-		//mFile.addMenuListener( controller ); 
+		mFile.addMenuListener( controller ); 
 		
 		mBar.add( mFile );
 		
@@ -139,7 +140,7 @@ public class View implements ScoreListener
 		mHelp.setBorderPainted( true );
 		mHelp.setBackground( Color.LIGHT_GRAY );
 		mHelp.setActionCommand( "Help" );
-		//mHelp.addMenuListener( controller ); 
+		mHelp.addMenuListener( controller ); 
 		
 		mBar.add( mHelp );
 
@@ -230,7 +231,7 @@ public class View implements ScoreListener
 		
 		// **** BOTTOM **** //
 		
-		JPanel panelBottom = new JPanel();
+		panelBottom = new JPanel();
 		panelBottom.setPreferredSize( new Dimension( 800, 100 ) );
 		GridLayout gridBottom = new GridLayout( 1, 4 );
 		panelBottom.setLayout( gridBottom ); 
@@ -319,7 +320,7 @@ public class View implements ScoreListener
 		
 		
 		// **** CENTER **** //
-		ShipAndGridControl centerDesign = new ShipAndGridControl( model, frame, mDifficulty, currentHighScore, diffPanel );
+		ShipAndGridControl centerDesign = new ShipAndGridControl( model, frame, mDifficulty, currentHighScore, diffPanel, panelBottom );
 		centerDesign.gridDesign( frame, border, model );
 		
 		//centerDesign.addKeyListener( controller );
@@ -365,7 +366,7 @@ public class View implements ScoreListener
 		this.fire = new ImageIcon( newFire );
 		
 		Image highScore1 = highScore.getImage();
-		Image newHighScore = highScore1.getScaledInstance( 100, 100, java.awt.Image.SCALE_SMOOTH );
+		Image newHighScore = highScore1.getScaledInstance( 80, 80, java.awt.Image.SCALE_SMOOTH );
 		this.highScore = new ImageIcon( newHighScore );
 		
 		Image pause1 = pause.getImage();
