@@ -53,6 +53,7 @@ public class View implements ScoreListener
 	private Model model; 				// Needs model to get new information about its view components
 	private Controller controller; 		// Needs controller to connect view components with user interaction
 	private JFrame frame; 				// Window that holds app
+	private JMenu mDifficulty;
 	private ShipAndGridControl shipControl;
 	private int score;
 	private ImageIcon up = new ImageIcon( "src/up_arrow.png" );
@@ -141,7 +142,7 @@ public class View implements ScoreListener
 		
 		mBar.add( mHelp );
 
-		JMenu mDifficulty = new JMenu( " Difficulty " );
+		mDifficulty = new JMenu( " Difficulty " );
 		mDifficulty.setBorder( null );
 		mDifficulty.setBorderPainted( true );
 		mDifficulty.setBackground( Color.LIGHT_GRAY );
@@ -215,6 +216,7 @@ public class View implements ScoreListener
 		userScore.setBorder( scoreBorder );
 		Font scoreFont = userScore.getFont();
 		userScore.setFont( scoreFont.deriveFont( Font.CENTER_BASELINE , 30) );
+		userScore.setForeground( Color.WHITE );
 		panelLeft.add( userScore );
 		
 		
@@ -316,22 +318,13 @@ public class View implements ScoreListener
 		
 		
 		// **** CENTER **** //
-		ShipAndGridControl centerDesign = new ShipAndGridControl( model );
+		ShipAndGridControl centerDesign = new ShipAndGridControl( model, frame, mDifficulty );
 		centerDesign.gridDesign( frame, border, model );
 		
 		//centerDesign.addKeyListener( controller );
 		frame.addKeyListener( controller );
-		frame.setFocusable( true );
+		frame.setFocusable( true ); 
 		
-		
-		if ( model.isGameOver() == true )
-		{
-			System.out.println( model.isGameOver() + "");
-			gameOver();
-		}
-
-		//System.out.println( model.isGameOver() + "");
-		// Listeners
 		model.addScoreListener( this );
 		
 	}

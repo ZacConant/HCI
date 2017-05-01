@@ -26,6 +26,8 @@ import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import model.Model;
@@ -43,6 +45,7 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 	private ImageIcon explosion = new ImageIcon( "src/explosion2.png" );
 	//private ImageIcon deathStar = new ImageIcon( "src/deathstar1.jpg");
 	private Image deathStar = Toolkit.getDefaultToolkit().createImage( "src/deathstar1.jpg" );
+	private ImageIcon highScore = new ImageIcon( "src/high_score.png" );
 	private JLabel playerShip = new JLabel();
 	private JLabel enemyShip = new JLabel();
 	private JLabel boltLabel = new JLabel();
@@ -51,19 +54,23 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 	private final int gameRow = 5;
 	private final int gameCol = 5;
 	private JPanel[][] panelArray;
+	private JFrame frame;
+	private JMenu mDifficulty;
 	
-	public ShipAndGridControl( Model model )
+	public ShipAndGridControl( Model model, JFrame frame, JMenu mDifficulty )
 	{
 		
 		this.model = model;
 		this.playerShip.setIcon( xwing );
 		this.enemyShip.setIcon( tie );
+		this.frame = frame;
+		this.mDifficulty = mDifficulty;
 //		this.playerShip = new JLabel( xwing );
 //		this.enemyShip = new JLabel( tie );
 		
 	}
 	
-	public void gridDesign(JFrame frame, BorderLayout border, Model model )
+	public void gridDesign( JFrame frame, BorderLayout border, Model model )
 	{
 		
 		this.setPreferredSize( new Dimension( 450, 450 ) );
@@ -173,6 +180,17 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 	@Override
 	public void updatePositions() 
 	{
+		// TODO: Might need to be placed within a listener
+		if ( model.isRunning() )
+		{
+			mDifficulty.setEnabled( false );
+		}
+		else
+		{
+			mDifficulty.setEnabled( true );
+		}
+		
+		
 		String[] zero = model.getDirection( 0 );
 		String[] ninety = model.getDirection( 90 );
 		String[] oneEighty = model.getDirection( 180 );
@@ -312,13 +330,23 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 			--indexJ1;
 		}
 		
+		if ( model.isGameOver() == true )
+		{
+			System.out.println( model.isGameOver() + "");
+			gameOver( frame );
+		}
+		
 	} // END OF UPDATEPOSITIONS()
 	
-//	@Override
-//	protected void paintComponent( Graphics g )
-//	{
-//		super.paintComponent( g );
-//		g.drawImage( deathStar, 0, 0, null);
-//	}
+	public void gameOver( JFrame frame )
+	{
+		if ( model.isHighScore() == true )
+		{
+			JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.INFORMATION_MESSAGE, highScore );
+		}
+		
+		else
+			JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.PLAIN_MESSAGE );
+	}
 
 }
