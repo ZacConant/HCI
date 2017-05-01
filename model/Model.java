@@ -31,6 +31,7 @@ public class Model {
 	private boolean isPlaying; // check if game has started
 	private boolean isRunning; // check if game is running (still running even if paused)
 	private boolean isGameOver; // check if game over
+	private boolean isEnd; // End of game
 	private int timerCount; // increments by 1 on every count
 	private int score; // current score
 	private int highScore; // current high score
@@ -56,6 +57,7 @@ public class Model {
 		this.isPlaying = false;
 		this.isGameOver = false;
 		this.isRunning = false;
+		this.isEnd = false;
 		this.timerCount = 0;
 		this.score = 0;
 		this.highScoreFile = new File("src/highscore.txt");
@@ -70,20 +72,20 @@ public class Model {
 	// Reset the game (reset button)
 	public void reset() {
 		this.stop();
-		this.notifyPositionListeners();
-		this.notifyOrientationListeners();
-		this.notifyScoreListeners();
 		this.turretOrientation = 90;
 		this.isShooting = false;
 		this.isPlaying = false;
 		this.isGameOver = false;
 		this.isRunning = false;
+		this.isEnd = false;
+		this.notifyPositionListeners();
+		this.notifyOrientationListeners();
+		this.notifyScoreListeners();
 		this.timerCount = 0;
 		this.score = 0;
 		this.highScore = readHighScore();
 		this.vaderTracker = 0;
 		this.initializeDirections();
-		print();
 		this.notifyPositionListeners();
 		this.notifyOrientationListeners();
 		this.notifyScoreListeners();
@@ -354,8 +356,10 @@ public class Model {
 					}
 					// If no missiles interfere with enemies just update arrays
 					else {
-						this.directions[i][j] += this.missiles[i][j];
-						this.directions[i][j] += this.enemies[i][j];
+						if (!(this.directions[i][j]).equals("D")) {
+							this.directions[i][j] += this.missiles[i][j];
+							this.directions[i][j] += this.enemies[i][j];
+						}
 					}
 				}
 				// Enemy and missile can only be in same position
@@ -389,8 +393,10 @@ public class Model {
 					}
 					// If no missiles interfere with enemies just update arrays
 					else {
-						this.directions[i][j] += this.missiles[i][j];
-						this.directions[i][j] += this.enemies[i][j];
+						if (!(this.directions[i][j]).equals("D")) {
+							this.directions[i][j] += this.missiles[i][j];
+							this.directions[i][j] += this.enemies[i][j];
+						}
 					}
 			    }
 				
@@ -483,6 +489,8 @@ public class Model {
 			
 			// Increment timer count
 			timerCount += 1;
+			
+			print();
 		}
 	}
 	
@@ -549,9 +557,11 @@ public class Model {
 		
 		// Set game to not running
 		this.isRunning = false;
+		this.isEnd = true;
 		
 		// One last cycle then stop
 		notifyOrientationListeners();
+		notifyPositionListeners();
 		stop();
 		
 		// If highscore, override in file
@@ -599,5 +609,10 @@ public class Model {
 	// check if game is running
 	public boolean isRunning() {
 		return this.isRunning;
+	}
+	
+	// Check if end of game
+	public boolean isEnd() {
+		return this.isEnd;
 	}
  }
