@@ -348,12 +348,5 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		else
 			JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.PLAIN_MESSAGE );
 	}
-	
-//	@Override
-//	protected void paintComponent( Graphics g )
-//	{
-//		super.paintComponent( g );
-//		g.drawImage( deathStar, 0, 0, null);
-//	}
 
 }

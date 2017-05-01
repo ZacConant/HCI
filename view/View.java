@@ -216,6 +216,7 @@ public class View implements ScoreListener
 		userScore.setBorder( scoreBorder );
 		Font scoreFont = userScore.getFont();
 		userScore.setFont( scoreFont.deriveFont( Font.CENTER_BASELINE , 30) );
+		userScore.setForeground( Color.WHITE );
 		panelLeft.add( userScore );
 		
 		
@@ -322,17 +323,8 @@ public class View implements ScoreListener
 		
 		//centerDesign.addKeyListener( controller );
 		frame.addKeyListener( controller );
-		frame.setFocusable( true );
+		frame.setFocusable( true ); 
 		
-		
-		if ( model.isGameOver() == true )
-		{
-			System.out.println( model.isGameOver() + "");
-			gameOver();
-		}
-
-		//System.out.println( model.isGameOver() + "");
-		// Listeners
 		model.addScoreListener( this );
 		
 	}
