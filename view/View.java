@@ -392,7 +392,7 @@ public class View implements ScoreListener
 		this.fire = new ImageIcon( newFire );
 		
 		Image highScore1 = highScore.getImage();
-		Image newHighScore = highScore1.getScaledInstance( 60, 60, java.awt.Image.SCALE_SMOOTH );
+		Image newHighScore = highScore1.getScaledInstance( 1, 1, java.awt.Image.SCALE_SMOOTH );
 		this.highScore = new ImageIcon( newHighScore );
 		
 		Image pause1 = pause.getImage();

@@ -184,6 +184,10 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		Image explosion1 = explosion.getImage();
 		Image newExplosion = explosion1.getScaledInstance( 37, 37, java.awt.Image.SCALE_SMOOTH );
 		this.explosion = new ImageIcon( newExplosion );
+		
+		Image highScore1 = highScore.getImage();
+		Image newHighScore = highScore1.getScaledInstance( 300, 200, java.awt.Image.SCALE_SMOOTH );
+		this.highScore = new ImageIcon( newHighScore );
 	}
 	
 	/**
@@ -417,17 +421,24 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 	 */
 	public void gameOver( JFrame frame )
 	{
+		JLabel lost = new JLabel( " You Lost " );
+		Font lostFont = lost.getFont();
+		lost.setFont( lostFont.deriveFont( Font.CENTER_BASELINE, 30) );
+		
+		
 		if ( model.isHighScore() == true )
 		{
-			JOptionPane.showMessageDialog( frame, " Nice Try ", "Game Over", JOptionPane.INFORMATION_MESSAGE, highScore );
+			JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.INFORMATION_MESSAGE, highScore );
 			System.out.println("WOWOWOW: nhs " );
 		}
 		
 		else
-			JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.PLAIN_MESSAGE );
+			JOptionPane.showMessageDialog( frame, lost, "Game Over", JOptionPane.PLAIN_MESSAGE );
 	}
 
-	
+	/**
+	 * Difficulty listener that listens for changes in difficulty.
+	 */
 	@Override
 	public void updateDifficulty() 
 	{
