@@ -22,6 +22,7 @@ import model.Model;
  */
 public class Controller implements KeyListener, ActionListener, MenuListener{
 
+	public boolean isNormal;
 	private Model model;
 	private JFrame frame;
 	String helpText = new String(
@@ -40,6 +41,7 @@ public class Controller implements KeyListener, ActionListener, MenuListener{
 		"Click the difficulty button on the menu bar at the top of the screen(Only allowed before a new game).\n"+
 		"Select your prefered difficulty.\n"+
 		"Enjoy the game!");
+	
 	private Readable helpTextFile;
 
 	public Controller(Model model, JFrame frame) {
@@ -47,6 +49,7 @@ public class Controller implements KeyListener, ActionListener, MenuListener{
 		// Needs to know model to update model data
 		this.model = model;
 		this.frame = frame;
+		setNormal(true);
 	}
 
 	@Override
@@ -140,10 +143,12 @@ public class Controller implements KeyListener, ActionListener, MenuListener{
 				//setDifficulty("MEDIUM");
 				if(e.getActionCommand().equals("Normal")){
 					model.setDifficulty("NORMAL");
+					setNormal(true);
 				}
 				//setDifficulty("HARD");
 				if(e.getActionCommand().equals("Hard")){
 					model.setDifficulty("HARD");
+					setNormal(false);
 				}
 	}
 
@@ -176,19 +181,12 @@ public class Controller implements KeyListener, ActionListener, MenuListener{
 			}
 		}
 	}
-	/*
-	// Read help text from external file
-		private int readHighScore() {
-			Scanner scanner;
-			try {
-				scanner = new Scanner(this.helpTextFile);
-				return scanner.nextInt();
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			return -1;
-		}
-		*/
+	
+	public boolean isNormal() {
+		return isNormal;
+	}
+
+	public void setNormal(boolean isNormal) {
+		this.isNormal = isNormal;
+	}
 }
