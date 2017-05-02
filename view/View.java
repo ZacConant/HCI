@@ -74,6 +74,7 @@ public class View implements ScoreListener
 	private JLabel currentHighScore;
 	private JPanel diffPanel;
 	private JPanel panelBottom;
+	private JLabel diffLabel;
 	
 //	private final int gridRows = 15;
 //	private final int gridCols = 15;
@@ -239,7 +240,7 @@ public class View implements ScoreListener
 		GridLayout diffGrid = new GridLayout(2, 1);
 		diffPanel = new JPanel( diffGrid );
 		
-		JLabel diffLabel = new JLabel( " High Score" );
+		diffLabel = new JLabel( " High Score" );
 		Font diffFont = getFont().deriveFont( Font.PLAIN, 28 );
 		diffLabel.setFont( diffFont );
 		diffLabel.setForeground( new Color( 75, 213, 238 ) );
@@ -320,7 +321,8 @@ public class View implements ScoreListener
 		
 		
 		// **** CENTER **** //
-		ShipAndGridControl centerDesign = new ShipAndGridControl( model, frame, mDifficulty, currentHighScore, diffPanel, panelBottom );
+		ShipAndGridControl centerDesign = new ShipAndGridControl( model, frame, mDifficulty, currentHighScore,
+				diffPanel, panelBottom, diffLabel );
 		centerDesign.gridDesign( frame, border, model );
 		
 		//centerDesign.addKeyListener( controller );
