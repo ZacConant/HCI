@@ -31,6 +31,7 @@ public class Model {
 	private boolean isPlaying; // check if game has started
 	private boolean isRunning; // check if game is running (still running even if paused)
 	private boolean isGameOver; // check if game over
+	private boolean isHighScore;
 	private boolean isEnd; // End of game
 	private int timerCount; // increments by 1 on every count
 	private int score; // current score
@@ -59,6 +60,7 @@ public class Model {
 		this.isPlaying = false;
 		this.isGameOver = false;
 		this.isRunning = false;
+		this.isHighScore = false;
 		this.isEnd = false;
 		this.timerCount = 0;
 		this.score = 0;
@@ -80,6 +82,7 @@ public class Model {
 		this.isGameOver = false;
 		this.isRunning = false;
 		this.isEnd = false;
+		this.isHighScore = false;
 		this.notifyPositionListeners();
 		this.notifyOrientationListeners();
 		this.notifyScoreListeners();
@@ -549,6 +552,11 @@ public class Model {
 	
 	// Check if new highscore achieved
 	public boolean isHighScore() {
+		return this.isHighScore;
+	}
+	
+	// Check score and highscore
+	private boolean checkHighScore() {
 		return this.score > this.highScore;
 	}
 	
@@ -560,8 +568,9 @@ public class Model {
 		this.isEnd = true;
 		
 		// If highscore, override in file
-		if (isHighScore()) {
+		if (checkHighScore()) {
 			this.highScore = score;
+			this.isHighScore = true;
 			System.out.println("New High Score: " + this.highScore);
 			writeHighScore(this.highScore);
 		}
