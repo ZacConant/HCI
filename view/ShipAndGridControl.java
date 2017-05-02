@@ -101,9 +101,6 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		this.diffLabel = diffLabel;
 		this.normal = normal;
 		this.hard = hard;
-//		this.playerShip = new JLabel( xwing );
-//		this.enemyShip = new JLabel( tie );
-		
 	}
 	
 	/**
@@ -121,12 +118,7 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		
 		GridLayout gridCenter = new GridLayout( gridRows, gridCols );
 		this.setLayout( gridCenter );
-		
-		// TEST
-		//JPanel behindCenter = new JPanel();
-		//~
-		//this.add( behindCenter );
-		
+				
 		// Creating grid
 		this.panelArray = new JPanel[ gridRows ][ gridCols ];
 
@@ -139,11 +131,9 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 				panelArray[ i ][ j ].setOpaque( false );
 				panelArray[ i ][ j ].add( new JLabel() );
 				this.add( panelArray[ i ][ j ] );
-				//behindCenter.add( panelArray[ i ][ j ] );
 			}
 		}
-		
-		//this.add( behindCenter );
+
 		frame.add( this );
 		
 		border.addLayoutComponent( this , BorderLayout.CENTER );
@@ -184,6 +174,10 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		Image explosion1 = explosion.getImage();
 		Image newExplosion = explosion1.getScaledInstance( 37, 37, java.awt.Image.SCALE_SMOOTH );
 		this.explosion = new ImageIcon( newExplosion );
+		
+		Image highScore1 = highScore.getImage();
+		Image newHighScore = highScore1.getScaledInstance( 300, 200, java.awt.Image.SCALE_SMOOTH );
+		this.highScore = new ImageIcon( newHighScore );
 	}
 	
 	/**
@@ -207,20 +201,6 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 	public void updateOrientation() 
 	{
 		this.playerShip.setIcon( model.getTurretImage() );
-		
-		//TODO: Will need to be moved
-		if ( controller.isNormal() == true )
-		{
-			System.out.println("Test!!!");
-			normal.setArmed( true );
-			hard.setArmed( false );
-		}
-		
-		if ( controller.isNormal() == false )
-		{
-			hard.setArmed( true );
-			normal.setArmed( false );
-		}
 	}
 
 	/**
@@ -383,30 +363,16 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		
 		if ( model.isEnd() == true )
 		{
-			System.out.println( model.isHighScore() + " hs");
 			gameOver( frame );
 			
 			GridLayout diffGrid = new GridLayout(2, 1);
-			
-			//diffPanel.
-//			diffPanel.removeAll();
-//			//currentHighScore.removeAll();
-//			diffPanel = new JPanel( diffGrid );
-			
-//			diffLabel = new JLabel( " High Score" );
-//			Font diffFont = getFont().deriveFont( Font.PLAIN, 28 );
-//			diffLabel.setFont( diffFont );
-//			diffLabel.setForeground( new Color( 75, 213, 238 ) );
+
 			diffPanel.add( diffLabel );
 			
-			//currentHighScore = new JLabel( "      " + Integer.toString( model.getHighScore() ) );
-			//currentHighScore = new JLabel();
 		
 			Font hsFont = currentHighScore.getFont();
 			currentHighScore.setFont( hsFont.deriveFont( Font.CENTER_BASELINE , 30) );
 			diffPanel.add( currentHighScore );
-			
-			//panelBottom.add( diffPanel );
 		}
 		
 	} // END OF UPDATEPOSITIONS()
@@ -417,38 +383,36 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 	 */
 	public void gameOver( JFrame frame )
 	{
+		JLabel lost = new JLabel( " You Lost " );
+		Font lostFont = lost.getFont();
+		lost.setFont( lostFont.deriveFont( Font.CENTER_BASELINE, 30) );
+		
+		
 		if ( model.isHighScore() == true )
 		{
-			JOptionPane.showMessageDialog( frame, " Nice Try ", "Game Over", JOptionPane.INFORMATION_MESSAGE, highScore );
-			System.out.println("WOWOWOW: nhs " );
+			JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.INFORMATION_MESSAGE, highScore );
 		}
 		
 		else
-			JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.PLAIN_MESSAGE );
+			JOptionPane.showMessageDialog( frame, lost, "Game Over", JOptionPane.PLAIN_MESSAGE );
 	}
 
-	
+	/**
+	 * Difficulty listener that listens for changes in difficulty.
+	 */
 	@Override
 	public void updateDifficulty() 
 	{
 		if ( controller.isNormal() == true )
 		{
-			System.out.println("Normal is true");
-			//hard.setArmed( false );
-//			normal.setArmed( true );
-//			hard.setArmed( false );
 			hard.setSelected( false );
 			normal.setSelected( true );
 		}
 		
 		if ( controller.isNormal() == false )
 		{
-			System.out.println("Normal is false");
 			normal.setSelected( false );
 			hard.setSelected( true );
-//			hard.setArmed( true );
-//			normal.setArmed( false );
-			//hard.setArmed( true );
 		}
 	}
 

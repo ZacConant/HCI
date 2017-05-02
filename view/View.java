@@ -73,15 +73,8 @@ public class View implements ScoreListener
 	private JPanel diffPanel;
 	private JPanel panelBottom;
 	private JLabel diffLabel;
-//	private JMenuItem normal;
-//	private JMenuItem hard;
 	private JRadioButtonMenuItem normal;
 	private JRadioButtonMenuItem hard;
-	
-//	private final int gridRows = 15;
-//	private final int gridCols = 15;
-//	private final int gameRow = 8;
-//	private final int gameCol = 8;
 	
 	/**
 	 * Constructor
@@ -392,7 +385,7 @@ public class View implements ScoreListener
 		this.fire = new ImageIcon( newFire );
 		
 		Image highScore1 = highScore.getImage();
-		Image newHighScore = highScore1.getScaledInstance( 60, 60, java.awt.Image.SCALE_SMOOTH );
+		Image newHighScore = highScore1.getScaledInstance( 1, 1, java.awt.Image.SCALE_SMOOTH );
 		this.highScore = new ImageIcon( newHighScore );
 		
 		Image pause1 = pause.getImage();
