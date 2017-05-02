@@ -41,6 +41,7 @@ public class Model {
 	private File highScoreFile; // File with current high score written
 	private String difficulty; // current difficulty
 	private int difficultySpeed; // determines how fast enemies move
+	private ArrayList<DifficultyListener> difficultyListeners; // listens for changes in difficulty
 	private int vaderTracker; // determines if a vader should be spawned
 	
 	public Model(int timeDelay) {
@@ -48,6 +49,7 @@ public class Model {
 		this.orientationListeners = new ArrayList<OrientationListener>();
 		this.positionListeners = new ArrayList<PositionListener>();
 		this.scoreListeners = new ArrayList<ScoreListener>();
+		this.difficultyListeners = new ArrayList<DifficultyListener>();
 		this.directions = new String[NUMBER_DIRECTIONS][GRID_DIMENSION/2];
 		this.enemies = new String[NUMBER_DIRECTIONS][GRID_DIMENSION/2];
 		this.missiles = new String[NUMBER_DIRECTIONS][GRID_DIMENSION/2];
@@ -601,6 +603,20 @@ public class Model {
 		}
 		else {
 			this.difficultySpeed = 8;
+		}
+		
+		notifyDifficultyListeners();
+	}
+	
+	// Register a view component with an orientation listener
+	public void addDifficultyListener(DifficultyListener listener) {
+		this.difficultyListeners.add(listener);
+	}
+	
+	// Call all view components to update orientation
+	public void notifyDifficultyListeners() {
+		for (DifficultyListener listener : difficultyListeners) {
+			listener.updateDifficulty();
 		}
 	}
 	
