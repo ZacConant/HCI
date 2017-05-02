@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
@@ -23,16 +24,22 @@ public class Controller implements KeyListener, ActionListener, MenuListener{
 
 	private Model model;
 	private JFrame frame;
-	String helpText = new String("Help for Galactic Turret\n "+
+	String helpText = new String("           Help for Galactic Turret            \n "+
 		"Press the Enter key OR the 'PLAY' button (green button with a triangle) to begin the game!\n"+
-		"When you do, you're adventure begins! You are able to control the ship in the middle \nby rotating it to face four directions "+
-		"(using the arrows on the screen OR\n the arrow keys on your keyboard) and shoot at the incoming \nenemies (using the Space Bar OR"+
-		"by pressing the button with the target on it).\n"+
-		"Press the Shift key OR the 'PAUSE' button (yellow button with two rectangles) to pause/freeze \nthe game, making all components stand still.\n"+
+		"When you do, you're adventure begins!\n "+
+		"You are able to control the ship in the middle by rotating it to face four directions\n "+
+		"(using the arrows on the screen OR the arrow keys on your keyboard)\n"+
+		"and shoot at the incoming enemies (using the Space Bar OR by pressing the button with the target on it).\n"+
+		"Press the Shift key OR the 'PAUSE' button (yellow button with two rectangles) to pause/freeze the game, \n"+
+		"making all components stand still.\n"+
 		"Press 'PLAY' again to continue a paused game.\n"+
-		"Press the Ctrl key OR the 'RESET' button (red button with rotating arrows) to reset a \npaused game.\n"+
-		"Your running score is recorded on the left of the screen and if you beat the highscore \nbelow that, your score becomes the highscore!\n"+
-		"There is an option to change the difficulty of the game for a greater challenge.....\n");
+		"Press the Ctrl key OR the 'RESET' button (red button with rotating arrows) to reset a paused game.\n"+
+		"Your running score is recorded on the left of the screen and if you beat the highscore below that, \n"+
+		"your score becomes the highscore!\n"+
+		"There is an option to change the difficulty of the game for a greater challenge.\n"+
+		"Click the difficulty button on the menu bar at the top of the screen(Only allowed before a new game).\n"+
+		"Select your prefered difficulty.\n"+
+		"Enjoy the game!");
 	private Readable helpTextFile;
 
 	public Controller(Model model, JFrame frame) {
@@ -44,6 +51,7 @@ public class Controller implements KeyListener, ActionListener, MenuListener{
 
 	@Override
 	public void keyPressed(KeyEvent arg0) {
+		frame.requestFocusInWindow();
 		//game controll hotkeys
 		//PLAY hotkey
 		if(arg0.getKeyCode()==KeyEvent.VK_ENTER){
@@ -154,18 +162,22 @@ public class Controller implements KeyListener, ActionListener, MenuListener{
 	@Override
 	public void menuSelected(MenuEvent arg0) {
 		// TODO Auto-generated method stub
-		//QUIT
-		//if(arg0.getActionCommand.equals("Quit")){
-			//System.exit(0);
-		//}
-		//HELP
+		
 		if(arg0.getSource() instanceof JMenu){
+			JMenu menu = (JMenu)arg0.getSource();
 			
-			JOptionPane.showMessageDialog(frame,helpText,"Help",JOptionPane.PLAIN_MESSAGE);
+			//QUIT
+			if (menu.getActionCommand().equals("Quit")) {
+				System.exit(0);
+			}
+			// Help
+			else if (menu.getActionCommand().equals("Help")) {
+				JOptionPane.showMessageDialog(frame,helpText,"Help",JOptionPane.PLAIN_MESSAGE);
+			}
 		}
 	}
 	/*
-	// Read highscore from external file
+	// Read help text from external file
 		private int readHighScore() {
 			Scanner scanner;
 			try {

@@ -557,17 +557,17 @@ public class Model {
 		this.isRunning = false;
 		this.isEnd = true;
 		
-		// One last cycle then stop
-		notifyOrientationListeners();
-		notifyPositionListeners();
-		stop();
-		
 		// If highscore, override in file
 		if (isHighScore()) {
 			this.highScore = score;
 			System.out.println("New High Score: " + this.highScore);
 			writeHighScore(this.highScore);
 		}
+		
+		// One last cycle then stop
+		notifyOrientationListeners();
+		notifyPositionListeners();
+		stop();
 		
 		// Render new scores
 		notifyScoreListeners();
