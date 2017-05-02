@@ -24,7 +24,7 @@ public class Controller implements KeyListener, ActionListener, MenuListener{
 
 	private Model model;
 	private JFrame frame;
-	String helpText = new String("           Help for Galactic Turret            \n "+
+	String helpText = new String(
 		"Press the Enter key OR the 'PLAY' button (green button with a triangle) to begin the game!\n"+
 		"When you do, you're adventure begins!\n "+
 		"You are able to control the ship in the middle by rotating it to face four directions\n "+
@@ -172,7 +172,7 @@ public class Controller implements KeyListener, ActionListener, MenuListener{
 			}
 			// Help
 			else if (menu.getActionCommand().equals("Help")) {
-				JOptionPane.showMessageDialog(frame,helpText,"Help",JOptionPane.PLAIN_MESSAGE);
+				JOptionPane.showMessageDialog(frame,helpText,"Help for Galactic Turret",JOptionPane.PLAIN_MESSAGE);
 			}
 		}
 	}
