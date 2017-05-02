@@ -347,16 +347,15 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		
 		if ( model.isEnd() == true )
 		{
-			System.out.println( model.isGameOver() + "");
+			System.out.println( model.isHighScore() + " hs");
 			gameOver( frame );
-			
-			
 			
 			GridLayout diffGrid = new GridLayout(2, 1);
 			
 			//diffPanel.
-			diffPanel.removeAll();
-			diffPanel = new JPanel( diffGrid );
+//			diffPanel.removeAll();
+//			//currentHighScore.removeAll();
+//			diffPanel = new JPanel( diffGrid );
 			
 //			diffLabel = new JLabel( " High Score" );
 //			Font diffFont = getFont().deriveFont( Font.PLAIN, 28 );
@@ -364,12 +363,12 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 //			diffLabel.setForeground( new Color( 75, 213, 238 ) );
 			diffPanel.add( diffLabel );
 			
-			currentHighScore = new JLabel( "      " + Integer.toString( model.getHighScore() ) );
+			//currentHighScore = new JLabel( "      " + Integer.toString( model.getHighScore() ) );
+			//currentHighScore = new JLabel();
+		
 			Font hsFont = currentHighScore.getFont();
 			currentHighScore.setFont( hsFont.deriveFont( Font.CENTER_BASELINE , 30) );
 			diffPanel.add( currentHighScore );
-			
-			System.out.println("SHIT");
 			
 			//panelBottom.add( diffPanel );
 		}
@@ -381,6 +380,7 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		if ( model.isHighScore() == true )
 		{
 			JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.INFORMATION_MESSAGE, highScore );
+			System.out.println("WOWOWOW: nhs " );
 		}
 		
 		else

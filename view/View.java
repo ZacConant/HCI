@@ -138,6 +138,7 @@ public class View implements ScoreListener
 		/* 'HELP' TAB */
 		JMenu mHelp = new JMenu( " Help " );
 		mHelp.setBorder( null );
+		mHelp.setRequestFocusEnabled( false );
 		mHelp.setBorderPainted( true );
 		mHelp.setBackground( Color.LIGHT_GRAY );
 		mHelp.setActionCommand( "Help" );
@@ -246,7 +247,9 @@ public class View implements ScoreListener
 		diffLabel.setForeground( new Color( 75, 213, 238 ) );
 		diffPanel.add( diffLabel );
 		
-		currentHighScore = new JLabel( "      " + Integer.toString( model.getHighScore() ) );
+		//currentHighScore = new JLabel( "      " + Integer.toString( model.getHighScore() ) );
+		currentHighScore = new JLabel();
+		System.out.println("new Label");
 		Font hsFont = currentHighScore.getFont();
 		currentHighScore.setFont( hsFont.deriveFont( Font.CENTER_BASELINE , 30) );
 		diffPanel.add( currentHighScore );
@@ -368,7 +371,7 @@ public class View implements ScoreListener
 		this.fire = new ImageIcon( newFire );
 		
 		Image highScore1 = highScore.getImage();
-		Image newHighScore = highScore1.getScaledInstance( 80, 80, java.awt.Image.SCALE_SMOOTH );
+		Image newHighScore = highScore1.getScaledInstance( 60, 60, java.awt.Image.SCALE_SMOOTH );
 		this.highScore = new ImageIcon( newHighScore );
 		
 		Image pause1 = pause.getImage();
@@ -417,5 +420,7 @@ public class View implements ScoreListener
 	{
 		this.score = model.getScore();
 		userScore.setText("       " + this.score);
+		
+		currentHighScore.setText( "      " + Integer.toString( model.getHighScore() ) );
 	}
 }
