@@ -205,13 +205,15 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 	{
 		this.playerShip.setIcon( model.getTurretImage() );
 		
-		if ( true )
+		//TODO: Will need to be moved
+		if ( controller.isNormal() == true )
 		{
+			System.out.println("Test!!!");
 			normal.setArmed( true );
 			hard.setArmed( false );
 		}
 		
-		if ( hard.isSelected() == true )
+		if ( controller.isNormal() == false )
 		{
 			hard.setArmed( true );
 			normal.setArmed( false );
@@ -225,6 +227,7 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 	@Override
 	public void updatePositions() 
 	{
+		//TODO: Will need to be moved
 		// Makes sure the 'Difficulty' menu cannot be accessed whenever the game is in motion
 		if ( model.isRunning() )
 		{

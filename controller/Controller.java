@@ -150,6 +150,14 @@ public class Controller implements KeyListener, ActionListener, MenuListener{
 					model.setDifficulty("HARD");
 					setNormal(false);
 				}
+				// Help
+				if(e.getActionCommand().equals("Help")){
+					JOptionPane.showMessageDialog(frame,helpText,"Help for Galactic Turret",JOptionPane.PLAIN_MESSAGE);
+				}
+				// Exit
+				if(e.getActionCommand().equals("Quit")){
+					System.exit( 0 );
+				}
 	}
 
 	@Override

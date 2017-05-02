@@ -35,6 +35,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu.Separator;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
@@ -133,13 +134,27 @@ public class View implements ScoreListener
 		mBar.setBorderPainted( true );
 		frame.setJMenuBar( mBar );
 		
+//		
+//		JRadioButtonMenuItem test = new JRadioButtonMenuItem(" Test ");
+//		//test.setOpaque( true );
+//		//test.setContentAreaFilled( false );
+//		test.setBorderPainted( true );
+//		//test.setFocusable( true );
+//		test.setRequestFocusEnabled( false );
+//		mBar.add( test );
+//		
 		/* 'FILE' TAB */
 		JMenu mFile = new JMenu( " Exit " );
 		mFile.setBorder( null );
 		mFile.setBorderPainted( true );
 		mFile.setBackground( Color.LIGHT_GRAY );
-		mFile.setActionCommand( "Quit" );
-		mFile.addMenuListener( controller ); 
+		//mFile.setActionCommand( "Quit" );
+		//mFile.addMenuListener( controller ); 
+		
+		JMenuItem mItemExit = new JMenuItem( "Exit Game");
+		mItemExit.setActionCommand( "Quit" );
+		mItemExit.addActionListener( controller );
+		mFile.add( mItemExit );
 		
 		mBar.add( mFile );
 		
@@ -147,12 +162,18 @@ public class View implements ScoreListener
 		
 		/* 'HELP' TAB */
 		JMenu mHelp = new JMenu( " Help " );
+		
 		mHelp.setBorder( null );
 		mHelp.setRequestFocusEnabled( false );
 		mHelp.setBorderPainted( true );
 		mHelp.setBackground( Color.LIGHT_GRAY );
-		mHelp.setActionCommand( "Help" );
-		mHelp.addMenuListener( controller ); 
+		//mHelp.setActionCommand( "Help" );
+		//mHelp.addMenuListener( controller ); 
+		
+		JMenuItem mItemHelp = new JMenuItem( "About" );
+		mItemHelp.setActionCommand( "Help" );
+		mItemHelp.addActionListener( controller );
+		mHelp.add( mItemHelp );
 		
 		mBar.add( mHelp );
 
@@ -164,7 +185,7 @@ public class View implements ScoreListener
 			
 		
 		normal = new JMenuItem( "Normal" );
-		//normal.setArmed( true );
+		normal.setArmed( true );
 		normal.setActionCommand( "Normal" );
 		normal.addActionListener( controller );
 		mDifficulty.add( normal );
@@ -173,6 +194,7 @@ public class View implements ScoreListener
 		hard.setActionCommand( "Hard" );
 		hard.addActionListener( controller );
 		mDifficulty.add( hard );
+
 		
 		mBar.add( mDifficulty );
 		
