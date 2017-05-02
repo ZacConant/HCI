@@ -36,13 +36,15 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
 
 import controller.Controller;
+import model.DifficultyListener;
 import model.Model;
 import model.OrientationListener;
 import model.PositionListener;
 
-public class ShipAndGridControl extends JPanel implements PositionListener, OrientationListener
+public class ShipAndGridControl extends JPanel implements PositionListener, OrientationListener, DifficultyListener
 {
 	private Model model;
 	private Controller controller;
@@ -67,8 +69,8 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 	private JPanel diffPanel;
 	private JPanel panelBottom;
 	private JMenu mDifficulty;
-	private JMenuItem normal;
-	private JMenuItem hard;
+	private JRadioButtonMenuItem normal;
+	private JRadioButtonMenuItem hard;
 	
 	
 	/**
@@ -84,7 +86,7 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 	 * @param hard
 	 */
 	public ShipAndGridControl( Model model, Controller controller, JFrame frame, JMenu mDifficulty, JLabel currentHighScore, 
-			JPanel diffPanel, JPanel panelBottom, JLabel diffLabel, JMenuItem normal, JMenuItem hard )
+			JPanel diffPanel, JPanel panelBottom, JLabel diffLabel, JRadioButtonMenuItem normal, JRadioButtonMenuItem hard )
 	{
 		
 		this.model = model;
@@ -156,6 +158,7 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		// Listeners
 		model.addOrientationListener( this );
 		model.addPositionListener( this );
+		model.addDifficultyListener( this );
 		
 		panelArray[ gameRow ][ gameCol ].add( playerShip );
 
@@ -422,6 +425,31 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		
 		else
 			JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.PLAIN_MESSAGE );
+	}
+
+	
+	@Override
+	public void updateDifficulty() 
+	{
+		if ( controller.isNormal() == true )
+		{
+			System.out.println("Normal is true");
+			//hard.setArmed( false );
+//			normal.setArmed( true );
+//			hard.setArmed( false );
+			hard.setSelected( false );
+			normal.setSelected( true );
+		}
+		
+		if ( controller.isNormal() == false )
+		{
+			System.out.println("Normal is false");
+			normal.setSelected( false );
+			hard.setSelected( true );
+//			hard.setArmed( true );
+//			normal.setArmed( false );
+			//hard.setArmed( true );
+		}
 	}
 
 }

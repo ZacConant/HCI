@@ -49,7 +49,8 @@ public class Controller implements KeyListener, ActionListener, MenuListener{
 		// Needs to know model to update model data
 		this.model = model;
 		this.frame = frame;
-		setNormal(true);
+		//setNormal(true);
+		this.isNormal = true;
 	}
 
 	@Override
@@ -142,13 +143,15 @@ public class Controller implements KeyListener, ActionListener, MenuListener{
 				//change difficulty in menu bar
 				//setDifficulty("MEDIUM");
 				if(e.getActionCommand().equals("Normal")){
-					model.setDifficulty("NORMAL");
 					setNormal(true);
+					model.setDifficulty("NORMAL");
+					//setNormal(true);
 				}
 				//setDifficulty("HARD");
 				if(e.getActionCommand().equals("Hard")){
-					model.setDifficulty("HARD");
 					setNormal(false);
+					model.setDifficulty("HARD");
+					//setNormal(false);
 				}
 				// Help
 				if(e.getActionCommand().equals("Help")){

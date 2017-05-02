@@ -73,8 +73,10 @@ public class View implements ScoreListener
 	private JPanel diffPanel;
 	private JPanel panelBottom;
 	private JLabel diffLabel;
-	private JMenuItem normal;
-	private JMenuItem hard;
+//	private JMenuItem normal;
+//	private JMenuItem hard;
+	private JRadioButtonMenuItem normal;
+	private JRadioButtonMenuItem hard;
 	
 //	private final int gridRows = 15;
 //	private final int gridCols = 15;
@@ -182,15 +184,14 @@ public class View implements ScoreListener
 		mDifficulty.setBorder( null );
 		mDifficulty.setBorderPainted( true );
 		mDifficulty.setBackground( Color.LIGHT_GRAY );
-			
 		
-		normal = new JMenuItem( "Normal" );
-		normal.setArmed( true );
+		normal = new JRadioButtonMenuItem( "Normal" );
+		normal.setSelected( true );
 		normal.setActionCommand( "Normal" );
 		normal.addActionListener( controller );
 		mDifficulty.add( normal );
 		
-		hard = new JMenuItem( "Hard" );
+		hard = new JRadioButtonMenuItem( "Hard" );
 		hard.setActionCommand( "Hard" );
 		hard.addActionListener( controller );
 		mDifficulty.add( hard );
@@ -349,6 +350,7 @@ public class View implements ScoreListener
 		frame.setFocusable( true ); 
 		
 		model.addScoreListener( this );
+		updateScore();
 		
 	}
 	
