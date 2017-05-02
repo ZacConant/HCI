@@ -571,7 +571,6 @@ public class Model {
 		if (checkHighScore()) {
 			this.highScore = score;
 			this.isHighScore = true;
-			System.out.println("New High Score: " + this.highScore);
 			writeHighScore(this.highScore);
 		}
 		
