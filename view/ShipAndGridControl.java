@@ -33,9 +33,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import controller.Controller;
 import model.Model;
 import model.OrientationListener;
 import model.PositionListener;
@@ -43,35 +45,50 @@ import model.PositionListener;
 public class ShipAndGridControl extends JPanel implements PositionListener, OrientationListener
 {
 	private Model model;
+	private Controller controller;
+	private JFrame frame;
 	private ImageIcon xwing = new ImageIcon( "src/X_Wing_90.png" );
-//	private ImageIcon xwing2 = new ImageIcon( "src/X_Wing_0.png" );
 	private ImageIcon tie = new ImageIcon( "src/TIE_Fighter_Render.png" );
 	private ImageIcon boltHorizontal = new ImageIcon( "src/blaster_bolt_horizontal.png" );
 	private ImageIcon boltVertical = new ImageIcon( "src/blaster_bolt_vertical.png" );
 	private ImageIcon explosion = new ImageIcon( "src/explosion2.png" );
-	//private ImageIcon deathStar = new ImageIcon( "src/deathstar1.jpg");
-	private Image deathStar = Toolkit.getDefaultToolkit().createImage( "src/deathstar1.jpg" );
 	private ImageIcon highScore = new ImageIcon( "src/high_score.png" );
+	private Image deathStar = Toolkit.getDefaultToolkit().createImage( "src/deathstar1.jpg" );
 	private JLabel playerShip = new JLabel();
 	private JLabel enemyShip = new JLabel();
 	private JLabel boltLabel = new JLabel();
+	private JLabel diffLabel;
+	private JLabel currentHighScore;
 	private final int gridRows = 11;
 	private final int gridCols = 11;
 	private final int gameRow = 5;
 	private final int gameCol = 5;
 	private JPanel[][] panelArray;
-	private JFrame frame;
-	private JMenu mDifficulty;
-	private JLabel currentHighScore;
 	private JPanel diffPanel;
 	private JPanel panelBottom;
-	private JLabel diffLabel;
+	private JMenu mDifficulty;
+	private JMenuItem normal;
+	private JMenuItem hard;
 	
-	public ShipAndGridControl( Model model, JFrame frame, JMenu mDifficulty, JLabel currentHighScore, 
-			JPanel diffPanel, JPanel panelBottom, JLabel diffLabel )
+	
+	/**
+	 * Constructor. Displays the moving ships and updated graphics.
+	 * @param model
+	 * @param frame
+	 * @param mDifficulty
+	 * @param currentHighScore
+	 * @param diffPanel
+	 * @param panelBottom
+	 * @param diffLabel
+	 * @param normal
+	 * @param hard
+	 */
+	public ShipAndGridControl( Model model, Controller controller, JFrame frame, JMenu mDifficulty, JLabel currentHighScore, 
+			JPanel diffPanel, JPanel panelBottom, JLabel diffLabel, JMenuItem normal, JMenuItem hard )
 	{
 		
 		this.model = model;
+		this.controller = controller;
 		this.playerShip.setIcon( xwing );
 		this.enemyShip.setIcon( tie );
 		this.frame = frame;
@@ -80,11 +97,19 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		this.diffPanel = diffPanel;
 		this.panelBottom = panelBottom;
 		this.diffLabel = diffLabel;
+		this.normal = normal;
+		this.hard = hard;
 //		this.playerShip = new JLabel( xwing );
 //		this.enemyShip = new JLabel( tie );
 		
 	}
 	
+	/**
+	 * Handles the moving ships between grids, updates images.
+	 * @param frame
+	 * @param border
+	 * @param model
+	 */
 	public void gridDesign( JFrame frame, BorderLayout border, Model model )
 	{
 		
@@ -136,6 +161,9 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 
 	}
 	
+	/**
+	 * Resizes all of the images to appropriate game size.
+	 */
 	public void imageSizing()
 	{
 		Image xWing = xwing.getImage();
@@ -155,47 +183,49 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		this.explosion = new ImageIcon( newExplosion );
 	}
 	
-	// Resize an image icon
+	/**
+	 * Method that can be called multiple times to resize a specific imageIcon
+	 * @param width
+	 * @param height
+	 * @param icon
+	 * @return
+	 */
 	public ImageIcon resizeImage( int width, int height, ImageIcon icon ) 
 	{
 		Image image = icon.getImage();
 		Image newImage = image.getScaledInstance( width, height, java.awt.Image.SCALE_SMOOTH );
 		return new ImageIcon( newImage );
-	}
-	
-	public void playerNorth()
-	{
-		//panelArray[ gameRow ][ 7 ].add( playerShip );
-		panelArray[ gameRow ][ 7 ].add( new JLabel( "^" ) );
-	}
-	
-	public void playerEast()
-	{
-		panelArray[ gameRow ][ 7 ].add( new JLabel( ">" ) );
-	}
-	
-	public void playerSouth()
-	{
-		panelArray[ gameRow ][ 7 ].add( new JLabel( "V" ) );
-	}
-	
-	public void playerWest()
-	{
-		panelArray[ gameRow ][ 7 ].add( new JLabel( "<" ) );
-	}
+	} 
 
+	/**
+	 * Updates the orientation of the user ship. Also controls the difficulty appearance settings.
+	 */
 	@Override
 	public void updateOrientation() 
 	{
-//		this.playerShip = new JLabel( model.getTurretImage() );
 		this.playerShip.setIcon( model.getTurretImage() );
-		//panelArray[ gameRow ][ 7 ].add( playerShip );
+		
+		if ( true )
+		{
+			normal.setArmed( true );
+			hard.setArmed( false );
+		}
+		
+		if ( hard.isSelected() == true )
+		{
+			hard.setArmed( true );
+			normal.setArmed( false );
+		}
 	}
 
+	/**
+	 * Updates the images and locations of the enemy ships. Also contains an isEnd method which is used to display dialog boxes, 
+	 * 	update high score.
+	 */
 	@Override
 	public void updatePositions() 
 	{
-		// TODO: Might need to be placed within a listener
+		// Makes sure the 'Difficulty' menu cannot be accessed whenever the game is in motion
 		if ( model.isRunning() )
 		{
 			mDifficulty.setEnabled( false );
@@ -375,57 +405,20 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		
 	} // END OF UPDATEPOSITIONS()
 	
+	/**
+	 * Displays a specific dialog box at the end of the game depending upon whether or not a new high score was achieved. 
+	 * @param frame
+	 */
 	public void gameOver( JFrame frame )
 	{
 		if ( model.isHighScore() == true )
 		{
-			JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.INFORMATION_MESSAGE, highScore );
+			JOptionPane.showMessageDialog( frame, " Nice Try ", "Game Over", JOptionPane.INFORMATION_MESSAGE, highScore );
 			System.out.println("WOWOWOW: nhs " );
 		}
 		
 		else
 			JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.PLAIN_MESSAGE );
 	}
-	
-//	public Font getFont()
-//	{
-//		URL swFont;
-////		try 
-////		{
-////			//swFont = new URL( "http://www.webpagepublicity.com/free-fonts/s/Star%20Jedi.ttf");
-////		} 
-////		catch (MalformedURLException e) 
-////		{
-////			// TODO Auto-generated catch block
-////			e.printStackTrace();
-////		}
-//		Font font = null;
-//		try 
-//		{
-//			swFont = new URL( "http://www.webpagepublicity.com/free-fonts/s/Star%20Jedi.ttf");
-//			font = Font.createFont(Font.TRUETYPE_FONT, swFont.openStream() );
-//		} 
-//		catch (MalformedURLException e) 
-//		{
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		catch ( FontFormatException e ) 
-//		{
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} 
-//		catch ( IOException e ) 
-//		{
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		font = font.deriveFont( Font.PLAIN, 44 );
-//		
-//		GraphicsEnvironment graphics = GraphicsEnvironment.getLocalGraphicsEnvironment();
-//		graphics.registerFont(font);
-//		
-//		return font;
-//	}
 
 }

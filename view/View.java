@@ -63,25 +63,30 @@ public class View implements ScoreListener
 	private ImageIcon start = new ImageIcon( "src/start.png" );
 	private ImageIcon fire = new ImageIcon( "src/target.png" );
 	private ImageIcon highScore = new ImageIcon( "src/high_score.png" );
-
 	private ImageIcon reset = new ImageIcon( "src/reset_button_1.png" );
 	private ImageIcon play = new ImageIcon( "src/play_button_1.png" );
 	private ImageIcon pause = new ImageIcon( "src/pause_button_1.png" );	
 	private ImageIcon deathStar = new ImageIcon( "src/deathstar3.jpg");
-	//private Image deathStar = Toolkit.getDefaultToolkit().createImage( "src/deathstar1.jpg" );
-
 	private JLabel userScore;
 	private JLabel currentHighScore;
 	private JPanel diffPanel;
 	private JPanel panelBottom;
 	private JLabel diffLabel;
+	private JMenuItem normal;
+	private JMenuItem hard;
 	
 //	private final int gridRows = 15;
 //	private final int gridCols = 15;
 //	private final int gameRow = 8;
 //	private final int gameCol = 8;
 	
-	
+	/**
+	 * Constructor
+	 * @param model
+	 * @param controller
+	 * @param frame
+	 * @throws Exception
+	 */
 	public View( Model model, Controller controller, JFrame frame ) throws Exception 
 	{
 		this.model = model;
@@ -96,6 +101,13 @@ public class View implements ScoreListener
 		gameView( controller, model, frame );
 	}
 	
+	/**
+	 * The visual layout of the game
+	 * @param controller
+	 * @param model
+	 * @param frame
+	 * @throws Exception
+	 */
 	private void gameView( Controller controller, Model model, JFrame frame ) throws Exception
 	{
 		imageResizing();
@@ -105,8 +117,6 @@ public class View implements ScoreListener
 		JLabel backGround = new JLabel();
 		backGround.setIcon( deathStar );
 		frame.setContentPane( backGround );
-		
-		
 		
 		
 		// The main layout used in the design of the game
@@ -147,35 +157,25 @@ public class View implements ScoreListener
 		mBar.add( mHelp );
 
 		mDifficulty = new JMenu( " Difficulty " );
+		mDifficulty.setRequestFocusEnabled( false );
 		mDifficulty.setBorder( null );
 		mDifficulty.setBorderPainted( true );
 		mDifficulty.setBackground( Color.LIGHT_GRAY );
-		
-		// TODO: Might need to be placed within a listener
-		if ( model.isRunning() )
-		{
-			mDifficulty.setEnabled( false );
-		}
-		else
-		{
-			mDifficulty.setEnabled( true );
-		}
 			
 		
-		JMenuItem normal = new JMenuItem( "Normal" );
+		normal = new JMenuItem( "Normal" );
+		//normal.setArmed( true );
 		normal.setActionCommand( "Normal" );
 		normal.addActionListener( controller );
 		mDifficulty.add( normal );
 		
-		JMenuItem hard = new JMenuItem( "Hard" );
+		hard = new JMenuItem( "Hard" );
 		hard.setActionCommand( "Hard" );
 		hard.addActionListener( controller );
 		mDifficulty.add( hard );
 		
 		mBar.add( mDifficulty );
 		
-		
-		//border.addLayoutComponent( mBar, BorderLayout.NORTH );
 		
 		// ---- END OF MENUBAR ---- //
 		
@@ -188,7 +188,6 @@ public class View implements ScoreListener
 		GridLayout gridLeft = new GridLayout( 5, 1 );
 		panelLeft.setLayout( gridLeft );
 		
-		//JButton startButton = new JButton( start );
 		JButton playButton = new JButton( play );
 		playButton.setBorderPainted( false );
 		playButton.setRequestFocusEnabled( false );
@@ -247,9 +246,7 @@ public class View implements ScoreListener
 		diffLabel.setForeground( new Color( 75, 213, 238 ) );
 		diffPanel.add( diffLabel );
 		
-		//currentHighScore = new JLabel( "      " + Integer.toString( model.getHighScore() ) );
 		currentHighScore = new JLabel();
-		System.out.println("new Label");
 		Font hsFont = currentHighScore.getFont();
 		currentHighScore.setFont( hsFont.deriveFont( Font.CENTER_BASELINE , 30) );
 		diffPanel.add( currentHighScore );
@@ -281,8 +278,7 @@ public class View implements ScoreListener
 		leftKey.setActionCommand( "faceLeft" );
 		leftKey.setRequestFocusEnabled( false );
 		panelControls.add( leftKey );
-		
-		//panelControls.add( new JLabel("") );
+ 
 		JButton trigger = new JButton( fire );
 		trigger.setBorderPainted( false );
 		trigger.addActionListener( controller );
@@ -315,7 +311,6 @@ public class View implements ScoreListener
 		
 		JLabel temp = new JLabel("");
 		panelBottom.add( temp );
-		
 		frame.add( panelBottom );
 		border.addLayoutComponent( panelBottom, BorderLayout.SOUTH );
 		
@@ -324,11 +319,10 @@ public class View implements ScoreListener
 		
 		
 		// **** CENTER **** //
-		ShipAndGridControl centerDesign = new ShipAndGridControl( model, frame, mDifficulty, currentHighScore,
-				diffPanel, panelBottom, diffLabel );
+		ShipAndGridControl centerDesign = new ShipAndGridControl( model, controller, frame, mDifficulty, currentHighScore,
+				diffPanel, panelBottom, diffLabel, normal, hard );
 		centerDesign.gridDesign( frame, border, model );
 		
-		//centerDesign.addKeyListener( controller );
 		frame.addKeyListener( controller );
 		frame.setFocusable( true ); 
 		
@@ -336,6 +330,9 @@ public class View implements ScoreListener
 		
 	}
 	
+	/**
+	 * Resizes all of the images to an appropriate game size
+	 */
 	public void imageResizing()
 	{
 		Image up1 = up.getImage();
@@ -383,6 +380,9 @@ public class View implements ScoreListener
 		this.deathStar = new ImageIcon( newDeathStar );
 	}
 	
+	/**
+	 * Displays text to the user using a 'Star Wars' font
+	 */
 	public Font getFont() throws Exception
 	{
 		URL swFont = new URL( "http://www.webpagepublicity.com/free-fonts/s/Star%20Jedi.ttf");
@@ -395,6 +395,9 @@ public class View implements ScoreListener
 		return font;
 	}
 	
+	/**
+	 * Displays dialog boxes whenever the game is over
+	 */
 	public void gameOver()
 	{
 		if ( model.isHighScore() == true )
@@ -405,16 +408,10 @@ public class View implements ScoreListener
 		else
 			JOptionPane.showMessageDialog( frame, " You Lost ", "Game Over", JOptionPane.PLAIN_MESSAGE );
 	}
-	
-	public void help()
-	{
-		//TODO: Waiting on "help" text
-//		if ( model.needsHelp() == true )
-//		{
-//			JOptionPane.showMessageDialog( frame, "", "Help", JOptionPane.PLAIN_MESSAGE );
-//		}
-	}
 
+	/**
+	 * Updates the score as the game is played
+	 */
 	@Override
 	public void updateScore() 
 	{
