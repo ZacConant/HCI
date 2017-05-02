@@ -15,14 +15,19 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -59,8 +64,11 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 	private JMenu mDifficulty;
 	private JLabel currentHighScore;
 	private JPanel diffPanel;
+	private JPanel panelBottom;
+	private JLabel diffLabel;
 	
-	public ShipAndGridControl( Model model, JFrame frame, JMenu mDifficulty, JLabel currentHighScore, JPanel diffPanel )
+	public ShipAndGridControl( Model model, JFrame frame, JMenu mDifficulty, JLabel currentHighScore, 
+			JPanel diffPanel, JPanel panelBottom, JLabel diffLabel )
 	{
 		
 		this.model = model;
@@ -70,6 +78,8 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		this.mDifficulty = mDifficulty;
 		this.currentHighScore = currentHighScore;
 		this.diffPanel = diffPanel;
+		this.panelBottom = panelBottom;
+		this.diffLabel = diffLabel;
 //		this.playerShip = new JLabel( xwing );
 //		this.enemyShip = new JLabel( tie );
 		
@@ -340,10 +350,28 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 			System.out.println( model.isGameOver() + "");
 			gameOver( frame );
 			
+			
+			
+			GridLayout diffGrid = new GridLayout(2, 1);
+			
+			//diffPanel.
+			diffPanel.removeAll();
+			diffPanel = new JPanel( diffGrid );
+			
+//			diffLabel = new JLabel( " High Score" );
+//			Font diffFont = getFont().deriveFont( Font.PLAIN, 28 );
+//			diffLabel.setFont( diffFont );
+//			diffLabel.setForeground( new Color( 75, 213, 238 ) );
+			diffPanel.add( diffLabel );
+			
 			currentHighScore = new JLabel( "      " + Integer.toString( model.getHighScore() ) );
 			Font hsFont = currentHighScore.getFont();
 			currentHighScore.setFont( hsFont.deriveFont( Font.CENTER_BASELINE , 30) );
 			diffPanel.add( currentHighScore );
+			
+			System.out.println("SHIT");
+			
+			//panelBottom.add( diffPanel );
 		}
 		
 	} // END OF UPDATEPOSITIONS()
@@ -358,5 +386,46 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 		else
 			JOptionPane.showMessageDialog( frame, "", "Game Over", JOptionPane.PLAIN_MESSAGE );
 	}
+	
+//	public Font getFont()
+//	{
+//		URL swFont;
+////		try 
+////		{
+////			//swFont = new URL( "http://www.webpagepublicity.com/free-fonts/s/Star%20Jedi.ttf");
+////		} 
+////		catch (MalformedURLException e) 
+////		{
+////			// TODO Auto-generated catch block
+////			e.printStackTrace();
+////		}
+//		Font font = null;
+//		try 
+//		{
+//			swFont = new URL( "http://www.webpagepublicity.com/free-fonts/s/Star%20Jedi.ttf");
+//			font = Font.createFont(Font.TRUETYPE_FONT, swFont.openStream() );
+//		} 
+//		catch (MalformedURLException e) 
+//		{
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		catch ( FontFormatException e ) 
+//		{
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} 
+//		catch ( IOException e ) 
+//		{
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		font = font.deriveFont( Font.PLAIN, 44 );
+//		
+//		GraphicsEnvironment graphics = GraphicsEnvironment.getLocalGraphicsEnvironment();
+//		graphics.registerFont(font);
+//		
+//		return font;
+//	}
 
 }
