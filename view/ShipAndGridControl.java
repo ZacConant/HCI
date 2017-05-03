@@ -2,7 +2,7 @@
  * Ryan Maynord, Zachary Conant, Nathan Pierce
  * CS 3053 - Human Computer Interaction
  * Project
- * April 25th, 27th 2017
+ * May 4th, 2017
  * ShipAndGridControl.java
  */
 
@@ -210,7 +210,6 @@ public class ShipAndGridControl extends JPanel implements PositionListener, Orie
 	@Override
 	public void updatePositions() 
 	{
-		//TODO: Will need to be moved
 		// Makes sure the 'Difficulty' menu cannot be accessed whenever the game is in motion
 		if ( model.isRunning() )
 		{

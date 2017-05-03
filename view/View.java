@@ -2,45 +2,32 @@
  * Ryan Maynord, Zachary Conant, Nathan Pierce
  * CS 3053 - Human Computer Interaction
  * Project
- * April 25th, 27th 2017
+ * May 4th, 2017
  * View.java
  */
 package view;
 
 import java.awt.BorderLayout;
-//import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
-//import java.awt.GridLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.LayoutManager;
-import java.awt.Toolkit;
 import java.net.URL;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu.Separator;
 import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JSeparator;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
 
 import controller.Controller;
 import model.Model;
@@ -108,7 +95,6 @@ public class View implements ScoreListener
 	{
 		imageResizing();
 		
-		
 		// Background image for the playing field
 		JLabel backGround = new JLabel();
 		backGround.setIcon( deathStar );
@@ -121,30 +107,17 @@ public class View implements ScoreListener
 		
 		
 		
-		
-		
 		// **** MENU BAR **** //
 		
 		JMenuBar mBar = new JMenuBar();
 		mBar.setBorderPainted( true );
 		frame.setJMenuBar( mBar );
-		
-//		
-//		JRadioButtonMenuItem test = new JRadioButtonMenuItem(" Test ");
-//		//test.setOpaque( true );
-//		//test.setContentAreaFilled( false );
-//		test.setBorderPainted( true );
-//		//test.setFocusable( true );
-//		test.setRequestFocusEnabled( false );
-//		mBar.add( test );
 //		
 		/* 'FILE' TAB */
 		JMenu mFile = new JMenu( " Exit " );
 		mFile.setBorder( null );
 		mFile.setBorderPainted( true );
 		mFile.setBackground( Color.LIGHT_GRAY );
-		//mFile.setActionCommand( "Quit" );
-		//mFile.addMenuListener( controller ); 
 		
 		JMenuItem mItemExit = new JMenuItem( "Exit Game");
 		mItemExit.setActionCommand( "Quit" );
@@ -162,8 +135,6 @@ public class View implements ScoreListener
 		mHelp.setRequestFocusEnabled( false );
 		mHelp.setBorderPainted( true );
 		mHelp.setBackground( Color.LIGHT_GRAY );
-		//mHelp.setActionCommand( "Help" );
-		//mHelp.addMenuListener( controller ); 
 		
 		JMenuItem mItemHelp = new JMenuItem( "About" );
 		mItemHelp.setActionCommand( "Help" );
